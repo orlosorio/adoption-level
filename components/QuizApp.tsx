@@ -154,7 +154,8 @@ export default function QuizApp() {
         )}
 
         {screen === "quiz" && language && QUESTIONS[currentQuestion] && (
-          <>
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="w-full max-w-[600px]">
             <header className="mb-5 w-full shrink-0">
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[14px] text-[#365cff]">
                 <span>
@@ -183,7 +184,7 @@ export default function QuizApp() {
               </div>
             </header>
 
-            <div className="mx-auto w-full max-w-[600px] flex-1">
+            <div className="mx-auto w-full max-w-[600px]">
               <div className="rounded-2xl bg-white px-6 py-8 sm:px-10 sm:py-11">
                 {(() => {
                   const q = QUESTIONS[currentQuestion]!;
@@ -222,7 +223,8 @@ export default function QuizApp() {
                 })()}
               </div>
             </div>
-          </>
+            </div>
+          </div>
         )}
 
         {screen === "email" && language && (
