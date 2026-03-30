@@ -245,9 +245,6 @@ export default function QuizApp() {
             <span className="hidden sm:inline">Home</span>
           </button>
         )}
-        <p className="tech-brand" data-text={UI.brand}>
-          <span className="tech-brand-inner">{UI.brand}</span>
-        </p>
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[860px] flex-1 flex-col">
