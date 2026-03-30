@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { UI } from "@/lib/content";
 
 export default function AssessmentNav() {
   const pathname = usePathname();
@@ -9,7 +8,7 @@ export default function AssessmentNav() {
   const isEntry = pathname === "/assessment";
 
   return (
-    <div className="relative z-10 flex w-full items-center justify-center pt-2">
+    <div className="relative z-10 flex w-full items-center pt-2">
       {isEntry ? (
         <a
           href="/"
@@ -58,9 +57,6 @@ export default function AssessmentNav() {
           <span className="hidden sm:inline">Home</span>
         </button>
       )}
-      <p className="tech-brand" data-text={UI.brand}>
-        <span className="tech-brand-inner">{UI.brand}</span>
-      </p>
     </div>
   );
 }
