@@ -67,10 +67,10 @@ export default function AssessmentEntry({
               <hr className="hero-title-rule" />
               <span className="hero-title-assessment">Self-Assessment</span>
             </h1>
-            <p className="mb-[clamp(4px,1vh,14px)] font-sans text-[14px] leading-relaxed text-[#4d5b9a] sm:text-[15px]">
+            <p className="mb-[clamp(10px,2vh,24px)] font-sans text-[14px] leading-relaxed text-[#4d5b9a] sm:text-[15px]">
               {UI.language.subtitle}
             </p>
-            <p className="mb-[clamp(6px,1.2vh,16px)] font-sans text-[13px] font-semibold text-[#365cff]/80">
+            <p className="mb-[clamp(14px,2.5vh,28px)] font-sans text-[13px] font-semibold text-[#365cff]/80">
               {UI.language.meta}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-5">
@@ -89,7 +89,7 @@ export default function AssessmentEntry({
                 <span className="glass-cta-label">{UI.language.en}</span>
               </button>
             </div>
-            <div className="relative left-1/2 mt-[clamp(8px,2vh,24px)] -ml-[50vw] w-screen">
+            <div className="relative left-1/2 mt-[clamp(20px,4vh,48px)] -ml-[50vw] w-screen">
               <ToolsMarquee language="en" />
             </div>
           </div>
