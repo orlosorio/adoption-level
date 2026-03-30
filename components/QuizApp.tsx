@@ -185,7 +185,7 @@ export default function QuizApp() {
             </header>
 
             <div className="mx-auto w-full max-w-[600px]">
-              <div className="rounded-2xl bg-white px-6 py-8 sm:px-10 sm:py-11">
+              <div className="glass-quiz-card px-6 py-8 sm:px-10 sm:py-11">
                 {(() => {
                   const q = QUESTIONS[currentQuestion]!;
                   const full = LEVEL_LABELS[q.level]![language];
@@ -199,21 +199,21 @@ export default function QuizApp() {
                       <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
                         {name}
                       </p>
-                      <p className="mt-6 min-h-14 font-sans text-[15px] font-normal leading-[1.6] text-[#2a2a2a] sm:min-h-14 sm:text-[17px]">
+                      <p className="mt-6 min-h-14 font-sans text-[15px] font-normal leading-[1.6] text-[#2a2a2a]/80 sm:min-h-14 sm:text-[17px]">
                         {text}
                       </p>
                       <div className="mt-10 flex flex-wrap justify-center gap-[14px]">
                         <button
                           type="button"
                           onClick={() => answerQuestion(true)}
-                          className="rounded-[10px] bg-[#365cff] px-8 py-3 text-[15px] font-bold tracking-[0.07em] text-white transition-colors hover:bg-[#2b4cf0] sm:px-12 sm:py-[14px]"
+                          className="glass-answer-btn"
                         >
                           {UI.quiz[language].yes}
                         </button>
                         <button
                           type="button"
                           onClick={() => answerQuestion(false)}
-                          className="rounded-[10px] border-[1.5px] border-[#cbd2f4] bg-white px-8 py-3 text-[15px] font-bold tracking-[0.07em] text-[#22348a] transition-colors hover:bg-[#f2f4ff] sm:px-12 sm:py-[14px]"
+                          className="glass-answer-btn"
                         >
                           {UI.quiz[language].no}
                         </button>
