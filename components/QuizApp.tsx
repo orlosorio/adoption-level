@@ -12,6 +12,8 @@ import { getResultLevel, getRoleResultLevel } from "@/lib/scoring";
 import { BEEHIIV_ENDPOINT } from "@/lib/config";
 import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from "@/lib/roles";
 import { ROLE_RESULT_COPY } from "@/lib/roleResults";
+import { COMPANY_QUESTIONS, DIMENSION_NAMES, DIMENSION_ORDER, type DimensionId } from "@/lib/companyAssessment";
+import { COMPANY_RESULT_COPY } from "@/lib/companyResults";
 import ToolsMarquee from "@/components/ToolsMarquee";
 import FomoCounter from "@/components/FomoCounter";
 import HeroAI from "@/components/HeroAI";
@@ -28,7 +30,7 @@ type Screen =
   | "email"
   | "results";
 
-type AssessmentType = "general" | "role";
+type AssessmentType = "general" | "role" | "company";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -51,11 +53,17 @@ export default function QuizApp() {
   const [selectedRole, setSelectedRole] = useState<RoleId | null>(null);
 
   const isRoleQuiz = assessmentType === "role";
+  const isCompanyQuiz = assessmentType === "company";
   const roleQuestions =
     isRoleQuiz && selectedRole
       ? ROLE_ASSESSMENTS[selectedRole].questions
       : null;
-  const activeQuestions = isRoleQuiz && roleQuestions ? roleQuestions : QUESTIONS;
+  const companyQuestions = isCompanyQuiz ? COMPANY_QUESTIONS : null;
+  const activeQuestions = isCompanyQuiz
+    ? COMPANY_QUESTIONS
+    : isRoleQuiz && roleQuestions
+      ? roleQuestions
+      : QUESTIONS;
   const totalQuestions = activeQuestions.length;
 
   const selectAssessmentType = (type: AssessmentType) => {
@@ -73,6 +81,8 @@ export default function QuizApp() {
       setScreen("quiz");
     }
   };
+
+  const isScaleQuiz = isRoleQuiz || isCompanyQuiz;
 
   const selectRole = (roleId: RoleId) => {
     setSelectedRole(roleId);
@@ -119,25 +129,40 @@ export default function QuizApp() {
       BEEHIIV_ENDPOINT &&
       BEEHIIV_ENDPOINT !== "YOUR_BEEHIIV_ENDPOINT"
     ) {
-      const payload = isRoleQuiz
+      const payload = isCompanyQuiz
         ? {
             email: trimmed,
             language,
-            assessmentType: "role" as const,
-            roleId: selectedRole,
-            roleName: selectedRole && language ? ROLE_NAMES[selectedRole][language] : "",
+            assessmentType: "company" as const,
             totalScore: score,
             maxScore: totalQuestions * 4,
             averageScore: (score / totalQuestions).toFixed(1),
             resultLevel,
+            dimensionScores: dimensionScores?.map((d) => ({
+              dimension: d.dimId,
+              score: d.score,
+              max: d.max,
+            })),
           }
-        : {
-            email: trimmed,
-            language,
-            assessmentType: "general" as const,
-            score,
-            resultLevel,
-          };
+        : isRoleQuiz
+          ? {
+              email: trimmed,
+              language,
+              assessmentType: "role" as const,
+              roleId: selectedRole,
+              roleName: selectedRole && language ? ROLE_NAMES[selectedRole][language] : "",
+              totalScore: score,
+              maxScore: totalQuestions * 4,
+              averageScore: (score / totalQuestions).toFixed(1),
+              resultLevel,
+            }
+          : {
+              email: trimmed,
+              language,
+              assessmentType: "general" as const,
+              score,
+              resultLevel,
+            };
       try {
         await fetch(BEEHIIV_ENDPOINT, {
           method: "POST",
@@ -157,10 +182,10 @@ export default function QuizApp() {
   };
 
   const score = answers.reduce((sum, v) => sum + v, 0);
-  const maxScore = isRoleQuiz ? totalQuestions * 4 : totalQuestions;
+  const maxScore = isScaleQuiz ? totalQuestions * 4 : totalQuestions;
   const resultLevel =
     answers.length > 0
-      ? isRoleQuiz
+      ? isScaleQuiz
         ? getRoleResultLevel(score, maxScore)
         : getResultLevel(score, answers.length)
       : 0;
@@ -169,7 +194,22 @@ export default function QuizApp() {
   const { number: resultLevelNumber, name: resultLevelName } =
     splitLevelLabel(resultLabel);
 
-  const resultCopy = isRoleQuiz ? ROLE_RESULT_COPY : RESULT_COPY;
+  const resultCopy = isCompanyQuiz
+    ? COMPANY_RESULT_COPY
+    : isRoleQuiz
+      ? ROLE_RESULT_COPY
+      : RESULT_COPY;
+
+  const dimensionScores = isCompanyQuiz
+    ? DIMENSION_ORDER.map((dimId) => {
+        const indices = COMPANY_QUESTIONS
+          .map((q, i) => (q.dimension === dimId ? i : -1))
+          .filter((i) => i >= 0);
+        const dimScore = indices.reduce((s, i) => s + (answers[i] ?? 0), 0);
+        const dimMax = indices.length * 4;
+        return { dimId, score: dimScore, max: dimMax, count: indices.length };
+      })
+    : null;
 
   const quizProgressPct =
     totalQuestions > 0
@@ -265,11 +305,13 @@ export default function QuizApp() {
             <header className="mb-5 w-full shrink-0">
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[14px] text-[#365cff]">
                 <span>
-                  {isRoleQuiz && roleQuestions
-                    ? UI.quiz[language].levelOf(roleQuestions[currentQuestion]!.level + 1)
-                    : UI.quiz[language].levelOf(
-                        (QUESTIONS[currentQuestion] as { level: number }).level + 1,
-                      )}
+                  {isCompanyQuiz && companyQuestions
+                    ? UI.quiz[language].levelOf(companyQuestions[currentQuestion]!.level + 1)
+                    : isRoleQuiz && roleQuestions
+                      ? UI.quiz[language].levelOf(roleQuestions[currentQuestion]!.level + 1)
+                      : UI.quiz[language].levelOf(
+                          (QUESTIONS[currentQuestion] as { level: number }).level + 1,
+                        )}
                 </span>
                 <span>
                   {UI.quiz[language].questionOf(
@@ -295,6 +337,42 @@ export default function QuizApp() {
             <div className="mx-auto w-full max-w-[600px]">
               <div className="glass-quiz-card px-6 py-8 sm:px-10 sm:py-11">
                 {(() => {
+                  if (isCompanyQuiz && companyQuestions) {
+                    const q = companyQuestions[currentQuestion]!;
+                    const { number, name } = splitLevelLabel(q.levelLabel[language]);
+                    const text = q.statement[language];
+                    const dimName = DIMENSION_NAMES[q.dimension][language];
+                    return (
+                      <>
+                        <span className="mb-3 inline-block rounded-full bg-[#eef1ff] px-3 py-1 text-[12px] font-semibold tracking-wide text-[#365cff]">
+                          {dimName}
+                        </span>
+                        <p className="font-serif text-[28px] font-bold leading-tight text-[#1f36a9]">
+                          {number}
+                        </p>
+                        <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
+                          {name}
+                        </p>
+                        <p className="mt-6 min-h-14 font-sans text-[15px] font-semibold leading-[1.6] text-[#1f36a9] sm:min-h-14 sm:text-[20px]">
+                          {text}
+                        </p>
+                        <ScaleButtons
+                          onChange={answerQuestion}
+                          language={language}
+                        />
+                        {currentQuestion > 0 && (
+                          <button
+                            type="button"
+                            onClick={goBack}
+                            className="quiz-back-link mt-6"
+                          >
+                            {UI.quiz[language].back}
+                          </button>
+                        )}
+                      </>
+                    );
+                  }
+
                   if (isRoleQuiz && roleQuestions) {
                     const q = roleQuestions[currentQuestion]!;
                     const { number, name } = splitLevelLabel(q.levelLabel[language]);
@@ -469,7 +547,7 @@ export default function QuizApp() {
                 </div>
               </div>
 
-              {isRoleQuiz && (
+              {isScaleQuiz && (
                 <div className="avg-score-card">
                   <div className="mb-2 flex items-center justify-between text-[14px]">
                     <span className="text-[#555]">
@@ -492,6 +570,47 @@ export default function QuizApp() {
                   <p className="mt-1 text-right text-xs text-[#999]">
                     {Math.round((score / (totalQuestions * 4)) * 100)}%
                   </p>
+                </div>
+              )}
+
+              {isCompanyQuiz && dimensionScores && language && (
+                <div className="mt-6 rounded-[10px] border border-[#d8defa] px-5 py-5">
+                  <p className="mb-4 font-sans text-sm font-bold text-[#1f36a9]">
+                    {language === "es"
+                      ? "Puntuación por dimensión"
+                      : "Score by dimension"}
+                  </p>
+                  <div className="space-y-3">
+                    {dimensionScores.map(({ dimId, score: ds, max: dm }) => (
+                      <div key={dimId}>
+                        <div className="mb-1 flex items-center justify-between text-[13px]">
+                          <span className="text-[#444]">
+                            {DIMENSION_NAMES[dimId][language]}
+                          </span>
+                          <span className="font-semibold text-[#111]">
+                            {ds}/{dm}
+                            <span className="ml-1 text-[#999]">
+                              ({dm > 0 ? Math.round((ds / dm) * 100) : 0}%)
+                            </span>
+                          </span>
+                        </div>
+                        <div className="h-[4px] w-full rounded-full bg-[#e8ebf8]">
+                          <div
+                            className="h-[4px] rounded-full transition-[width] duration-[350ms] ease-out"
+                            style={{
+                              width: dm > 0 ? `${(ds / dm) * 100}%` : "0%",
+                              backgroundColor:
+                                dm > 0 && ds / dm >= 0.7
+                                  ? "#22c55e"
+                                  : dm > 0 && ds / dm >= 0.4
+                                    ? "#f59e0b"
+                                    : "#ef4444",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

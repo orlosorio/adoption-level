@@ -236,7 +236,7 @@ export default function GeneralQuiz({
             </header>
 
             <div className="mx-auto w-full max-w-[600px]">
-              <div className="glass-quiz-card px-6 py-8 sm:px-10 sm:py-11">
+              <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
                 {(() => {
                   const q = QUESTIONS[currentQuestion]!;
                   const full = LEVEL_LABELS[q.level]![language];

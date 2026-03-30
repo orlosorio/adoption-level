@@ -20,7 +20,7 @@ export default function AssessmentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="assessment-shell quiz-grid-bg flex min-h-screen flex-col px-4 py-10 sm:px-6 sm:py-12">
+    <div className="assessment-shell quiz-grid-bg flex min-h-dvh flex-col px-4 py-6 sm:px-6 sm:py-8">
       <BackgroundScene />
       <AssessmentNav />
       <div className="relative z-10 mx-auto flex w-full max-w-[860px] flex-1 flex-col">

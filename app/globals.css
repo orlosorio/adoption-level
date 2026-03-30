@@ -1388,3 +1388,158 @@ body {
 .assessment-shell:has(.quiz-in-progress) [aria-label="Back to home"]:hover {
   opacity: 1;
 }
+
+/* ── Viewport-height responsive: laptops (≤ 900px tall) ── */
+
+@media (max-height: 900px) {
+  .assessment-shell {
+    padding-top: 1.25rem;
+    padding-bottom: 1rem;
+  }
+
+  .hero-ai-svg {
+    height: clamp(40px, 7vw, 72px);
+  }
+
+  .hero-title-adoption {
+    font-size: clamp(22px, 3.5vw, 36px);
+  }
+
+  .hero-title-rule {
+    margin-top: 12px;
+  }
+
+  .hero-title-assessment {
+    font-size: clamp(18px, 2.5vw, 28px);
+    margin-top: 10px;
+    letter-spacing: 0.25em;
+  }
+
+  .marquee-section {
+    padding: 24px 0;
+  }
+
+  .marquee-label {
+    margin-bottom: 16px;
+  }
+
+  .fomo-counter {
+    padding: 20px 24px 14px;
+  }
+
+  .fomo-number {
+    font-size: clamp(36px, 5vw, 48px);
+    margin-bottom: 8px;
+  }
+
+  .fomo-live-label {
+    margin-bottom: 6px;
+  }
+
+  .type-selector-card {
+    min-height: 180px;
+    padding: 24px;
+  }
+
+  .glass-cta {
+    padding: 14px 40px;
+  }
+
+  .glass-quiz-card {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .scale-option-btn {
+    padding: 11px 16px;
+  }
+}
+
+/* ── Viewport-height responsive: small laptops / MacBook Air 13″ (≤ 768px tall) ── */
+
+@media (max-height: 768px) {
+  .assessment-shell {
+    padding-top: 0.625rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .hero-ai-svg {
+    height: clamp(32px, 5.5vw, 52px);
+  }
+
+  .hero-title-adoption {
+    font-size: clamp(18px, 3vw, 28px);
+    margin-top: 0;
+  }
+
+  .hero-title-rule {
+    margin-top: 6px;
+  }
+
+  .hero-title-assessment {
+    font-size: clamp(14px, 2vw, 20px);
+    margin-top: 6px;
+    letter-spacing: 0.18em;
+  }
+
+  .marquee-section {
+    padding: 12px 0;
+  }
+
+  .marquee-label {
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .marquee-pill {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .fomo-counter {
+    padding: 10px 24px 8px;
+  }
+
+  .fomo-number {
+    font-size: clamp(28px, 4vw, 38px);
+    margin-bottom: 4px;
+  }
+
+  .fomo-subtitle {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .fomo-live-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .type-selector-card {
+    min-height: 140px;
+    padding: 18px;
+  }
+
+  .glass-cta {
+    padding: 12px 32px;
+    font-size: 15px;
+  }
+
+  .glass-quiz-card {
+    padding: 1rem 1.25rem;
+  }
+
+  .scale-option-btn {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  .role-card {
+    min-height: 56px;
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .role-grid {
+    gap: 10px;
+  }
+}

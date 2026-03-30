@@ -2,7 +2,7 @@
 
 import type { Language } from "@/lib/content";
 
-type AssessmentType = "general" | "role";
+export type AssessmentType = "general" | "role" | "company";
 
 interface TypeSelectorProps {
   language: Language;
@@ -26,6 +26,7 @@ const cards: {
   desc: Record<Language, string>;
   stats: Record<Language, string>;
   recommended?: boolean;
+  icon: string;
 }[] = [
   {
     type: "general",
@@ -35,6 +36,7 @@ const cards: {
       es: "Qué tan bien estás usando IA en toda tu vida laboral.",
     },
     stats: { en: "15 questions · ~5 min", es: "15 preguntas · ~5 min" },
+    icon: "👤",
   },
   {
     type: "role",
@@ -48,6 +50,17 @@ const cards: {
       es: "33 preguntas · ~7 min",
     },
     recommended: true,
+    icon: "🎯",
+  },
+  {
+    type: "company",
+    title: { en: "Company Assessment", es: "Evaluación Empresarial" },
+    desc: {
+      en: "How ready is your organization for AI adoption across 7 key dimensions.",
+      es: "Qué tan preparada está tu organización para adoptar IA en 7 dimensiones clave.",
+    },
+    stats: { en: "35 questions · ~8 min", es: "35 preguntas · ~8 min" },
+    icon: "🏢",
   },
 ];
 
@@ -60,13 +73,13 @@ export default function TypeSelector({
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <div className="w-full max-w-[700px] text-center">
+      <div className="w-full max-w-[920px] text-center">
         <h2 className="mb-6 font-sans text-lg font-semibold text-[#1f36a9]">
           {HEADING[language]}
         </h2>
 
         {onLanguageChange && (
-          <div className="mb-10 inline-flex items-center gap-1 rounded-full border border-[#1f36a9]/10 bg-white/40 p-1 text-[13px] font-medium backdrop-blur-md">
+          <div className="mb-6 inline-flex items-center gap-1 rounded-full border border-[#1f36a9]/10 bg-white/40 p-1 text-[13px] font-medium backdrop-blur-md">
             <button
               type="button"
               onClick={() => onLanguageChange("es")}
@@ -92,7 +105,7 @@ export default function TypeSelector({
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {cards.map((card) => (
             <button
               key={card.type}
@@ -113,6 +126,7 @@ export default function TypeSelector({
                   {RECOMMENDED_LABEL[language]}
                 </span>
               )}
+              <p className="mb-1 text-2xl" aria-hidden>{card.icon}</p>
               <p className="font-sans text-lg font-semibold text-[#1f36a9]">
                 {card.title[language]}
               </p>

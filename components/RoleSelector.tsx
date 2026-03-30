@@ -40,7 +40,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[720px] text-center">
-        <h2 className="mb-8 font-sans text-base font-semibold text-[#1f36a9]">
+        <h2 className="mb-5 font-sans text-base font-semibold text-[#1f36a9]">
           {UI_TEXT[language].heading}
         </h2>
 
