@@ -1187,6 +1187,10 @@ body {
 }
 
 .assessment-shell:has(.quiz-in-progress) .quiz-aurora-blob {
+  animation-duration: 300s !important;
+}
+
+.assessment-shell:has(.quiz-in-progress) .quiz-aurora-blob {
   opacity: 0.18;
   transition: opacity 0.8s ease;
 }
