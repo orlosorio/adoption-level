@@ -1182,6 +1182,10 @@ body {
   transition: background-image 0.8s ease;
 }
 
+.assessment-shell:has(.quiz-in-progress) .quiz-cube {
+  animation-duration: 500s !important;
+}
+
 .assessment-shell:has(.quiz-in-progress) .quiz-aurora-blob {
   opacity: 0.18;
   transition: opacity 0.8s ease;

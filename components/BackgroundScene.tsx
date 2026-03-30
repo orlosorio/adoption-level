@@ -1,18 +1,25 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function BackgroundScene() {
   const prefersReduced = useReducedMotion();
+  const pathname = usePathname();
+
+  const quizActive =
+    pathname === "/assessment/general" ||
+    pathname.startsWith("/assessment/role/");
+
+  const slow = quizActive ? 5 : 1;
 
   return (
     <>
-      {/* Aurora blobs — slow 120s full rotation of the whole layer */}
       <motion.div
         aria-hidden
         animate={prefersReduced ? undefined : { rotate: [0, 360] }}
         transition={{
-          duration: 120,
+          duration: 120 * slow,
           repeat: Infinity,
           ease: "linear",
         }}
@@ -34,12 +41,11 @@ export default function BackgroundScene() {
 
       <div aria-hidden className="quiz-grain-layer" />
 
-      {/* Cube A — 42px, Y-axis rotation over 20s */}
       <div aria-hidden className="quiz-cube quiz-cube-a">
         <motion.div
           animate={prefersReduced ? undefined : { rotateY: [0, 360] }}
           transition={{
-            duration: 20,
+            duration: 20 * slow,
             repeat: Infinity,
             ease: "linear",
           }}
@@ -58,12 +64,11 @@ export default function BackgroundScene() {
         </motion.div>
       </div>
 
-      {/* Cube B — 48px, X-axis counter-rotation over 28s */}
       <div aria-hidden className="quiz-cube quiz-cube-b">
         <motion.div
           animate={prefersReduced ? undefined : { rotateX: [0, -360] }}
           transition={{
-            duration: 28,
+            duration: 28 * slow,
             repeat: Infinity,
             ease: "linear",
           }}
@@ -82,12 +87,11 @@ export default function BackgroundScene() {
         </motion.div>
       </div>
 
-      {/* Pyramid — 36px, Z-axis rotation over 24s */}
       <div aria-hidden className="quiz-cube quiz-pyramid">
         <motion.div
           animate={prefersReduced ? undefined : { rotate: [0, 360] }}
           transition={{
-            duration: 24,
+            duration: 24 * slow,
             repeat: Infinity,
             ease: "linear",
           }}
