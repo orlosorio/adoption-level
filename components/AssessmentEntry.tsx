@@ -67,10 +67,10 @@ export default function AssessmentEntry({
               <hr className="hero-title-rule" />
               <span className="hero-title-assessment">Self-Assessment</span>
             </h1>
-            <p className="mb-[clamp(6px,1.2vh,16px)] font-sans text-base leading-relaxed text-[#4d5b9a] sm:text-lg">
+            <p className="mb-[clamp(4px,1vh,14px)] font-sans text-[14px] leading-relaxed text-[#4d5b9a] sm:text-[15px]">
               {UI.language.subtitle}
             </p>
-            <p className="mb-[clamp(8px,1.5vh,20px)] font-sans text-[15px] font-semibold text-[#365cff]/80">
+            <p className="mb-[clamp(6px,1.2vh,16px)] font-sans text-[13px] font-semibold text-[#365cff]/80">
               {UI.language.meta}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-5">
