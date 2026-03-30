@@ -19,7 +19,7 @@ export default function AssessmentEntry({
   errorParam?: string | null;
 }) {
   const router = useRouter();
-  const [screen, setScreen] = useState<Screen>("type-selector");
+  const [screen, setScreen] = useState<Screen>("language");
   const [assessmentType, setAssessmentType] = useState<AssessmentType>("general");
 
   const selectAssessmentType = (type: AssessmentType) => {
@@ -85,6 +85,13 @@ export default function AssessmentEntry({
             <div className="relative left-1/2 mt-12 -ml-[50vw] w-screen">
               <ToolsMarquee language="en" />
             </div>
+            <button
+              type="button"
+              onClick={() => setScreen("role-selector")}
+              className="mt-10 cursor-pointer font-sans text-[13px] text-[#365cff]/40 underline decoration-[#365cff]/15 transition-colors hover:text-[#365cff]/70"
+            >
+              Or take a role-specific assessment &rarr;
+            </button>
           </div>
         </div>
       )}
