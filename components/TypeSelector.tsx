@@ -1,49 +1,98 @@
 "use client";
 
+import type { Language } from "@/lib/content";
+
 type AssessmentType = "general" | "role";
 
 interface TypeSelectorProps {
+  language: Language;
   onSelect: (type: AssessmentType) => void;
+  onLanguageChange?: (lang: Language) => void;
 }
+
+const HEADING: Record<Language, string> = {
+  en: "Choose your assessment",
+  es: "Elige tu evaluación",
+};
+
+const RECOMMENDED_LABEL: Record<Language, string> = {
+  en: "Recommended",
+  es: "Recomendado",
+};
 
 const cards: {
   type: AssessmentType;
-  titleEn: string;
-  titleEs: string;
-  descEn: string;
-  descEs: string;
-  stats: string;
+  title: Record<Language, string>;
+  desc: Record<Language, string>;
+  stats: Record<Language, string>;
+  recommended?: boolean;
 }[] = [
   {
     type: "general",
-    titleEn: "General Assessment",
-    titleEs: "Evaluación General",
-    descEn: "How well are you using AI across your entire work life.",
-    descEs: "Qué tan bien estás usando IA en toda tu vida laboral.",
-    stats: "15 questions · ~5 min · YES / NO",
+    title: { en: "General Assessment", es: "Evaluación General" },
+    desc: {
+      en: "How well are you using AI across your entire work life.",
+      es: "Qué tan bien estás usando IA en toda tu vida laboral.",
+    },
+    stats: { en: "15 questions · ~5 min", es: "15 preguntas · ~5 min" },
   },
   {
     type: "role",
-    titleEn: "Role-Specific Assessment",
-    titleEs: "Evaluación por Rol",
-    descEn: "How well are you using AI in your specific discipline.",
-    descEs: "Qué tan bien estás usando IA en tu disciplina específica.",
-    stats: "33 questions · ~7 min · Confidence scale",
+    title: { en: "Role-Specific Assessment", es: "Evaluación por Rol" },
+    desc: {
+      en: "How well are you using AI in your specific discipline.",
+      es: "Qué tan bien estás usando IA en tu disciplina específica.",
+    },
+    stats: {
+      en: "33 questions · ~7 min",
+      es: "33 preguntas · ~7 min",
+    },
+    recommended: true,
   },
 ];
 
-export default function TypeSelector({ onSelect }: TypeSelectorProps) {
+export default function TypeSelector({
+  language,
+  onSelect,
+  onLanguageChange,
+}: TypeSelectorProps) {
+  const other: Language = language === "es" ? "en" : "es";
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <div className="w-full max-w-[600px] text-center">
-        <h2 className="mb-2 font-sans text-base font-semibold text-[#1f36a9]">
-          Choose your assessment
+      <div className="w-full max-w-[700px] text-center">
+        <h2 className="mb-6 font-sans text-lg font-semibold text-[#1f36a9]">
+          {HEADING[language]}
         </h2>
-        <p className="mb-10 font-sans text-sm italic text-[#1f36a9]/60">
-          Elige tu evaluación
-        </p>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {onLanguageChange && (
+          <div className="mb-10 inline-flex items-center gap-1 rounded-full border border-[#1f36a9]/10 bg-white/40 p-1 text-[13px] font-medium backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => onLanguageChange("es")}
+              className={`rounded-full px-4 py-1.5 transition-all ${
+                language === "es"
+                  ? "bg-[#1f36a9] text-white shadow-sm"
+                  : "text-[#1f36a9]/50 hover:text-[#1f36a9]/80"
+              }`}
+            >
+              Español
+            </button>
+            <button
+              type="button"
+              onClick={() => onLanguageChange("en")}
+              className={`rounded-full px-4 py-1.5 transition-all ${
+                language === "en"
+                  ? "bg-[#1f36a9] text-white shadow-sm"
+                  : "text-[#1f36a9]/50 hover:text-[#1f36a9]/80"
+              }`}
+            >
+              English
+            </button>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {cards.map((card) => (
             <button
               key={card.type}
@@ -57,22 +106,21 @@ export default function TypeSelector({ onSelect }: TypeSelectorProps) {
                   onSelect(card.type);
                 }
               }}
-              className="type-selector-card"
+              className={`type-selector-card relative ${card.recommended ? "type-selector-card-recommended" : ""}`}
             >
-              <p className="font-sans text-base font-semibold text-[#1f36a9]">
-                {card.titleEn}
+              {card.recommended && (
+                <span className="absolute -top-3 right-4 rounded-full bg-[#365cff] px-3 py-0.5 text-[11px] font-semibold tracking-wide text-white shadow-sm">
+                  {RECOMMENDED_LABEL[language]}
+                </span>
+              )}
+              <p className="font-sans text-lg font-semibold text-[#1f36a9]">
+                {card.title[language]}
               </p>
-              <p className="mt-0.5 font-sans text-[13px] italic text-[#1f36a9]/50">
-                {card.titleEs}
+              <p className="mt-3 font-sans text-[15px] leading-[1.6] text-[#2a2a2a]/65">
+                {card.desc[language]}
               </p>
-              <p className="mt-4 font-sans text-[13px] leading-[1.6] text-[#2a2a2a]/65">
-                {card.descEn}
-              </p>
-              <p className="mt-1 font-sans text-[13px] italic leading-[1.6] text-[#2a2a2a]/45">
-                {card.descEs}
-              </p>
-              <p className="mt-3 font-sans text-xs text-[#1f36a9]/40">
-                {card.stats}
+              <p className="mt-4 font-sans text-sm text-[#1f36a9]/40">
+                {card.stats[language]}
               </p>
             </button>
           ))}

@@ -50,25 +50,29 @@ export default function AssessmentEntry({
       )}
 
       {screen === "type-selector" && (
-        <TypeSelector onSelect={selectAssessmentType} />
+        <TypeSelector
+          language={language ?? "es"}
+          onSelect={selectAssessmentType}
+          onLanguageChange={setLanguage}
+        />
       )}
 
       {screen === "language" && (
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="w-full max-w-[600px] text-center">
+          <div className="w-full max-w-[700px] text-center">
             <h1 className="hero-title mb-10">
               <HeroAI />
               <span className="hero-title-adoption">Adoption</span>
               <hr className="hero-title-rule" />
               <span className="hero-title-assessment">Self-Assessment</span>
             </h1>
-            <p className="mb-8 font-sans text-[15px] leading-relaxed text-[#4d5b9a] sm:text-base">
+            <p className="mb-8 font-sans text-base leading-relaxed text-[#4d5b9a] sm:text-lg">
               {UI.language.subtitle}
             </p>
-            <p className="mb-8 font-sans text-sm font-semibold text-[#365cff]/80">
+            <p className="mb-8 font-sans text-[15px] font-semibold text-[#365cff]/80">
               {UI.language.meta}
             </p>
-            <div className="flex flex-col gap-5 sm:flex-row sm:justify-center sm:gap-6">
+            <div className="flex flex-col gap-5 sm:flex-row sm:justify-center sm:gap-7">
               <button
                 type="button"
                 onClick={() => pickLanguage("es")}

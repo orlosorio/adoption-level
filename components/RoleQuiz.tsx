@@ -8,7 +8,8 @@ import {
   UI,
 } from "@/lib/content";
 import { getRoleResultLevel } from "@/lib/scoring";
-import { BEEHIIV_ENDPOINT, NEWSLETTER_URL } from "@/lib/config";
+import { BEEHIIV_ENDPOINT } from "@/lib/config";
+import { COUNTRIES, COMPANY_TYPES, AGE_RANGES } from "@/lib/demographics";
 import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from "@/lib/roles";
 import { ROLE_RESULT_COPY } from "@/lib/roleResults";
 import {
@@ -20,7 +21,7 @@ import ScaleButtons from "@/components/ScaleButtons";
 import HeroAI from "@/components/HeroAI";
 import ToolsMarquee from "@/components/ToolsMarquee";
 
-type Screen = "language" | "quiz" | "email" | "results";
+type Screen = "language" | "quiz" | "email" | "results" | "demographics" | "coming-soon";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -49,6 +50,10 @@ export default function RoleQuiz({
     initialLanguage ? "quiz" : "language",
   );
   const [hydrated, setHydrated] = useState(false);
+  const [demoCountry, setDemoCountry] = useState("");
+  const [demoCompany, setDemoCompany] = useState("");
+  const [demoAge, setDemoAge] = useState("");
+  const [shareCopied, setShareCopied] = useState(false);
 
   const roleAssessment = ROLE_ASSESSMENTS[roleId];
   const roleQuestions = roleAssessment.questions;
@@ -114,6 +119,15 @@ export default function RoleQuiz({
     [answers, currentQuestion, totalQuestions, persist, changeScreen],
   );
 
+  const goBack = useCallback(() => {
+    if (currentQuestion <= 0) return;
+    const prevQ = currentQuestion - 1;
+    const prevAnswers = answers.slice(0, -1);
+    setCurrentQuestion(prevQ);
+    setAnswers(prevAnswers);
+    persist(prevQ, prevAnswers);
+  }, [currentQuestion, answers, persist]);
+
   const score = answers.reduce((sum, v) => sum + v, 0);
   const maxScore = totalQuestions * 4;
   const resultLevel =
@@ -165,6 +179,41 @@ export default function RoleQuiz({
   const skipEmail = () => {
     clearPersistedState();
     changeScreen("results");
+  };
+
+  const submitDemographics = async () => {
+    if (
+      BEEHIIV_ENDPOINT &&
+      BEEHIIV_ENDPOINT !== "YOUR_BEEHIIV_ENDPOINT"
+    ) {
+      try {
+        await fetch(BEEHIIV_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "demographics",
+            language,
+            assessmentType: "role",
+            roleId,
+            roleName: language ? ROLE_NAMES[roleId][language] : "",
+            totalScore: score,
+            maxScore,
+            averageScore: (score / totalQuestions).toFixed(1),
+            resultLevel,
+            country: demoCountry,
+            companyType: demoCompany,
+            ageRange: demoAge,
+          }),
+        });
+      } catch {
+        /* advance regardless */
+      }
+    }
+    changeScreen("coming-soon");
+  };
+
+  const skipDemographics = () => {
+    changeScreen("coming-soon");
   };
 
   const restart = () => {
@@ -258,16 +307,25 @@ export default function RoleQuiz({
                       <p className="font-serif text-[28px] font-bold leading-tight text-[#1f36a9]">
                         {number}
                       </p>
-                      <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
+                      <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]/50">
                         {name}
                       </p>
-                      <p className="mt-6 min-h-14 font-sans text-[15px] font-normal leading-[1.6] text-[#2a2a2a]/80 sm:min-h-14 sm:text-[17px]">
+                      <p className="mt-6 min-h-14 font-sans text-[15px] font-semibold leading-[1.6] text-[#1f36a9] sm:min-h-14 sm:text-[20px]">
                         {text}
                       </p>
                       <ScaleButtons
                         onChange={answerQuestion}
                         language={language}
                       />
+                      {currentQuestion > 0 && (
+                        <button
+                          type="button"
+                          onClick={goBack}
+                          className="quiz-back-link mt-6"
+                        >
+                          {UI.quiz[language].back}
+                        </button>
+                      )}
                     </>
                   );
                 })()}
@@ -325,93 +383,237 @@ export default function RoleQuiz({
 
       {screen === "results" && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="w-full max-w-[600px] rounded-2xl bg-white px-6 py-8 text-left sm:px-10 sm:py-11">
-            <div className="border-b border-[#eee] pb-8 text-center">
-              <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
-                {resultLevelNumber}
+          <div className="grid w-full max-w-[960px] grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_340px]">
+            {/* Left column -- results */}
+            <div className="rounded-2xl bg-white px-6 py-8 text-left sm:px-10 sm:py-11">
+              <div className="border-b border-[#eee] pb-8 text-center">
+                <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
+                  {resultLevelNumber}
+                </p>
+                <p className="mt-2 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
+                  {resultLevelName}
+                </p>
+                <p className="mt-2 font-sans text-xs tracking-[0.08em] text-[#8a9ff0]">
+                  {ROLE_NAMES[roleId][language]}
+                  {" · "}
+                  {language === "es" ? "Escala de confianza" : "Confidence Scale"}
+                </p>
+              </div>
+
+              <div className="mt-8 rounded-[10px] bg-[#eef1ff] px-5 py-4">
+                <div className="mb-3 flex items-center justify-between text-[15px]">
+                  <span className="text-[#333]">
+                    {language === "es" ? "Puntuación total" : "Total score"}
+                  </span>
+                  <span className="font-bold text-[#111]">
+                    {score} / {maxScore}
+                  </span>
+                </div>
+                <div className="h-[5px] w-full rounded-full bg-[#d7ddfb]">
+                  <div
+                    className="h-[5px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
+                    style={{
+                      width:
+                        maxScore > 0
+                          ? `${(score / maxScore) * 100}%`
+                          : "0%",
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="avg-score-card">
+                <div className="mb-2 flex items-center justify-between text-[14px]">
+                  <span className="text-[#555]">
+                    {language === "es"
+                      ? "Promedio por pregunta"
+                      : "Average score per question"}
+                  </span>
+                  <span className="font-bold text-[#111]">
+                    {(score / totalQuestions).toFixed(1)} / 4.0
+                  </span>
+                </div>
+                <div className="h-[4px] w-full rounded-full bg-[#d7ddfb]">
+                  <div
+                    className="h-[4px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
+                    style={{
+                      width: `${(score / (totalQuestions * 4)) * 100}%`,
+                    }}
+                  />
+                </div>
+                <p className="mt-1 text-right text-xs text-[#999]">
+                  {Math.round((score / (totalQuestions * 4)) * 100)}%
+                </p>
+              </div>
+
+              <p className="mt-8 font-sans text-[15px] leading-relaxed text-[#333]">
+                {ROLE_RESULT_COPY[resultLevel]!.description[language]}
               </p>
-              <p className="mt-2 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
-                {resultLevelName}
-              </p>
-              <p className="mt-2 font-sans text-xs tracking-[0.08em] text-[#8a9ff0]">
-                {ROLE_NAMES[roleId][language]}
-                {" · "}
-                {language === "es" ? "Escala de confianza" : "Confidence Scale"}
-              </p>
+
+              <div className="mt-8">
+                <p className="font-sans text-sm font-bold text-[#111]">
+                  {UI.results[language].nextStepHeading}
+                </p>
+                <p className="mt-2 font-sans text-[15px] leading-relaxed text-[#333]">
+                  {ROLE_RESULT_COPY[resultLevel]!.nextStep[language]}
+                </p>
+              </div>
             </div>
 
-            <div className="mt-8 rounded-[10px] bg-[#eef1ff] px-5 py-4">
-              <div className="mb-3 flex items-center justify-between text-[15px]">
-                <span className="text-[#333]">
-                  {language === "es" ? "Puntuación total" : "Total score"}
-                </span>
-                <span className="font-bold text-[#111]">
-                  {score} / {maxScore}
-                </span>
+            {/* Right column -- conversion */}
+            <div className="results-cta-column flex flex-col gap-5">
+              <div className="results-cta-card">
+                <p className="font-sans text-lg font-bold text-[#1f36a9]">
+                  {UI.results[language].ctaHeading}
+                </p>
+                <p className="mt-2 font-sans text-[14px] leading-relaxed text-[#555]">
+                  {UI.results[language].ctaBody}
+                </p>
+                <p className="mt-5 font-sans text-[13px] font-semibold text-[#1f36a9]">
+                  {UI.results[language].benchmarkTitle}
+                </p>
+                <p className="mt-1 font-sans text-[13px] text-[#777]">
+                  {UI.results[language].benchmarkSubtitle}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => changeScreen("demographics")}
+                  className="results-cta-btn mt-5"
+                >
+                  {UI.results[language].benchmarkCta}
+                </button>
               </div>
-              <div className="h-[5px] w-full rounded-full bg-[#d7ddfb]">
-                <div
-                  className="h-[5px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
-                  style={{
-                    width:
-                      maxScore > 0
-                        ? `${(score / maxScore) * 100}%`
-                        : "0%",
-                  }}
-                />
-              </div>
-            </div>
 
-            <div className="avg-score-card">
-              <div className="mb-2 flex items-center justify-between text-[14px]">
-                <span className="text-[#555]">
-                  {language === "es"
-                    ? "Promedio por pregunta"
-                    : "Average score per question"}
-                </span>
-                <span className="font-bold text-[#111]">
-                  {(score / totalQuestions).toFixed(1)} / 4.0
-                </span>
-              </div>
-              <div className="h-[4px] w-full rounded-full bg-[#d7ddfb]">
-                <div
-                  className="h-[4px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
-                  style={{
-                    width: `${(score / (totalQuestions * 4)) * 100}%`,
-                  }}
-                />
-              </div>
-              <p className="mt-1 text-right text-xs text-[#999]">
-                {Math.round((score / (totalQuestions * 4)) * 100)}%
-              </p>
+              <button
+                type="button"
+                onClick={restart}
+                className="w-full text-center font-sans text-sm text-[#999] underline"
+              >
+                {UI.results[language].again}
+              </button>
             </div>
+          </div>
+        </div>
+      )}
 
-            <p className="mt-8 font-sans text-[15px] leading-relaxed text-[#333]">
-              {ROLE_RESULT_COPY[resultLevel]!.description[language]}
+      {screen === "demographics" && language && (
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 sm:px-10 sm:py-11">
+            <h2 className="font-sans text-2xl font-bold text-[#1f36a9]">
+              {UI.demographics[language].title}
+            </h2>
+            <p className="mt-3 font-sans text-[15px] leading-relaxed text-[#2a2a2a]/70">
+              {UI.demographics[language].subtitle}
             </p>
 
-            <div className="mt-8">
-              <p className="font-sans text-sm font-bold text-[#111]">
-                {UI.results[language].nextStepHeading}
-              </p>
-              <p className="mt-2 font-sans text-[15px] leading-relaxed text-[#333]">
-                {ROLE_RESULT_COPY[resultLevel]!.nextStep[language]}
-              </p>
-            </div>
-
-            <div className="mt-10 rounded-[10px] border border-[#d8defa] px-5 py-[18px]">
-              <p className="font-sans text-[15px] font-semibold text-[#1f36a9]">
-                {UI.results[language].newsletterTitle}
-              </p>
-              <p className="mt-1 font-sans text-sm text-[#555]">
-                {UI.results[language].newsletterSubtitle}
-              </p>
-              <a
-                href={NEWSLETTER_URL}
-                className="mt-4 flex w-full items-center justify-center rounded-[10px] bg-[#365cff] py-3 text-center text-[15px] font-bold text-white transition-opacity hover:opacity-90"
+            <label className="mt-6 block">
+              <span className="mb-1.5 block font-sans text-sm font-medium text-[#333]">
+                {UI.demographics[language].countryLabel}
+              </span>
+              <select
+                value={demoCountry}
+                onChange={(e) => setDemoCountry(e.target.value)}
+                className={`glass-select${demoCountry === "" ? " placeholder" : ""}`}
               >
-                {UI.results[language].newsletterCta}
-              </a>
+                <option value="" disabled>
+                  {UI.demographics[language].countryPlaceholder}
+                </option>
+                {COUNTRIES.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c[language]}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="mt-4 block">
+              <span className="mb-1.5 block font-sans text-sm font-medium text-[#333]">
+                {UI.demographics[language].companyLabel}
+              </span>
+              <select
+                value={demoCompany}
+                onChange={(e) => setDemoCompany(e.target.value)}
+                className={`glass-select${demoCompany === "" ? " placeholder" : ""}`}
+              >
+                <option value="" disabled>
+                  {UI.demographics[language].companyPlaceholder}
+                </option>
+                {COMPANY_TYPES.map((c) => (
+                  <option key={c.value} value={c.value}>
+                    {c[language]}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="mt-4 block">
+              <span className="mb-1.5 block font-sans text-sm font-medium text-[#333]">
+                {UI.demographics[language].ageLabel}
+              </span>
+              <select
+                value={demoAge}
+                onChange={(e) => setDemoAge(e.target.value)}
+                className={`glass-select${demoAge === "" ? " placeholder" : ""}`}
+              >
+                <option value="" disabled>
+                  {UI.demographics[language].agePlaceholder}
+                </option>
+                {AGE_RANGES.map((a) => (
+                  <option key={a.value} value={a.value}>
+                    {a[language]}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <button
+              type="button"
+              onClick={() => void submitDemographics()}
+              className="glass-answer-btn glass-answer-yes mt-8 w-full justify-center"
+            >
+              {UI.demographics[language].submit}
+            </button>
+            <button
+              type="button"
+              onClick={skipDemographics}
+              className="mt-6 w-full text-center font-sans text-sm text-[#1f36a9]/30 underline decoration-[#1f36a9]/15 transition-colors hover:text-[#1f36a9]/50"
+            >
+              {UI.demographics[language].skip}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {screen === "coming-soon" && language && (
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 text-center sm:px-10 sm:py-11">
+            <p className="font-serif text-3xl font-bold text-[#1f36a9]">
+              {UI.comingSoon[language].title}
+            </p>
+            <p className="mt-4 font-sans text-[15px] leading-relaxed text-[#2a2a2a]/80">
+              {UI.comingSoon[language].body}
+            </p>
+
+            <div className="mt-8 rounded-[12px] border border-[#d8defa] bg-[#f5f7ff] px-5 py-5 text-center">
+              <p className="font-sans text-[14px] font-semibold text-[#1f36a9]">
+                {UI.comingSoon[language].shareHeading}
+              </p>
+              <p className="mt-1 font-sans text-[13px] leading-relaxed text-[#555]">
+                {UI.comingSoon[language].shareBody}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  void navigator.clipboard.writeText(window.location.origin + "/assessment");
+                  setShareCopied(true);
+                  setTimeout(() => setShareCopied(false), 2500);
+                }}
+                className="mt-4 inline-flex items-center gap-2 rounded-[10px] border border-[#365cff]/20 bg-white px-5 py-2.5 font-sans text-[14px] font-semibold text-[#365cff] transition-all hover:border-[#365cff]/40 hover:bg-[#f0f3ff]"
+              >
+                {shareCopied
+                  ? UI.comingSoon[language].shareCopied
+                  : UI.comingSoon[language].shareCta}
+              </button>
             </div>
 
             <button

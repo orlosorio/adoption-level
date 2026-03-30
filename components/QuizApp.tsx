@@ -102,6 +102,12 @@ export default function QuizApp() {
     }
   };
 
+  const goBack = () => {
+    if (currentQuestion <= 0) return;
+    setCurrentQuestion((q) => q - 1);
+    setAnswers((a) => a.slice(0, -1));
+  };
+
   const submitEmail = async () => {
     const trimmed = emailInput.trim();
     if (!EMAIL_REGEX.test(trimmed)) {
@@ -177,7 +183,18 @@ export default function QuizApp() {
       <BackgroundScene />
 
       <div className="relative z-10 flex w-full items-center justify-center pt-2">
-        {screen !== "type-selector" && screen !== "language" && (
+        {screen === "type-selector" || screen === "language" ? (
+          <a
+            href="/"
+            className="absolute left-0 flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/40 bg-white/25 px-3 py-1.5 text-[13px] font-medium text-[#1f36a9]/60 backdrop-blur-md transition-all hover:bg-white/40 hover:text-[#1f36a9]"
+            aria-label="Back to home"
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
+              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="hidden sm:inline">Home</span>
+          </a>
+        ) : (
           <button
             type="button"
             onClick={restartQuiz}
@@ -197,7 +214,7 @@ export default function QuizApp() {
 
       <div className="relative z-10 mx-auto flex w-full max-w-[860px] flex-1 flex-col">
         {screen === "type-selector" && (
-          <TypeSelector onSelect={selectAssessmentType} />
+          <TypeSelector language="es" onSelect={selectAssessmentType} />
         )}
 
         {screen === "language" && (
@@ -290,13 +307,22 @@ export default function QuizApp() {
                         <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
                           {name}
                         </p>
-                        <p className="mt-6 min-h-14 font-sans text-[15px] font-normal leading-[1.6] text-[#2a2a2a]/80 sm:min-h-14 sm:text-[17px]">
+                        <p className="mt-6 min-h-14 font-sans text-[15px] font-semibold leading-[1.6] text-[#1f36a9] sm:min-h-14 sm:text-[20px]">
                           {text}
                         </p>
                         <ScaleButtons
                           onChange={answerQuestion}
                           language={language}
                         />
+                        {currentQuestion > 0 && (
+                          <button
+                            type="button"
+                            onClick={goBack}
+                            className="quiz-back-link mt-6"
+                          >
+                            {UI.quiz[language].back}
+                          </button>
+                        )}
                       </>
                     );
                   }
@@ -313,7 +339,7 @@ export default function QuizApp() {
                       <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
                         {name}
                       </p>
-                      <p className="mt-6 min-h-14 font-sans text-[15px] font-normal leading-[1.6] text-[#2a2a2a]/80 sm:min-h-14 sm:text-[17px]">
+                      <p className="mt-6 min-h-14 font-sans text-[15px] font-semibold leading-[1.6] text-[#1f36a9] sm:min-h-14 sm:text-[20px]">
                         {text}
                       </p>
                       <div className="mt-10 flex flex-wrap justify-center gap-[14px]">
@@ -332,6 +358,15 @@ export default function QuizApp() {
                           {UI.quiz[language].no}
                         </button>
                       </div>
+                      {currentQuestion > 0 && (
+                        <button
+                          type="button"
+                          onClick={goBack}
+                          className="quiz-back-link mt-6"
+                        >
+                          {UI.quiz[language].back}
+                        </button>
+                      )}
                     </>
                   );
                 })()}

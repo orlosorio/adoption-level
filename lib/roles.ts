@@ -25,7 +25,7 @@ export interface RoleAssessment {
 
 export const ROLE_NAMES: Record<RoleId, { es: string; en: string }> = {
   'ux-ui-design': { es: 'Diseño UX/UI', en: 'UX/UI Design' },
-  'webflow-developer': { es: 'Desarrollador Webflow', en: 'Webflow Developer' },
+  'webflow-developer': { es: 'Desarrollador Webflow/Framer', en: 'Webflow/Framer Developer' },
   'seo-specialist': { es: 'Especialista en SEO', en: 'SEO Specialist' },
   'growth-marketing': { es: 'Marketing de Crecimiento', en: 'Growth Marketing' },
   'full-stack-developer': { es: 'Desarrollador Full Stack', en: 'Full Stack Developer' },
@@ -210,7 +210,7 @@ export const ROLE_ASSESSMENTS: Record<RoleId, RoleAssessment> = {
   },
   'webflow-developer': {
     roleId: 'webflow-developer',
-    roleName: { es: 'Desarrollador Webflow', en: 'Webflow Developer' },
+    roleName: { es: 'Desarrollador Webflow/Framer', en: 'Webflow/Framer Developer' },
     questions: [
       {
         level: 0,

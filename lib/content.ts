@@ -156,10 +156,10 @@ export const UI = {
   language: {
     heading: "AI Adoption Self-Assessment",
     subtitle:
-      "Find out exactly where you stand - and what the top 10% of professionals are already doing that you probably aren't.",
+      "Find out exactly where you stand - and what the top 3% of professionals are already doing that you probably aren't.",
     meta: "15 questions · ~5 minutes. No fluff.",
-    es: "[Español]",
-    en: "[English]",
+    es: "Español",
+    en: "English",
   },
   quiz: {
     es: {
@@ -167,12 +167,14 @@ export const UI = {
       questionOf: (x: number, total: number) => `Pregunta ${x} de ${total}`,
       yes: "SÍ",
       no: "NO",
+      back: "← Pregunta anterior",
     },
     en: {
       levelOf: (n: number) => `Level ${n} of 5`,
       questionOf: (x: number, total: number) => `Question ${x} of ${total}`,
       yes: "YES",
       no: "NO",
+      back: "← Previous question",
     },
   },
   email: {
@@ -202,19 +204,75 @@ export const UI = {
       affirmativeLabel: "Respuestas afirmativas",
       scoreOf: (s: number, t: number) => `${s} de ${t}`,
       nextStepHeading: "Tu siguiente paso",
-      newsletterTitle: "Recibe tips semanales de IA para tu trabajo",
-      newsletterSubtitle: "Contenido práctico cada semana, sin relleno.",
-      newsletterCta: "Suscribirme",
+      benchmarkTitle: "Compara tus resultados",
+      benchmarkSubtitle:
+        "Responde 3 preguntas rápidas para ver cómo te comparas con la comunidad.",
+      benchmarkCta: "Comparar con la comunidad",
       again: "Hacer el quiz de nuevo",
+      ctaHeading: "¿Qué sigue?",
+      ctaBody:
+        "Descubre cómo se compara tu nivel con el de otros profesionales de tu industria.",
     },
     en: {
       affirmativeLabel: "Affirmative answers",
       scoreOf: (s: number, t: number) => `${s} of ${t}`,
       nextStepHeading: "Your next step",
-      newsletterTitle: "Get weekly AI tips for your work",
-      newsletterSubtitle: "Practical content every week, no fluff.",
-      newsletterCta: "Subscribe",
+      benchmarkTitle: "See how you compare",
+      benchmarkSubtitle:
+        "Answer 3 quick questions to see how your score stacks up against the community.",
+      benchmarkCta: "Compare with the community",
       again: "Take the quiz again",
+      ctaHeading: "What's next?",
+      ctaBody:
+        "Find out how your level compares to other professionals in your industry.",
+    },
+  },
+  demographics: {
+    es: {
+      title: "Ayúdanos a crear el mejor benchmark público",
+      subtitle:
+        "Queremos compartir los resultados de forma abierta para que toda la comunidad pueda aprender. Con tu información anónima podemos armar un panorama real de la adopción de IA en la región.",
+      countryLabel: "País",
+      countryPlaceholder: "Selecciona tu país",
+      companyLabel: "Tipo de empresa",
+      companyPlaceholder: "Selecciona el tipo",
+      ageLabel: "Rango de edad",
+      agePlaceholder: "Selecciona tu rango",
+      submit: "Enviar y continuar →",
+      skip: "Prefiero no compartir",
+    },
+    en: {
+      title: "Help us build the best public benchmark",
+      subtitle:
+        "We want to share results openly so the whole community can learn. Your anonymous info helps us paint a real picture of AI adoption across industries.",
+      countryLabel: "Country",
+      countryPlaceholder: "Select your country",
+      companyLabel: "Company type",
+      companyPlaceholder: "Select company type",
+      ageLabel: "Age range",
+      agePlaceholder: "Select your range",
+      submit: "Submit and continue →",
+      skip: "I'd rather not share",
+    },
+  },
+  comingSoon: {
+    es: {
+      title: "¡Muchas gracias!",
+      body: "Tu aporte es muy valioso. Estamos recopilando respuestas y en cuanto tengamos suficientes, publicaremos los resultados del benchmark aquí mismo y te los enviaremos por email.",
+      shareHeading: "Mientras tanto, ayúdanos a correr la voz",
+      shareBody:
+        "Cuantas más personas participen, mejores serán los resultados para todos.",
+      shareCta: "Copiar enlace para compartir",
+      shareCopied: "¡Enlace copiado!",
+    },
+    en: {
+      title: "Thank you so much!",
+      body: "Your input means a lot. We're collecting responses and as soon as we have enough, we'll publish benchmark results right here and send them to you by email.",
+      shareHeading: "In the meantime, help us spread the word",
+      shareBody:
+        "The more people participate, the better the results are for everyone.",
+      shareCta: "Copy link to share",
+      shareCopied: "Link copied!",
     },
   },
 } as const;
