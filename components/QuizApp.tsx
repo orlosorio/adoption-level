@@ -206,14 +206,14 @@ export default function QuizApp() {
                         <button
                           type="button"
                           onClick={() => answerQuestion(true)}
-                          className="glass-answer-btn"
+                          className="glass-answer-btn glass-answer-yes"
                         >
                           {UI.quiz[language].yes}
                         </button>
                         <button
                           type="button"
                           onClick={() => answerQuestion(false)}
-                          className="glass-answer-btn"
+                          className="glass-answer-btn glass-answer-no"
                         >
                           {UI.quiz[language].no}
                         </button>
