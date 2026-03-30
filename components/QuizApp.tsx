@@ -229,11 +229,11 @@ export default function QuizApp() {
 
         {screen === "email" && language && (
           <div className="flex flex-1 flex-col items-center justify-center">
-            <div className="w-full max-w-[600px] rounded-2xl bg-white px-6 py-8 sm:px-10 sm:py-11">
+            <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 sm:px-10 sm:py-11">
               <h2 className="font-sans text-2xl font-bold text-[#1f36a9]">
                 {UI.email[language].title}
               </h2>
-              <p className="mt-4 font-sans text-[15px] leading-relaxed text-[#333]">
+              <p className="mt-4 font-sans text-[15px] leading-relaxed text-[#2a2a2a]/80">
                 {UI.email[language].body}
               </p>
               <input
@@ -245,7 +245,7 @@ export default function QuizApp() {
                   setEmailError(false);
                 }}
                 placeholder={UI.email[language].placeholder}
-                className="mt-6 w-full rounded-lg border border-[#d2d8f4] px-4 py-3 font-sans text-[15px] text-[#111] outline-none focus-visible:ring-2 focus-visible:ring-[#365cff] focus-visible:ring-offset-2"
+                className="glass-input mt-6 w-full"
               />
               {emailError && (
                 <p className="mt-2 text-sm text-red-600">
@@ -255,17 +255,17 @@ export default function QuizApp() {
               <button
                 type="button"
                 onClick={() => void submitEmail()}
-                className="mt-6 w-full rounded-[10px] bg-[#365cff] py-[14px] text-[15px] font-bold tracking-[0.07em] text-white transition-colors hover:bg-[#2b4cf0]"
+                className="glass-answer-btn glass-answer-yes mt-6 w-full justify-center"
               >
                 {UI.email[language].submit}
               </button>
-              <p className="mt-4 text-center text-xs leading-relaxed text-[#666]">
+              <p className="mt-4 text-center text-xs leading-relaxed text-[#1f36a9]/35">
                 {UI.email[language].privacy}
               </p>
               <button
                 type="button"
                 onClick={skipEmail}
-                className="mt-6 w-full text-center font-sans text-sm text-[#999] underline"
+                className="mt-6 w-full text-center font-sans text-sm text-[#1f36a9]/30 underline decoration-[#1f36a9]/15 transition-colors hover:text-[#1f36a9]/50"
               >
                 {UI.email[language].skip}
               </button>
