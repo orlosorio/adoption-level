@@ -1,5 +1,5 @@
-import QuizApp from "@/components/QuizApp";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <QuizApp />;
+  redirect("/assessment");
 }
