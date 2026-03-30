@@ -61,19 +61,19 @@ export default function AssessmentEntry({
       {screen === "language" && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[700px] text-center">
-            <h1 className="hero-title mb-5">
+            <h1 className="hero-title mb-[clamp(8px,1.5vh,20px)]">
               <HeroAI />
               <span className="hero-title-adoption">Adoption</span>
               <hr className="hero-title-rule" />
               <span className="hero-title-assessment">Self-Assessment</span>
             </h1>
-            <p className="mb-4 font-sans text-base leading-relaxed text-[#4d5b9a] sm:text-lg">
+            <p className="mb-[clamp(6px,1.2vh,16px)] font-sans text-base leading-relaxed text-[#4d5b9a] sm:text-lg">
               {UI.language.subtitle}
             </p>
-            <p className="mb-5 font-sans text-[15px] font-semibold text-[#365cff]/80">
+            <p className="mb-[clamp(8px,1.5vh,20px)] font-sans text-[15px] font-semibold text-[#365cff]/80">
               {UI.language.meta}
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-5">
               <button
                 type="button"
                 onClick={() => pickLanguage("es")}
@@ -89,7 +89,7 @@ export default function AssessmentEntry({
                 <span className="glass-cta-label">{UI.language.en}</span>
               </button>
             </div>
-            <div className="relative left-1/2 mt-6 -ml-[50vw] w-screen">
+            <div className="relative left-1/2 mt-[clamp(8px,2vh,24px)] -ml-[50vw] w-screen">
               <ToolsMarquee language="en" />
             </div>
           </div>

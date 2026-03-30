@@ -246,7 +246,7 @@
 
 .hero-ai-svg {
   display: block;
-  height: clamp(56px, 9vw, 96px);
+  height: clamp(44px, min(9vw, 9vh), 96px);
   width: auto;
   user-select: none;
   animation: aiSvgGlow 10s ease-in-out infinite;
@@ -317,7 +317,7 @@
 
 .hero-title-adoption {
   font-family: var(--font-serif);
-  font-size: clamp(26px, 4.5vw, 44px);
+  font-size: clamp(22px, min(4.5vw, 4.5vh), 44px);
   font-weight: 700;
   font-style: italic;
   line-height: 1.1;
@@ -328,7 +328,7 @@
 .hero-title-rule {
   width: clamp(40px, 6vw, 64px);
   height: 1.5px;
-  margin-top: 18px;
+  margin-top: clamp(6px, 1.8vh, 18px);
   border: none;
   background: linear-gradient(
     90deg,
@@ -340,12 +340,12 @@
 
 .hero-title-assessment {
   font-family: var(--font-mono);
-  font-size: 34px;
+  font-size: clamp(16px, min(2.8vw, 3.5vh), 34px);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3em;
   color: rgba(31, 54, 169, 0.72);
-  margin-top: 16px;
+  margin-top: clamp(6px, 1.5vh, 16px);
   padding-left: 0.3em;
 }
 
@@ -361,7 +361,7 @@
 
 .marquee-section {
   width: 100%;
-  padding: 40px 0;
+  padding: clamp(8px, 3vh, 40px) 0;
 }
 
 .marquee-label {
@@ -371,13 +371,13 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: rgba(31, 54, 169, 0.4);
-  margin-bottom: 24px;
+  margin-bottom: clamp(8px, 1.8vh, 24px);
 }
 
 .marquee-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(6px, 1vh, 12px);
 }
 
 .marquee-wrapper:hover .marquee-scroll-left,
@@ -424,8 +424,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: clamp(4px, 0.8vh, 8px) clamp(10px, 1.2vw, 16px);
+  font-size: clamp(12px, 1.4vw, 14px);
   font-weight: 500;
   color: rgba(31, 54, 169, 0.6);
   white-space: nowrap;
@@ -605,7 +605,7 @@
     align-items: center;
     justify-content: center;
     min-width: 200px;
-    padding: 18px 48px;
+    padding: clamp(12px, 1.8vh, 18px) clamp(32px, 4vw, 48px);
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.07em;
@@ -707,7 +707,7 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  padding: 36px 24px 28px;
+  padding: clamp(8px, 2.5vh, 36px) 24px clamp(6px, 2vh, 28px);
   text-align: center;
 }
 
@@ -717,12 +717,12 @@
   justify-content: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vh, 14px);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: rgba(31, 54, 169, 0.35);
-  margin-bottom: 10px;
+  margin-bottom: clamp(4px, 0.8vh, 10px);
 }
 
 .fomo-live-dot {
@@ -738,13 +738,13 @@
 
 .fomo-number {
   font-family: var(--font-serif);
-  font-size: clamp(44px, 7vw, 58px);
+  font-size: clamp(32px, min(7vw, 5.5vh), 58px);
   font-weight: 700;
   color: var(--brand-700);
   letter-spacing: -2px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 14px;
+  margin-bottom: clamp(4px, 1vh, 14px);
 }
 
 .fomo-percent {
@@ -756,10 +756,10 @@
 
 .fomo-subtitle {
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vh, 14px);
   font-weight: 400;
   color: rgba(31, 54, 169, 0.38);
-  line-height: 1.6;
+  line-height: 1.5;
   width: fit-content;
   margin: 0 auto;
 }
@@ -1389,157 +1389,33 @@ body {
   opacity: 1;
 }
 
-/* ── Viewport-height responsive: laptops (≤ 900px tall) ── */
+/* ── Viewport-height responsive: laptops (≤ 960px tall) ── */
 
-@media (max-height: 900px) {
+@media (max-height: 960px) {
   .assessment-shell {
-    padding-top: 1.25rem;
-    padding-bottom: 1rem;
-  }
-
-  .hero-ai-svg {
-    height: clamp(40px, 7vw, 72px);
-  }
-
-  .hero-title-adoption {
-    font-size: clamp(22px, 3.5vw, 36px);
-  }
-
-  .hero-title-rule {
-    margin-top: 12px;
-  }
-
-  .hero-title-assessment {
-    font-size: clamp(18px, 2.5vw, 28px);
-    margin-top: 10px;
-    letter-spacing: 0.25em;
-  }
-
-  .marquee-section {
-    padding: 24px 0;
-  }
-
-  .marquee-label {
-    margin-bottom: 16px;
-  }
-
-  .fomo-counter {
-    padding: 20px 24px 14px;
-  }
-
-  .fomo-number {
-    font-size: clamp(36px, 5vw, 48px);
-    margin-bottom: 8px;
-  }
-
-  .fomo-live-label {
-    margin-bottom: 6px;
+    padding-top: clamp(0.5rem, 1.5vh, 1.25rem);
+    padding-bottom: clamp(0.25rem, 1vh, 1rem);
   }
 
   .type-selector-card {
-    min-height: 180px;
-    padding: 24px;
-  }
-
-  .glass-cta {
-    padding: 14px 40px;
+    min-height: 160px;
+    padding: clamp(16px, 2.5vh, 24px);
   }
 
   .glass-quiz-card {
-    padding: 1.25rem 1.5rem;
+    padding: clamp(0.75rem, 2vh, 1.25rem) clamp(1rem, 2.5vw, 1.5rem);
   }
 
   .scale-option-btn {
-    padding: 11px 16px;
-  }
-}
-
-/* ── Viewport-height responsive: small laptops / MacBook Air 13″ (≤ 768px tall) ── */
-
-@media (max-height: 768px) {
-  .assessment-shell {
-    padding-top: 0.625rem;
-    padding-bottom: 0.375rem;
-  }
-
-  .hero-ai-svg {
-    height: clamp(32px, 5.5vw, 52px);
-  }
-
-  .hero-title-adoption {
-    font-size: clamp(18px, 3vw, 28px);
-    margin-top: 0;
-  }
-
-  .hero-title-rule {
-    margin-top: 6px;
-  }
-
-  .hero-title-assessment {
-    font-size: clamp(14px, 2vw, 20px);
-    margin-top: 6px;
-    letter-spacing: 0.18em;
-  }
-
-  .marquee-section {
-    padding: 12px 0;
-  }
-
-  .marquee-label {
-    margin-bottom: 10px;
-    font-size: 11px;
-  }
-
-  .marquee-pill {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
-
-  .fomo-counter {
-    padding: 10px 24px 8px;
-  }
-
-  .fomo-number {
-    font-size: clamp(28px, 4vw, 38px);
-    margin-bottom: 4px;
-  }
-
-  .fomo-subtitle {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .fomo-live-label {
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-
-  .type-selector-card {
-    min-height: 140px;
-    padding: 18px;
-  }
-
-  .glass-cta {
-    padding: 12px 32px;
-    font-size: 15px;
-  }
-
-  .glass-quiz-card {
-    padding: 1rem 1.25rem;
-  }
-
-  .scale-option-btn {
-    padding: 9px 14px;
-    font-size: 13px;
+    padding: clamp(8px, 1.2vh, 11px) 16px;
   }
 
   .role-card {
     min-height: 56px;
-    padding: 12px;
-    font-size: 13px;
+    padding: clamp(10px, 1.5vh, 20px);
   }
 
   .role-grid {
-    gap: 10px;
+    gap: clamp(8px, 1vh, 14px);
   }
 }
