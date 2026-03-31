@@ -256,17 +256,17 @@ export default function CompanyQuiz({
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
               <button
                 type="button"
-                onClick={() => startQuiz("es")}
-                className="glass-cta"
-              >
-                <span className="glass-cta-label">{UI.language.es}</span>
-              </button>
-              <button
-                type="button"
                 onClick={() => startQuiz("en")}
                 className="glass-cta"
               >
                 <span className="glass-cta-label">{UI.language.en}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => startQuiz("es")}
+                className="glass-cta"
+              >
+                <span className="glass-cta-label">{UI.language.es}</span>
               </button>
             </div>
             <div className="relative left-1/2 mt-6 -ml-[50vw] w-screen">

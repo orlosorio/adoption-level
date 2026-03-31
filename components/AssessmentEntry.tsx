@@ -76,17 +76,17 @@ export default function AssessmentEntry({
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-5">
               <button
                 type="button"
-                onClick={() => pickLanguage("es")}
-                className="glass-cta"
-              >
-                <span className="glass-cta-label">{UI.language.es}</span>
-              </button>
-              <button
-                type="button"
                 onClick={() => pickLanguage("en")}
                 className="glass-cta"
               >
                 <span className="glass-cta-label">{UI.language.en}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => pickLanguage("es")}
+                className="glass-cta"
+              >
+                <span className="glass-cta-label">{UI.language.es}</span>
               </button>
             </div>
             <div className="relative left-1/2 mt-[clamp(20px,4vh,48px)] -ml-[50vw] w-screen">
