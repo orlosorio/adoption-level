@@ -25,6 +25,7 @@ const ROLE_ORDER: RoleId[] = [
   "writers-editors",
   "paid-marketing",
   "hr-people-ops",
+  "finance-accounting",
   "seo-specialist",
   "webflow-developer",
 ];

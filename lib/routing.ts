@@ -18,6 +18,7 @@ export const VALID_ROLE_IDS: RoleId[] = [
   "video-editor",
   "founder-executive",
   "hr-people-ops",
+  "finance-accounting",
 ];
 
 export function isValidRoleId(id: string): id is RoleId {

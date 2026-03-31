@@ -14,7 +14,8 @@ export type RoleId =
   | 'customer-success'
   | 'video-editor'
   | 'founder-executive'
-  | 'hr-people-ops';
+  | 'hr-people-ops'
+  | 'finance-accounting';
 
 export interface RoleQuestion {
   level: 0 | 1 | 2 | 3 | 4;
@@ -46,6 +47,7 @@ export const ROLE_NAMES: Record<RoleId, { es: string; en: string }> = {
   'video-editor': { es: 'Editor de Video', en: 'Video Editor' },
   'founder-executive': { es: 'Fundador & Ejecutivo', en: 'Founder & Executive' },
   'hr-people-ops': { es: 'RR.HH. & People Ops', en: 'HR & People Ops' },
+  'finance-accounting': { es: 'Finanzas y Contabilidad', en: 'Finance & Accounting' },
 };
 
 export const ROLE_ASSESSMENTS: Record<RoleId, RoleAssessment> = {
@@ -2782,6 +2784,185 @@ export const ROLE_ASSESSMENTS: Record<RoleId, RoleAssessment> = {
         level: 4,
         levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
         statement: { es: 'Lidero la estrategia de people con IA en mi organización — definiendo estándares de competencia en IA, programas de capacitación y roadmaps de adopción a nivel empresa.', en: 'I lead the AI people strategy at my organization — defining AI competency standards, training programs, and adoption roadmaps company-wide.' },
+      },
+    ],
+  },
+  'finance-accounting': {
+    roleId: 'finance-accounting',
+    roleName: { es: 'Finanzas y Contabilidad', en: 'Finance & Accounting' },
+    questions: [
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'Uso IA para resumir informes financieros extensos, llamadas de resultados o notas de analistas en puntos clave más rápido que leyéndolos manualmente.', en: 'I use AI to summarize long financial reports, earnings calls, or analyst notes into key takeaways faster than reading manually.' },
+      },
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'He usado IA para escribir borradores de comentarios financieros, explicaciones de variaciones o narrativas de presupuesto.', en: 'I have used AI to write first-draft financial commentary, variance explanations, or budget narratives.' },
+      },
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'Uso IA para generar fórmulas, funciones de búsqueda o lógica de transformación de datos en Excel o Google Sheets.', en: 'I use AI to generate formulas, lookup functions, or data transformation logic in Excel or Google Sheets.' },
+      },
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'He usado IA para investigar la salud financiera de una empresa — ratios, reportes recientes, benchmarks de la industria — antes de una reunión o decisión.', en: 'I have used AI to research a company\'s financial health — ratios, recent filings, industry benchmarks — before a meeting or decision.' },
+      },
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'Uso IA para redactar correos financieros, comunicaciones con clientes o resúmenes de actualización para el consejo.', en: 'I use AI to draft financial emails, client communications, or board update summaries.' },
+      },
+      {
+        level: 0,
+        levelLabel: { es: 'Nivel 1 — Explorador', en: 'Level 1 — Explorer' },
+        statement: { es: 'He pedido a la IA que me explique un concepto financiero, regulación o norma contable que no conocía.', en: 'I have asked AI to explain a financial concept, regulation, or accounting standard I was unfamiliar with.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'Uso IA para construir o acelerar modelos financieros — proyecciones de ingresos, modelos de costos o análisis de escenarios — más rápido que construirlos manualmente.', en: 'I use AI to build or accelerate financial models — revenue forecasts, cost models, or scenario analyses — faster than building them manually.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'He usado IA para generar narrativas de análisis de variaciones — explicando por qué los resultados reales se desviaron del presupuesto en múltiples centros de costo.', en: 'I have used AI to generate variance analysis narratives — explaining why actuals deviated from budget across multiple cost centers.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'Uso IA para producir borradores de actualizaciones para inversionistas, presentaciones de consejo o reportes gerenciales a partir de datos crudos.', en: 'I use AI to produce first-draft investor updates, board presentations, or management reports from raw data inputs.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'He usado IA para analizar los estados financieros de una empresa y generar una tesis de inversión estructurada o memo de crédito.', en: 'I have used AI to analyze a company\'s financial statements and generate a structured investment thesis or credit memo.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'Mantengo una biblioteca de prompts específica de finanzas para tareas recurrentes: plantillas de reportes, marcos de comentarios, supuestos de modelos y checklists de due diligence.', en: 'I maintain a finance-specific prompt library for recurring tasks: reporting templates, commentary frameworks, model assumptions, and due diligence checklists.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'Uso IA para generar anotaciones de gráficos, resúmenes ejecutivos o narrativas de data storytelling a partir de hojas de cálculo.', en: 'I use AI to generate chart annotations, executive summaries, or data storytelling narratives from spreadsheet outputs.' },
+      },
+      {
+        level: 1,
+        levelLabel: { es: 'Nivel 2 — Aprendiz', en: 'Level 2 — Learner' },
+        statement: { es: 'He producido un dashboard financiero, reporte o presentación de fidelidad media usando herramientas de IA (Claude, ChatGPT, Gamma o similar) sin necesitar recursos adicionales para empezar desde cero.', en: 'I have produced a mid-fidelity financial dashboard, report, or presentation using AI tools (Claude, ChatGPT, Gamma, or similar) without needing additional resources to start from scratch.' },
+        isNew: true,
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'Uso IA para realizar benchmarking financiero de competidores — extrayendo datos de reportes públicos y generando informes comparativos estructurados.', en: 'I use AI to run competitor financial benchmarking — pulling public filing data and generating structured comparison reports.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'He usado IA para escribir y validar modelos complejos en Excel o Google Sheets — incluyendo modelos DCF, estructuras LBO o modelos de tres estados financieros.', en: 'I have used AI to write and QA complex Excel or Google Sheets models — including DCF models, LBO structures, or three-statement models.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'Uso IA para automatizar reportes financieros recurrentes — P&L mensuales, resúmenes de flujo de caja o paquetes de presupuesto vs. real — con mínimo formateo manual.', en: 'I use AI to automate recurring financial reports — monthly P&Ls, cash flow summaries, or budget vs. actual packages — with minimal manual formatting.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'He usado IA para preparar materiales de due diligence — documentos de data room, respuestas financieras de Q&A o FAQs para inversionistas — con rapidez.', en: 'I have used AI to prepare due diligence materials — data room documents, financial Q&A responses, or investor FAQs — at speed.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'Uso IA para analizar grandes conjuntos de datos financieros — identificando tendencias, valores atípicos y anomalías — y generar reportes de insights en lenguaje claro.', en: 'I use AI to analyze large financial datasets — identifying trends, outliers, and anomalies — and generate plain-language insight reports.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'He usado IA para escribir o revisar contratos financieros, term sheets o acuerdos y señalar cláusulas clave o riesgos.', en: 'I have used AI to write or review financial contracts, term sheets, or agreements and flag key clauses or risks.' },
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'He producido un reporte financiero, modelo o presentación de alta fidelidad listo para producción usando IA que fue directamente a liderazgo, clientes o inversionistas sin retrabajo significativo.', en: 'I have produced a high-fidelity, production-ready financial report, model, or presentation using AI that went directly to leadership, clients, or investors without significant rework.' },
+        isNew: true,
+      },
+      {
+        level: 2,
+        levelLabel: { es: 'Nivel 3 — Practicante', en: 'Level 3 — Practitioner' },
+        statement: { es: 'Colaboro con compañeros técnicos usando herramientas con control de versiones o repositorios compartidos — con IA ayudándome a entender, escribir o revisar los scripts y código involucrados.', en: 'I collaborate with technical teammates using version-controlled tools or shared repositories — with AI helping me understand, write, or review the scripts and code involved.' },
+        isNew: true,
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'He conectado fuentes de datos financieros (ERP, software contable, data warehouse) a herramientas de IA que generan paquetes de reportes automatizados semanales o mensuales.', en: 'I have connected financial data sources (ERP, accounting software, data warehouse) to AI tools that generate automated weekly or monthly reporting packages.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'Uso IA para construir modelos financieros predictivos — pronóstico de ingresos, modelado de impacto de churn o optimización de capital de trabajo — usando datos históricos.', en: 'I use AI to build predictive financial models — revenue forecasting, churn impact modeling, or working capital optimization — using historical data.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'He usado IA para diseñar y automatizar flujos de tesorería o gestión de efectivo — posicionamiento de caja, resúmenes de exposición cambiaria o seguimiento de covenants.', en: 'I have used AI to design and automate treasury or cash management workflows — cash positioning, FX exposure summaries, or covenant tracking.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'Uso IA para generar inteligencia competitiva en tiempo real — monitoreando reportes de competidores, sorpresas de resultados y revisiones de analistas automáticamente.', en: 'I use AI to generate real-time competitive intelligence — monitoring competitor filings, earnings surprises, and analyst revisions automatically.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'He entrenado IA con el contexto financiero y plan de cuentas de nuestra empresa para generar comentarios financieros precisos y consistentes a escala.', en: 'I have trained AI on our company\'s financial context and chart of accounts to generate accurate, on-brand financial commentary at scale.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'Uso IA para producir análisis de provisiones fiscales, documentación de precios de transferencia o resúmenes de cumplimiento regulatorio más rápido que los procesos manuales.', en: 'I use AI to produce tax provision analyses, transfer pricing documentation, or regulatory compliance summaries faster than manual processes.' },
+      },
+      {
+        level: 3,
+        levelLabel: { es: 'Nivel 4 — Avanzado', en: 'Level 4 — Advanced' },
+        statement: { es: 'Mi equipo de finanzas sigue un proceso documentado de reporteo asistido por IA que ayudé a definir, con reducciones medibles en el tiempo de cierre o esfuerzo de reporteo.', en: 'My finance team follows a documented AI-assisted reporting process I helped define, with measurable reductions in close cycle time or reporting effort.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'He construido herramientas financieras de IA personalizadas — paquetes de cierre automatizados, explicadores inteligentes de variaciones o rastreadores de presupuesto en tiempo real — usados en producción por mi equipo.', en: 'I have built custom AI finance tools — automated close packages, intelligent variance explanators, or real-time budget trackers — used in production by my team.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'Uso agentes de IA que monitorean autónomamente métricas financieras clave, señalan anomalías y redactan acciones recomendadas sin mi intervención diaria.', en: 'I use AI agents that autonomously monitor key financial metrics, flag anomalies, and draft recommended actions without my daily input.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'Mido el ROI de la IA en operaciones financieras — horas ahorradas en cierre, mejoras en precisión de reportes, capacidad de analistas liberada — con métricas específicas.', en: 'I track the ROI of AI in finance operations — hours saved on close, reporting accuracy improvements, analyst capacity freed — with specific metrics.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'He rediseñado los flujos de trabajo del equipo de finanzas alrededor de la IA — reduciendo la carga de reporteo manual mientras mejoro la velocidad, precisión y profundidad analítica.', en: 'I have redesigned finance team workflows around AI — reducing manual reporting burden while improving speed, accuracy, and analytical depth.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'Mentoreo a profesionales de finanzas en flujos de trabajo asistidos por IA y he documentado la metodología para adopción del equipo o la industria.', en: 'I mentor finance professionals on AI-assisted workflows and have documented the methodology for team or industry adoption.' },
+      },
+      {
+        level: 4,
+        levelLabel: { es: 'Nivel 5 — Catalizador', en: 'Level 5 — Catalyst' },
+        statement: { es: 'Contribuyo al entendimiento de la IA en la comunidad financiera y de CFOs a través de casos de estudio, frameworks, charlas o contenido publicado.', en: 'I contribute to the finance and CFO community\'s understanding of AI through case studies, frameworks, speaking engagements, or published content.' },
       },
     ],
   },
