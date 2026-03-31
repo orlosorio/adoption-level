@@ -1109,7 +1109,7 @@
 }
 
 .type-selector-card:hover {
-  background: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
   animation: glitch-border 2s steps(1) infinite;
 }
@@ -1259,7 +1259,7 @@
 }
 
 .role-card:hover {
-  background: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.3);
   border-color: rgba(54, 92, 255, 0.25);
   box-shadow: 0 4px 16px rgba(31, 54, 169, 0.08);
   transform: translateY(-1px);
@@ -1455,6 +1455,493 @@
 @media (max-width: 1023px) {
   .results-cta-column {
     position: static;
+  }
+}
+
+/* ── Value-Prop Screen ── */
+
+.vprop-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid #d8defa;
+  transition: border-color 0.2s;
+}
+.vprop-card:hover {
+  border-color: #365cff40;
+}
+.vprop-icon {
+  flex-shrink: 0;
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 2px;
+}
+.vprop-title {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f36a9;
+}
+.vprop-desc {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+  margin-top: 2px;
+}
+.vprop-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #365cff 0%, #5b7aff 100%);
+  color: white;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(54, 92, 255, 0.25);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.vprop-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(54, 92, 255, 0.35);
+}
+.vprop-cta:active {
+  transform: translateY(0);
+}
+.vprop-skip {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: #1f36a9;
+  opacity: 0.3;
+  text-decoration: underline;
+  text-decoration-color: rgba(31, 54, 169, 0.15);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.vprop-skip:hover {
+  opacity: 0.5;
+}
+.vprop-live-counter {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #1f36a9;
+  opacity: 0.35;
+  text-align: center;
+}
+
+/* ── Step Indicator (Pills) ── */
+
+.pq-step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.pq-step-dot {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  background: #d8defa;
+  transition: background 0.25s;
+}
+.pq-step-active {
+  background: #365cff;
+}
+.pq-step-label {
+  margin-left: 8px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #365cff;
+  opacity: 0.7;
+}
+
+/* ── Demographics Form Fields ── */
+
+.demo-field {
+  text-align: left;
+}
+.demo-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+.demo-helper {
+  margin-bottom: 8px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #888;
+}
+.demo-select {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #d8defa;
+  background: white;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  color: #1f36a9;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23365cff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.demo-select:focus {
+  border-color: #365cff;
+}
+.demo-select.placeholder {
+  color: #999;
+}
+.demo-error {
+  border-color: #ef4444 !important;
+}
+
+/* Salary button group */
+.demo-salary-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.demo-salary-btn {
+  flex: 1 1 auto;
+  min-width: 80px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1.5px solid #d8defa;
+  background: white;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1f36a9;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.demo-salary-btn:hover {
+  border-color: #365cff60;
+  background: #f5f7ff;
+}
+.demo-salary-selected {
+  border-color: #365cff;
+  background: #eef1ff;
+  font-weight: 700;
+}
+
+/* Company type card grid */
+.demo-company-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.demo-company-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1.5px solid #d8defa;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.demo-company-card:hover {
+  border-color: #365cff60;
+  background: #f5f7ff;
+}
+.demo-company-selected {
+  border-color: #365cff;
+  background: #eef1ff;
+}
+.demo-company-icon {
+  font-size: 20px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.demo-company-title {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f36a9;
+}
+.demo-company-subtitle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  color: #4e6bff;
+  margin-top: 1px;
+}
+.demo-company-desc {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #999;
+  margin-top: 4px;
+  display: none;
+}
+@media (min-width: 640px) {
+  .demo-company-desc {
+    display: block;
+  }
+  .demo-company-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .demo-company-card {
+    padding: 16px 12px;
+  }
+}
+
+/* ── Benchmark Panel ── */
+
+.bench-panel {
+  padding: 24px 20px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid #d8defa;
+}
+.bench-heading {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1f36a9;
+}
+.bench-respondents {
+  margin-top: 4px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #888;
+}
+.bench-section {
+  margin-top: 16px;
+}
+.bench-label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+.bench-statement {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+.bench-track {
+  margin-top: 6px;
+  height: 8px;
+  border-radius: 4px;
+  background: #eef1ff;
+  overflow: hidden;
+}
+.bench-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #365cff 0%, #5b7aff 100%);
+  transition: width 0.8s ease-out;
+}
+.bench-pct {
+  margin-top: 2px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1f36a9;
+  text-align: right;
+}
+.bench-divider {
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+.bench-not-enough {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 8px;
+}
+
+/* ── Benchmark Teaser (blurred) ── */
+
+.bench-teaser-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #d8defa;
+}
+.bench-teaser-blur {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+.bench-teaser-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+.bench-teaser-lock-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.bench-teaser-lock-title {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1f36a9;
+}
+.bench-teaser-lock-sub {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: #4d5b9a;
+  margin-top: 2px;
+}
+.bench-teaser-cta-section {
+  padding: 20px;
+  text-align: center;
+}
+.bench-teaser-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #365cff 0%, #5b7aff 100%);
+  color: white;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(54, 92, 255, 0.25);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.bench-teaser-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(54, 92, 255, 0.35);
+}
+.bench-teaser-cta:active {
+  transform: translateY(0);
+}
+.bench-teaser-skip {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #1f36a9;
+  opacity: 0.3;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.bench-teaser-skip:hover {
+  opacity: 0.5;
+}
+
+/* Benchmark reveal animation */
+.bench-reveal {
+  animation: benchReveal 0.6s ease-out forwards;
+}
+@keyframes benchReveal {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* Calculating spinner */
+.bench-calculating-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #d8defa;
+  border-top-color: #365cff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Mobile responsive tweaks for post-quiz ── */
+
+@media (max-width: 639px) {
+  .vprop-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .vprop-icon {
+    font-size: 20px;
+  }
+  .vprop-title {
+    font-size: 14px;
+  }
+  .vprop-desc {
+    font-size: 12px;
+  }
+  .vprop-cta {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  .bench-panel {
+    padding: 18px 16px;
+  }
+  .bench-heading {
+    font-size: 16px;
+  }
+  .bench-pct {
+    font-size: 17px;
+  }
+  .demo-salary-btn {
+    font-size: 12px;
+    padding: 8px 8px;
+    min-width: 70px;
+  }
+  .bench-teaser-lock-icon {
+    font-size: 26px;
+  }
+  .bench-teaser-lock-title {
+    font-size: 14px;
+  }
+  .bench-teaser-lock-sub {
+    font-size: 12px;
+  }
+  .bench-teaser-cta-section {
+    padding: 16px;
   }
 }
 

@@ -8,7 +8,7 @@ export default function AssessmentNav() {
   const isEntry = pathname === "/assessment";
 
   return (
-    <div className="relative z-10 flex w-full items-center pt-1 sm:pt-2">
+    <div className="relative z-20 flex w-full items-center pt-1 sm:pt-2">
       {isEntry ? (
         <a
           href="/"
