@@ -32,19 +32,23 @@ export default function FomoCounter({
 
   return (
     <section className="fomo-counter" aria-label="AI expert adoption counter">
-      <p className="fomo-live-label">
-        <span className="fomo-live-dot" />
-        {copy.live}
-      </p>
-      <p className="fomo-number" role="timer">
-        {value}
-        <span className="fomo-percent">%</span>
-      </p>
-      <p className="fomo-subtitle">
-        {copy.sub1}
-        <br />
-        <em>{copy.sub2}</em>
-      </p>
+      <div className="fomo-inner">
+        <div className="fomo-left">
+          <p className="fomo-live-label">
+            <span className="fomo-live-dot" />
+            {copy.live}
+          </p>
+          <p className="fomo-number" role="timer">
+            {value}
+            <span className="fomo-percent">%</span>
+          </p>
+        </div>
+        <p className="fomo-subtitle">
+          {copy.sub1}
+          <br />
+          <em>{copy.sub2}</em>
+        </p>
+      </div>
     </section>
   );
 }

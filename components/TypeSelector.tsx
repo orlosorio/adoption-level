@@ -74,12 +74,12 @@ export default function TypeSelector({
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[920px] text-center">
-        <h2 className="mb-6 font-sans text-lg font-semibold text-[#1f36a9]">
+        <h2 className="mb-3 sm:mb-6 font-sans text-base sm:text-lg font-semibold text-[#1f36a9]">
           {HEADING[language]}
         </h2>
 
         {onLanguageChange && (
-          <div className="mb-10 inline-flex items-center gap-1 rounded-full border border-[#1f36a9]/10 bg-white/40 p-1 text-[13px] font-medium backdrop-blur-md">
+          <div className="mb-5 sm:mb-10 inline-flex items-center gap-1 rounded-full border border-[#1f36a9]/10 bg-white/40 p-1 text-[13px] font-medium backdrop-blur-md">
             <button
               type="button"
               onClick={() => onLanguageChange("es")}
@@ -105,7 +105,7 @@ export default function TypeSelector({
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:gap-5 sm:grid-cols-3">
           {cards.map((card) => (
             <button
               key={card.type}
@@ -126,14 +126,15 @@ export default function TypeSelector({
                   {RECOMMENDED_LABEL[language]}
                 </span>
               )}
-              <p className="mb-1 text-2xl" aria-hidden>{card.icon}</p>
-              <p className="font-sans text-lg font-semibold text-[#1f36a9]">
+              <p className="hidden sm:block mb-1 text-2xl" aria-hidden>{card.icon}</p>
+              <p className="font-sans text-base sm:text-lg font-semibold text-[#1f36a9]">
+                <span className="sm:hidden mr-2 text-xl" aria-hidden>{card.icon}</span>
                 {card.title[language]}
               </p>
-              <p className="mt-3 font-sans text-[15px] leading-[1.6] text-[#2a2a2a]/65">
+              <p className="mt-1.5 sm:mt-3 font-sans text-[13px] sm:text-[15px] leading-[1.5] sm:leading-[1.6] text-[#2a2a2a]/65">
                 {card.desc[language]}
               </p>
-              <p className="mt-4 font-sans text-sm text-[#1f36a9]/40">
+              <p className="mt-2 sm:mt-4 font-sans text-xs sm:text-sm text-[#1f36a9]/40">
                 {card.stats[language]}
               </p>
             </button>

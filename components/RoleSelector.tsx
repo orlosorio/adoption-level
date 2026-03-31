@@ -46,7 +46,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[720px] text-center">
-        <h2 className="mb-5 font-sans text-base font-semibold text-[#1f36a9]">
+        <h2 className="mb-3 sm:mb-5 font-sans text-sm sm:text-base font-semibold text-[#1f36a9]">
           {UI_TEXT[language].heading}
         </h2>
 
@@ -73,7 +73,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
         </div>
 
         <div
-          className="mt-6 transition-all duration-300 ease-out"
+          className="mt-4 sm:mt-6 transition-all duration-300 ease-out"
           style={{
             opacity: selected ? 1 : 0,
             transform: selected ? "translateY(0)" : "translateY(8px)",

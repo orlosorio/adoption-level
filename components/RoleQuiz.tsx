@@ -266,8 +266,8 @@ export default function RoleQuiz({
       {screen === "quiz" && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px]">
-            <header className="mb-5 w-full shrink-0">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[14px] text-[#365cff]">
+            <header className="mb-3 sm:mb-5 w-full shrink-0">
+              <div className="mb-1.5 sm:mb-2 flex flex-wrap items-center justify-between gap-2 text-[12px] sm:text-[14px] text-[#365cff]">
                 <span>
                   {UI.quiz[language].levelOf(
                     roleQuestions[currentQuestion]!.level + 1,
@@ -304,13 +304,15 @@ export default function RoleQuiz({
                   const text = q.statement[language];
                   return (
                     <>
-                      <p className="font-serif text-[28px] font-bold leading-tight text-[#1f36a9]">
-                        {number}
-                      </p>
-                      <p className="mt-1 font-sans text-[15px] font-semibold italic text-[#4e6bff]/50">
-                        {name}
-                      </p>
-                      <p className="mt-6 min-h-14 font-sans text-[15px] font-semibold leading-[1.6] text-[#1f36a9] sm:min-h-14 sm:text-[20px]">
+                      <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
+                        <p className="font-serif text-[20px] font-bold leading-tight text-[#1f36a9] sm:text-[28px]">
+                          {number}
+                        </p>
+                        <p className="font-sans text-[13px] font-semibold italic text-[#4e6bff]/50 sm:mt-1 sm:text-[15px]">
+                          {name}
+                        </p>
+                      </div>
+                      <p className="mt-3 font-sans text-[14px] font-semibold leading-[1.6] text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
                         {text}
                       </p>
                       <ScaleButtons
@@ -321,7 +323,7 @@ export default function RoleQuiz({
                         <button
                           type="button"
                           onClick={goBack}
-                          className="quiz-back-link mt-6"
+                          className="quiz-back-link mt-3 sm:mt-6"
                         >
                           {UI.quiz[language].back}
                         </button>
@@ -337,11 +339,11 @@ export default function RoleQuiz({
 
       {screen === "email" && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 sm:px-10 sm:py-11">
-            <h2 className="font-sans text-2xl font-bold text-[#1f36a9]">
+          <div className="glass-quiz-card w-full max-w-[600px] px-5 py-6 sm:px-10 sm:py-11">
+            <h2 className="font-sans text-xl sm:text-2xl font-bold text-[#1f36a9]">
               {UI.email[language].title}
             </h2>
-            <p className="mt-4 font-sans text-[15px] leading-relaxed text-[#2a2a2a]/80">
+            <p className="mt-3 sm:mt-4 font-sans text-[14px] sm:text-[15px] leading-relaxed text-[#2a2a2a]/80">
               {UI.email[language].body}
             </p>
             <input
@@ -353,7 +355,7 @@ export default function RoleQuiz({
                 setEmailError(false);
               }}
               placeholder={UI.email[language].placeholder}
-              className="glass-input mt-6 w-full"
+              className="glass-input mt-4 sm:mt-6 w-full"
             />
             {emailError && (
               <p className="mt-2 text-sm text-red-600">
@@ -363,17 +365,17 @@ export default function RoleQuiz({
             <button
               type="button"
               onClick={() => void submitEmail()}
-              className="glass-answer-btn glass-answer-yes mt-6 w-full justify-center"
+              className="glass-answer-btn glass-answer-yes mt-4 sm:mt-6 w-full justify-center"
             >
               {UI.email[language].submit}
             </button>
-            <p className="mt-4 text-center text-xs leading-relaxed text-[#1f36a9]/35">
+            <p className="mt-3 sm:mt-4 text-center text-xs leading-relaxed text-[#1f36a9]/35">
               {UI.email[language].privacy}
             </p>
             <button
               type="button"
               onClick={skipEmail}
-              className="mt-6 w-full text-center font-sans text-sm text-[#1f36a9]/30 underline decoration-[#1f36a9]/15 transition-colors hover:text-[#1f36a9]/50"
+              className="mt-4 sm:mt-6 w-full text-center font-sans text-sm text-[#1f36a9]/30 underline decoration-[#1f36a9]/15 transition-colors hover:text-[#1f36a9]/50"
             >
               {UI.email[language].skip}
             </button>
@@ -385,7 +387,7 @@ export default function RoleQuiz({
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="grid w-full max-w-[960px] grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_340px]">
             {/* Left column -- results */}
-            <div className="rounded-2xl bg-white px-6 py-8 text-left sm:px-10 sm:py-11">
+            <div className="rounded-2xl bg-white px-5 py-6 text-left sm:px-10 sm:py-11">
               <div className="border-b border-[#eee] pb-8 text-center">
                 <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
                   {resultLevelNumber}
@@ -498,7 +500,7 @@ export default function RoleQuiz({
 
       {screen === "demographics" && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 sm:px-10 sm:py-11">
+          <div className="glass-quiz-card w-full max-w-[600px] px-5 py-6 sm:px-10 sm:py-11">
             <h2 className="font-sans text-2xl font-bold text-[#1f36a9]">
               {UI.demographics[language].title}
             </h2>
@@ -586,7 +588,7 @@ export default function RoleQuiz({
 
       {screen === "coming-soon" && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="glass-quiz-card w-full max-w-[600px] px-6 py-8 text-center sm:px-10 sm:py-11">
+          <div className="glass-quiz-card w-full max-w-[600px] px-5 py-6 text-center sm:px-10 sm:py-11">
             <p className="font-serif text-3xl font-bold text-[#1f36a9]">
               {UI.comingSoon[language].title}
             </p>
