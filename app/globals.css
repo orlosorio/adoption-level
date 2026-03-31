@@ -1136,13 +1136,18 @@
 
 @media (max-width: 639px) {
   .type-selector-card {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow:
-      0 4px 16px rgba(31, 54, 169, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      0 2px 8px rgba(31, 54, 169, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .type-selector-card-recommended {
+    box-shadow:
+      0 2px 8px rgba(31, 54, 169, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 }
 
@@ -1295,10 +1300,10 @@
     font-size: 12px;
     min-height: 56px;
     padding: 12px 14px;
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
