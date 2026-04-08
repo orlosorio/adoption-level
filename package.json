@@ -6,7 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:init": "supabase init",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:studio": "supabase studio",
+    "db:reset": "supabase db reset",
+    "db:migrate": "supabase migration up",
+    "db:seed": "npx tsx scripts/seed.ts",
+    "db:typegen": "supabase gen types typescript --local > lib/supabase/database.types.ts",
+    "db:push": "supabase db push",
+    "db:diff": "supabase db diff --local",
+    "db:status": "supabase status"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0",
