@@ -28,7 +28,7 @@ import { resolve } from "path";
 
 function loadEnv() {
   try {
-    const envPath = resolve(__dirname, "../.env.local");
+    const envPath = resolve(__dirname, "../.env");
     const content = readFileSync(envPath, "utf-8");
     for (const line of content.split("\n")) {
       const trimmed = line.trim();
