@@ -7,7 +7,7 @@ import Link from "next/link";
 import { adminFetch } from "@/lib/admin/fetch";
 
 interface QuestionData {
-  id: number;
+  id: string;
   assessment_type_id: string;
   role_id: string | null;
   dimension_id: string | null;

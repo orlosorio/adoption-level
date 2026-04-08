@@ -11,7 +11,7 @@ interface Stats {
   byType: { assessment_type_id: string; count: number }[];
   byCountry: { country: string; count: number }[];
   recent: {
-    id: number;
+    id: string;
     assessment_type_id: string;
     role_id: string | null;
     email: string | null;

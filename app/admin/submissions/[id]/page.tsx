@@ -8,7 +8,7 @@ import { adminFetch } from "@/lib/admin/fetch";
 
 interface SubmissionDetail {
   submission: {
-    id: number;
+    id: string;
     assessment_type_id: string;
     role_id: string | null;
     language: string;
@@ -24,7 +24,7 @@ interface SubmissionDetail {
     completed_at: string;
   };
   answers: {
-    question_id: number;
+    question_id: string;
     answer_value: number;
     questions: { statement_en: string; statement_es: string; level: number } | null;
   }[];

@@ -5,7 +5,7 @@ import AdminNav from "@/components/admin/AdminNav";
 import { adminFetch } from "@/lib/admin/fetch";
 
 interface Session {
-  id: number;
+  id: string;
   token_preview: string;
   created_at: string;
   expires_at: string;
@@ -15,7 +15,7 @@ interface Session {
 export default function AdminSessions() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
-  const [closingId, setClosingId] = useState<number | null>(null);
+  const [closingId, setClosingId] = useState<string | null>(null);
 
   function loadSessions() {
     adminFetch("/api/admin/sessions")
@@ -29,7 +29,7 @@ export default function AdminSessions() {
     loadSessions();
   }, []);
 
-  async function handleClose(id: number, isCurrent: boolean) {
+  async function handleClose(id: string, isCurrent: boolean) {
     const msg = isCurrent
       ? "This is your current session. You will be logged out. Continue?"
       : "Close this session? The user will be logged out.";

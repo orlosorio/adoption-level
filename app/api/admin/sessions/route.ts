@@ -40,7 +40,7 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = (await request.json()) as { id?: number };
+  const { id } = (await request.json()) as { id?: string };
   if (!id) {
     return NextResponse.json({ error: "Missing session id" }, { status: 400 });
   }

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { adminFetch } from "@/lib/admin/fetch";
 
 interface Submission {
-  id: number;
+  id: string;
   assessment_type_id: string;
   role_id: string | null;
   language: string;

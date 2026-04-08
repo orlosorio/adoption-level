@@ -5,7 +5,7 @@
 -- 1. Assessment Types
 -- ------------------------------------------------------------
 create table assessment_types (
-  id text primary key,
+  id uuid primary key default gen_random_uuid(),
   name_en text not null,
   name_es text not null,
   description_en text,
@@ -43,7 +43,7 @@ create table roles (
 -- 4. Questions
 -- ------------------------------------------------------------
 create table questions (
-  id bigint generated always as identity primary key,
+  id uuid primary key default gen_random_uuid(),
   assessment_type_id text not null references assessment_types(id),
   role_id text references roles(id),
   dimension_id text references dimensions(id),
@@ -79,7 +79,7 @@ create index questions_dimension_idx on questions (dimension_id, sort_order)
 -- 5. Submissions
 -- ------------------------------------------------------------
 create table submissions (
-  id bigint generated always as identity primary key,
+  id uuid primary key default gen_random_uuid(),
   assessment_type_id text not null references assessment_types(id),
   role_id text references roles(id),
   language text not null check (language in ('en', 'es')),
@@ -109,9 +109,9 @@ create index submissions_completed_at_idx on submissions (completed_at desc);
 -- 6. Submission Answers
 -- ------------------------------------------------------------
 create table submission_answers (
-  id bigint generated always as identity primary key,
-  submission_id bigint not null references submissions(id) on delete cascade,
-  question_id bigint not null references questions(id),
+  id uuid primary key default gen_random_uuid(),
+  submission_id uuid not null references submissions(id) on delete cascade,
+  question_id uuid not null references questions(id),
   answer_value smallint not null check (answer_value between 0 and 4),
   created_at timestamptz default now()
 );
@@ -122,7 +122,7 @@ create index submission_answers_question_idx on submission_answers (question_id,
 -- 7. Benchmark Aggregates
 -- ------------------------------------------------------------
 create table benchmark_aggregates (
-  id bigint generated always as identity primary key,
+  id uuid primary key default gen_random_uuid(),
   assessment_type_id text not null references assessment_types(id),
   role_id text references roles(id),
   segment_type text not null check (segment_type in ('overall', 'country', 'company_type', 'industry')),
@@ -141,7 +141,7 @@ create index benchmark_lookup_idx on benchmark_aggregates (assessment_type_id, s
 -- 8. Admin Sessions
 -- ------------------------------------------------------------
 create table admin_sessions (
-  id bigint generated always as identity primary key,
+  id uuid primary key default gen_random_uuid(),
   token text not null unique,
   created_at timestamptz default now(),
   expires_at timestamptz not null

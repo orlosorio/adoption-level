@@ -6,7 +6,7 @@ import Link from "next/link";
 import { adminFetch } from "@/lib/admin/fetch";
 
 interface Question {
-  id: number;
+  id: string;
   assessment_type_id: string;
   role_id: string | null;
   dimension_id: string | null;
@@ -41,7 +41,7 @@ export default function AdminQuestions() {
 
   useEffect(() => { void fetchQuestions(); }, [fetchQuestions]);
 
-  const toggleActive = async (id: number, currentActive: boolean) => {
+  const toggleActive = async (id: string, currentActive: boolean) => {
     await adminFetch(`/api/admin/questions/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
