@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "database-schema-designer": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "computedHash": "6a26ca15216bb4bfee66ebf813edcb1e31a8002f3f641f16f550df814b522217"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f4cd7570115d97af6bcb2946eb891a958c8d04a43b479871c9ccadbc670ad058"
+    }
+  }
+}
