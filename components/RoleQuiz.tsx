@@ -351,6 +351,7 @@ export default function RoleQuiz({
           resultsContent={resultsContent}
           onRestart={restart}
           onEmailSubmit={handleEmailSubmit}
+          answers={answers.map((value, i) => ({ sortOrder: i, value }))}
         />
       )}
     </div>

@@ -5,6 +5,12 @@ import type { Language } from "@/lib/content";
 import { UI } from "@/lib/content";
 import type { BenchmarkResult } from "@/lib/benchmarkMock";
 import { computeMockBenchmark } from "@/lib/benchmarkMock";
+
+interface SubmissionAnswer {
+  questionId?: number;
+  sortOrder?: number;
+  value: number;
+}
 import { COUNTRIES } from "@/lib/demographics";
 import { COMPANY_TYPES_V2 } from "@/lib/companyTypesV2";
 import { INDUSTRIES } from "@/lib/industries";
@@ -32,6 +38,8 @@ interface PostQuizFlowProps {
   resultsContent: React.ReactNode;
   onRestart: () => void;
   onEmailSubmit?: (payload: Record<string, unknown>) => Promise<void>;
+  answers?: SubmissionAnswer[];
+  dimensionScores?: { dim: string; score: number; max: number }[] | null;
 }
 
 export default function PostQuizFlow({
@@ -45,6 +53,8 @@ export default function PostQuizFlow({
   resultsContent,
   onRestart,
   onEmailSubmit,
+  answers: submissionAnswers,
+  dimensionScores,
 }: PostQuizFlowProps) {
   const [screen, setScreen] = useState<PostQuizScreen>("value-prop");
   const [email, setEmail] = useState<string | null>(null);
@@ -58,8 +68,26 @@ export default function PostQuizFlow({
   }, []);
 
   const handleSkipToResults = useCallback(() => {
+    // Submit without demographics (best-effort)
+    if (submissionAnswers && submissionAnswers.length > 0) {
+      fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          assessmentTypeId: assessmentType,
+          roleId: roleId || null,
+          language,
+          email: email || null,
+          totalScore: score,
+          maxScore,
+          resultLevel,
+          dimensionScores: dimensionScores || null,
+          answers: submissionAnswers,
+        }),
+      }).catch(() => {});
+    }
     changeScreen("results");
-  }, [changeScreen]);
+  }, [assessmentType, roleId, language, email, score, maxScore, resultLevel, submissionAnswers, dimensionScores, changeScreen]);
 
   const handleEmailSubmit = useCallback(
     async (submittedEmail: string) => {
@@ -86,10 +114,65 @@ export default function PostQuizFlow({
   );
 
   const handleDemographicsSubmit = useCallback(
-    (data: DemographicsData) => {
+    async (data: DemographicsData) => {
       setDemographics(data);
       setHasCompletedDemographics(true);
+      changeScreen("calculating");
 
+      // 1. Submit to API (best-effort, don't block results)
+      if (submissionAnswers && submissionAnswers.length > 0) {
+        try {
+          await fetch("/api/submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              assessmentTypeId: assessmentType,
+              roleId: roleId || null,
+              language,
+              email: email || null,
+              country: data.country || null,
+              salaryRange: data.salaryRange || null,
+              companyType: data.companyType || null,
+              industry: data.industry || null,
+              totalScore: score,
+              maxScore,
+              resultLevel,
+              dimensionScores: dimensionScores || null,
+              answers: submissionAnswers,
+            }),
+          });
+        } catch {
+          // Submission failed — continue to show results anyway
+        }
+      }
+
+      // 2. Fetch real benchmarks, fall back to mock
+      try {
+        const params = new URLSearchParams({
+          type: assessmentType,
+          score: String(score),
+          maxScore: String(maxScore),
+        });
+        if (roleId) params.set("roleId", roleId);
+        if (data.country) params.set("country", data.country);
+        if (data.companyType) params.set("companyType", data.companyType);
+        if (data.industry) params.set("industry", data.industry);
+
+        const res = await fetch(`/api/benchmarks?${params}`);
+        if (res.ok) {
+          const benchmark: BenchmarkResult = await res.json();
+          // Only use real data if we have enough submissions
+          if (benchmark.totalRespondents >= 10) {
+            setBenchmarkData(benchmark);
+            changeScreen("results");
+            return;
+          }
+        }
+      } catch {
+        // Benchmark fetch failed — fall back to mock
+      }
+
+      // Fallback to mock benchmark
       const benchmark = computeMockBenchmark(
         score,
         maxScore,
@@ -97,15 +180,10 @@ export default function PostQuizFlow({
         data.companyType,
         data.industry,
       );
-
-      changeScreen("calculating");
-
-      setTimeout(() => {
-        setBenchmarkData(benchmark);
-        changeScreen("results");
-      }, 1500);
+      setBenchmarkData(benchmark);
+      changeScreen("results");
     },
-    [score, maxScore, changeScreen],
+    [score, maxScore, assessmentType, roleId, language, email, resultLevel, submissionAnswers, dimensionScores, changeScreen],
   );
 
   const handleUnlockFromResults = useCallback(() => {

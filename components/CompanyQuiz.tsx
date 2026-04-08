@@ -399,6 +399,8 @@ export default function CompanyQuiz({
           resultsContent={resultsContent}
           onRestart={restart}
           onEmailSubmit={handleEmailSubmit}
+          answers={answers.map((value, i) => ({ sortOrder: i, value }))}
+          dimensionScores={dimensionScores.map((d) => ({ dim: d.dimId, score: d.score, max: d.max }))}
         />
       )}
     </div>
