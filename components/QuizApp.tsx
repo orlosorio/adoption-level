@@ -1,61 +1,48 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  type Language,
-  LEVEL_LABELS,
-  QUESTIONS,
-  RESULT_COPY,
-  UI,
-} from "@/lib/content";
-import { getResultLevel, getRoleResultLevel } from "@/lib/scoring";
-import { BEEHIIV_ENDPOINT } from "@/lib/config";
-import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from "@/lib/roles";
-import { ROLE_RESULT_COPY } from "@/lib/roleResults";
-import { COMPANY_QUESTIONS, DIMENSION_NAMES, DIMENSION_ORDER, type DimensionId } from "@/lib/companyAssessment";
-import { COMPANY_RESULT_COPY } from "@/lib/companyResults";
-import ToolsMarquee from "@/components/ToolsMarquee";
-import FomoCounter from "@/components/FomoCounter";
-import HeroAI from "@/components/HeroAI";
-import BackgroundScene from "@/components/BackgroundScene";
-import TypeSelector, { type AssessmentType } from "@/components/TypeSelector";
-import RoleSelector from "@/components/RoleSelector";
-import ScaleButtons from "@/components/ScaleButtons";
+import Link from 'next/link';
+import { useState } from 'react';
+import { type Language, LEVEL_LABELS, QUESTIONS, RESULT_COPY, UI } from '@/lib/content';
+import { getResultLevel, getRoleResultLevel } from '@/lib/scoring';
+import { BEEHIIV_ENDPOINT } from '@/lib/config';
+import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from '@/lib/roles';
+import { ROLE_RESULT_COPY } from '@/lib/roleResults';
+import { COMPANY_QUESTIONS, DIMENSION_NAMES, DIMENSION_ORDER } from '@/lib/companyAssessment';
+import { COMPANY_RESULT_COPY } from '@/lib/companyResults';
+import ToolsMarquee from '@/components/ToolsMarquee';
+import FomoCounter from '@/components/FomoCounter';
+import HeroAI from '@/components/HeroAI';
+import BackgroundScene from '@/components/BackgroundScene';
+import TypeSelector, { type AssessmentType } from '@/components/TypeSelector';
+import RoleSelector from '@/components/RoleSelector';
+import ScaleButtons from '@/components/ScaleButtons';
 
-type Screen =
-  | "type-selector"
-  | "language"
-  | "role-selector"
-  | "quiz"
-  | "email"
-  | "results";
+type Screen = 'type-selector' | 'language' | 'role-selector' | 'quiz' | 'email' | 'results';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function splitLevelLabel(label: string): { number: string; name: string } {
-  const parts = label.split(" — ");
+  const parts = label.split(' — ');
   if (parts.length >= 2) {
-    return { number: parts[0]!, name: parts.slice(1).join(" — ") };
+    return { number: parts[0]!, name: parts.slice(1).join(' — ') };
   }
-  return { number: label, name: "" };
+  return { number: label, name: '' };
 }
 
 export default function QuizApp() {
   const [language, setLanguage] = useState<Language | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
-  const [emailInput, setEmailInput] = useState("");
+  const [emailInput, setEmailInput] = useState('');
   const [emailError, setEmailError] = useState(false);
-  const [screen, setScreen] = useState<Screen>("type-selector");
-  const [assessmentType, setAssessmentType] = useState<AssessmentType>("general");
+  const [screen, setScreen] = useState<Screen>('type-selector');
+  const [assessmentType, setAssessmentType] = useState<AssessmentType>('general');
   const [selectedRole, setSelectedRole] = useState<RoleId | null>(null);
 
-  const isRoleQuiz = assessmentType === "role";
-  const isCompanyQuiz = assessmentType === "company";
+  const isRoleQuiz = assessmentType === 'role';
+  const isCompanyQuiz = assessmentType === 'company';
   const roleQuestions =
-    isRoleQuiz && selectedRole
-      ? ROLE_ASSESSMENTS[selectedRole].questions
-      : null;
+    isRoleQuiz && selectedRole ? ROLE_ASSESSMENTS[selectedRole].questions : null;
   const companyQuestions = isCompanyQuiz ? COMPANY_QUESTIONS : null;
   const activeQuestions = isCompanyQuiz
     ? COMPANY_QUESTIONS
@@ -66,17 +53,17 @@ export default function QuizApp() {
 
   const selectAssessmentType = (type: AssessmentType) => {
     setAssessmentType(type);
-    setScreen("language");
+    setScreen('language');
   };
 
   const startQuiz = (lang: Language) => {
     setLanguage(lang);
     setCurrentQuestion(0);
     setAnswers([]);
-    if (assessmentType === "role") {
-      setScreen("role-selector");
+    if (assessmentType === 'role') {
+      setScreen('role-selector');
     } else {
-      setScreen("quiz");
+      setScreen('quiz');
     }
   };
 
@@ -86,25 +73,25 @@ export default function QuizApp() {
     setSelectedRole(roleId);
     setCurrentQuestion(0);
     setAnswers([]);
-    setScreen("quiz");
+    setScreen('quiz');
   };
 
   const restartQuiz = () => {
     setCurrentQuestion(0);
     setAnswers([]);
-    setEmailInput("");
+    setEmailInput('');
     setEmailError(false);
-    setAssessmentType("general");
+    setAssessmentType('general');
     setSelectedRole(null);
     setLanguage(null);
-    setScreen("type-selector");
+    setScreen('type-selector');
   };
 
   const answerQuestion = (value: number) => {
     const nextAnswers = [...answers, value];
     setAnswers(nextAnswers);
     if (currentQuestion + 1 >= totalQuestions) {
-      setScreen("email");
+      setScreen('email');
     } else {
       setCurrentQuestion((q) => q + 1);
     }
@@ -123,15 +110,12 @@ export default function QuizApp() {
       return;
     }
     setEmailError(false);
-    if (
-      BEEHIIV_ENDPOINT &&
-      BEEHIIV_ENDPOINT !== "YOUR_BEEHIIV_ENDPOINT"
-    ) {
+    if (BEEHIIV_ENDPOINT && BEEHIIV_ENDPOINT !== 'YOUR_BEEHIIV_ENDPOINT') {
       const payload = isCompanyQuiz
         ? {
             email: trimmed,
             language,
-            assessmentType: "company" as const,
+            assessmentType: 'company' as const,
             totalScore: score,
             maxScore: totalQuestions * 4,
             averageScore: (score / totalQuestions).toFixed(1),
@@ -146,9 +130,9 @@ export default function QuizApp() {
           ? {
               email: trimmed,
               language,
-              assessmentType: "role" as const,
+              assessmentType: 'role' as const,
               roleId: selectedRole,
-              roleName: selectedRole && language ? ROLE_NAMES[selectedRole][language] : "",
+              roleName: selectedRole && language ? ROLE_NAMES[selectedRole][language] : '',
               totalScore: score,
               maxScore: totalQuestions * 4,
               averageScore: (score / totalQuestions).toFixed(1),
@@ -157,26 +141,26 @@ export default function QuizApp() {
           : {
               email: trimmed,
               language,
-              assessmentType: "general" as const,
+              assessmentType: 'general' as const,
               score,
               resultLevel,
             };
       try {
         await fetch(BEEHIIV_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
       } catch {
         /* advance regardless */
       }
     }
-    setScreen("results");
+    setScreen('results');
   };
 
   const skipEmail = () => {
     setEmailError(false);
-    setScreen("results");
+    setScreen('results');
   };
 
   const score = answers.reduce((sum, v) => sum + v, 0);
@@ -187,10 +171,8 @@ export default function QuizApp() {
         ? getRoleResultLevel(score, maxScore)
         : getResultLevel(score, answers.length)
       : 0;
-  const resultLabel =
-    language != null ? LEVEL_LABELS[resultLevel]![language] : "";
-  const { number: resultLevelNumber, name: resultLevelName } =
-    splitLevelLabel(resultLabel);
+  const resultLabel = language != null ? LEVEL_LABELS[resultLevel]![language] : '';
+  const { number: resultLevelNumber, name: resultLevelName } = splitLevelLabel(resultLabel);
 
   const resultCopy = isCompanyQuiz
     ? COMPANY_RESULT_COPY
@@ -200,19 +182,16 @@ export default function QuizApp() {
 
   const dimensionScores = isCompanyQuiz
     ? DIMENSION_ORDER.map((dimId) => {
-        const indices = COMPANY_QUESTIONS
-          .map((q, i) => (q.dimension === dimId ? i : -1))
-          .filter((i) => i >= 0);
+        const indices = COMPANY_QUESTIONS.map((q, i) => (q.dimension === dimId ? i : -1)).filter(
+          (i) => i >= 0,
+        );
         const dimScore = indices.reduce((s, i) => s + (answers[i] ?? 0), 0);
         const dimMax = indices.length * 4;
         return { dimId, score: dimScore, max: dimMax, count: indices.length };
       })
     : null;
 
-  const quizProgressPct =
-    totalQuestions > 0
-      ? ((currentQuestion + 1) / totalQuestions) * 100
-      : 0;
+  const quizProgressPct = totalQuestions > 0 ? ((currentQuestion + 1) / totalQuestions) * 100 : 0;
 
   const currentQ = activeQuestions[currentQuestion];
 
@@ -221,17 +200,23 @@ export default function QuizApp() {
       <BackgroundScene />
 
       <div className="relative z-10 flex w-full items-center justify-center pt-2">
-        {screen === "type-selector" || screen === "language" ? (
-          <a
+        {screen === 'type-selector' || screen === 'language' ? (
+          <Link
             href="/"
             className="absolute left-0 flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/40 bg-white/25 px-3 py-1.5 text-[13px] font-medium text-[#1f36a9]/60 backdrop-blur-md transition-all hover:bg-white/40 hover:text-[#1f36a9]"
             aria-label="Back to home"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M10 12L6 8L10 4"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             <span className="hidden sm:inline">Home</span>
-          </a>
+          </Link>
         ) : (
           <button
             type="button"
@@ -240,7 +225,13 @@ export default function QuizApp() {
             aria-label="Back to home"
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M10 12L6 8L10 4"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             <span className="hidden sm:inline">Home</span>
           </button>
@@ -248,11 +239,11 @@ export default function QuizApp() {
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[860px] flex-1 flex-col">
-        {screen === "type-selector" && (
+        {screen === 'type-selector' && (
           <TypeSelector language="es" onSelect={selectAssessmentType} />
         )}
 
-        {screen === "language" && (
+        {screen === 'language' && (
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="w-full max-w-[600px] text-center">
               <h1 className="hero-title mb-6 sm:mb-10">
@@ -268,95 +259,156 @@ export default function QuizApp() {
                 {UI.language.meta}
               </p>
               <div className="flex flex-row justify-center gap-4 sm:gap-6">
-                <button
-                  type="button"
-                  onClick={() => startQuiz("en")}
-                  className="glass-cta"
-                >
+                <button type="button" onClick={() => startQuiz('en')} className="glass-cta">
                   <span className="glass-cta-label">{UI.language.en}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => startQuiz("es")}
-                  className="glass-cta"
-                >
+                <button type="button" onClick={() => startQuiz('es')} className="glass-cta">
                   <span className="glass-cta-label">{UI.language.es}</span>
                 </button>
               </div>
-              <div className="mt-6 sm:mt-12 w-screen -ml-[50vw] left-1/2 relative">
+              <div className="relative left-1/2 mt-6 -ml-[50vw] w-screen sm:mt-12">
                 <ToolsMarquee language="en" />
               </div>
             </div>
           </div>
         )}
 
-        {screen === "role-selector" && language && (
+        {screen === 'role-selector' && language && (
           <RoleSelector language={language} onSelect={selectRole} />
         )}
 
-        {screen === "quiz" && language && currentQ && (
+        {screen === 'quiz' && language && currentQ && (
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="w-full max-w-[600px]">
-            <header className="mb-3 sm:mb-5 w-full shrink-0">
-              <div className="mb-1.5 sm:mb-2 flex flex-wrap items-center justify-between gap-2 text-[12px] sm:text-[14px] text-[#365cff]">
-                <span>
-                  {isCompanyQuiz && companyQuestions
-                    ? UI.quiz[language].levelOf(companyQuestions[currentQuestion]!.level + 1)
-                    : isRoleQuiz && roleQuestions
-                      ? UI.quiz[language].levelOf(roleQuestions[currentQuestion]!.level + 1)
-                      : UI.quiz[language].levelOf(
-                          (QUESTIONS[currentQuestion] as { level: number }).level + 1,
-                        )}
-                </span>
-                <span>
-                  {UI.quiz[language].questionOf(
-                    currentQuestion + 1,
-                    totalQuestions,
-                  )}
-                </span>
-              </div>
-              <div
-                className="h-1 w-full rounded-sm bg-[#d8defa]"
-                role="progressbar"
-                aria-valuenow={currentQuestion + 1}
-                aria-valuemin={1}
-                aria-valuemax={totalQuestions}
-              >
+              <header className="mb-3 w-full shrink-0 sm:mb-5">
+                <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#365cff] sm:mb-2 sm:text-[14px]">
+                  <span>
+                    {isCompanyQuiz && companyQuestions
+                      ? UI.quiz[language].levelOf(companyQuestions[currentQuestion]!.level + 1)
+                      : isRoleQuiz && roleQuestions
+                        ? UI.quiz[language].levelOf(roleQuestions[currentQuestion]!.level + 1)
+                        : UI.quiz[language].levelOf(
+                            (QUESTIONS[currentQuestion] as { level: number }).level + 1,
+                          )}
+                  </span>
+                  <span>{UI.quiz[language].questionOf(currentQuestion + 1, totalQuestions)}</span>
+                </div>
                 <div
-                  className="h-1 rounded-sm bg-[#365cff] transition-[width] duration-[350ms] ease-out"
-                  style={{ width: `${quizProgressPct}%` }}
-                />
-              </div>
-            </header>
+                  className="h-1 w-full rounded-sm bg-[#d8defa]"
+                  role="progressbar"
+                  aria-valuenow={currentQuestion + 1}
+                  aria-valuemin={1}
+                  aria-valuemax={totalQuestions}
+                >
+                  <div
+                    className="h-1 rounded-sm bg-[#365cff] transition-[width] duration-[350ms] ease-out"
+                    style={{ width: `${quizProgressPct}%` }}
+                  />
+                </div>
+              </header>
 
-            <div className="mx-auto w-full max-w-[600px]">
-              <div className="glass-quiz-card px-6 py-8 sm:px-10 sm:py-11">
-                {(() => {
-                  if (isCompanyQuiz && companyQuestions) {
-                    const q = companyQuestions[currentQuestion]!;
-                    const { number, name } = splitLevelLabel(q.levelLabel[language]);
-                    const text = q.statement[language];
-                    const dimName = DIMENSION_NAMES[q.dimension][language];
+              <div className="mx-auto w-full max-w-[600px]">
+                <div className="glass-quiz-card px-6 py-8 sm:px-10 sm:py-11">
+                  {(() => {
+                    if (isCompanyQuiz && companyQuestions) {
+                      const q = companyQuestions[currentQuestion]!;
+                      const { number, name } = splitLevelLabel(q.levelLabel[language]);
+                      const text = q.statement[language];
+                      const dimName = DIMENSION_NAMES[q.dimension][language];
+                      return (
+                        <>
+                          <span className="mb-2 inline-block rounded-full bg-[#eef1ff] px-3 py-0.5 text-[11px] font-semibold tracking-wide text-[#365cff] sm:mb-3 sm:py-1 sm:text-[12px]">
+                            {dimName}
+                          </span>
+                          <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
+                            <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
+                              {number}
+                            </p>
+                            <p className="font-sans text-[13px] font-semibold text-[#4e6bff] italic sm:mt-1 sm:text-[15px]">
+                              {name}
+                            </p>
+                          </div>
+                          <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
+                            {text}
+                          </p>
+                          <ScaleButtons onChange={answerQuestion} language={language} />
+                          {currentQuestion > 0 && (
+                            <button
+                              type="button"
+                              onClick={goBack}
+                              className="quiz-back-link mt-3 sm:mt-6"
+                            >
+                              {UI.quiz[language].back}
+                            </button>
+                          )}
+                        </>
+                      );
+                    }
+
+                    if (isRoleQuiz && roleQuestions) {
+                      const q = roleQuestions[currentQuestion]!;
+                      const { number, name } = splitLevelLabel(q.levelLabel[language]);
+                      const text = q.statement[language];
+                      return (
+                        <>
+                          <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
+                            <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
+                              {number}
+                            </p>
+                            <p className="font-sans text-[13px] font-semibold text-[#4e6bff] italic sm:mt-1 sm:text-[15px]">
+                              {name}
+                            </p>
+                          </div>
+                          <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
+                            {text}
+                          </p>
+                          <ScaleButtons onChange={answerQuestion} language={language} />
+                          {currentQuestion > 0 && (
+                            <button
+                              type="button"
+                              onClick={goBack}
+                              className="quiz-back-link mt-3 sm:mt-6"
+                            >
+                              {UI.quiz[language].back}
+                            </button>
+                          )}
+                        </>
+                      );
+                    }
+
+                    const q = QUESTIONS[currentQuestion]!;
+                    const full = LEVEL_LABELS[q.level]![language];
+                    const { number, name } = splitLevelLabel(full);
+                    const text = language === 'es' ? q.es : q.en;
                     return (
                       <>
-                        <span className="mb-2 sm:mb-3 inline-block rounded-full bg-[#eef1ff] px-3 py-0.5 sm:py-1 text-[11px] sm:text-[12px] font-semibold tracking-wide text-[#365cff]">
-                          {dimName}
-                        </span>
                         <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
-                          <p className="font-serif text-[20px] font-bold leading-tight text-[#1f36a9] sm:text-[28px]">
+                          <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
                             {number}
                           </p>
-                          <p className="font-sans text-[13px] font-semibold italic text-[#4e6bff] sm:mt-1 sm:text-[15px]">
+                          <p className="font-sans text-[13px] font-semibold text-[#4e6bff] italic sm:mt-1 sm:text-[15px]">
                             {name}
                           </p>
                         </div>
-                        <p className="mt-3 font-sans text-[14px] font-semibold leading-[1.6] text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
+                        <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
                           {text}
                         </p>
-                        <ScaleButtons
-                          onChange={answerQuestion}
-                          language={language}
-                        />
+                        <div className="mt-6 flex flex-wrap justify-center gap-[14px] sm:mt-10">
+                          <button
+                            type="button"
+                            onClick={() => answerQuestion(1)}
+                            className="glass-answer-btn glass-answer-yes"
+                          >
+                            {UI.quiz[language].yes}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => answerQuestion(0)}
+                            className="glass-answer-btn glass-answer-no"
+                          >
+                            {UI.quiz[language].no}
+                          </button>
+                        </div>
                         {currentQuestion > 0 && (
                           <button
                             type="button"
@@ -368,94 +420,14 @@ export default function QuizApp() {
                         )}
                       </>
                     );
-                  }
-
-                  if (isRoleQuiz && roleQuestions) {
-                    const q = roleQuestions[currentQuestion]!;
-                    const { number, name } = splitLevelLabel(q.levelLabel[language]);
-                    const text = q.statement[language];
-                    return (
-                      <>
-                        <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
-                          <p className="font-serif text-[20px] font-bold leading-tight text-[#1f36a9] sm:text-[28px]">
-                            {number}
-                          </p>
-                          <p className="font-sans text-[13px] font-semibold italic text-[#4e6bff] sm:mt-1 sm:text-[15px]">
-                            {name}
-                          </p>
-                        </div>
-                        <p className="mt-3 font-sans text-[14px] font-semibold leading-[1.6] text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
-                          {text}
-                        </p>
-                        <ScaleButtons
-                          onChange={answerQuestion}
-                          language={language}
-                        />
-                        {currentQuestion > 0 && (
-                          <button
-                            type="button"
-                            onClick={goBack}
-                            className="quiz-back-link mt-3 sm:mt-6"
-                          >
-                            {UI.quiz[language].back}
-                          </button>
-                        )}
-                      </>
-                    );
-                  }
-
-                  const q = QUESTIONS[currentQuestion]!;
-                  const full = LEVEL_LABELS[q.level]![language];
-                  const { number, name } = splitLevelLabel(full);
-                  const text = language === "es" ? q.es : q.en;
-                  return (
-                    <>
-                      <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
-                        <p className="font-serif text-[20px] font-bold leading-tight text-[#1f36a9] sm:text-[28px]">
-                          {number}
-                        </p>
-                        <p className="font-sans text-[13px] font-semibold italic text-[#4e6bff] sm:mt-1 sm:text-[15px]">
-                          {name}
-                        </p>
-                      </div>
-                      <p className="mt-3 font-sans text-[14px] font-semibold leading-[1.6] text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
-                        {text}
-                      </p>
-                      <div className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-[14px]">
-                        <button
-                          type="button"
-                          onClick={() => answerQuestion(1)}
-                          className="glass-answer-btn glass-answer-yes"
-                        >
-                          {UI.quiz[language].yes}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => answerQuestion(0)}
-                          className="glass-answer-btn glass-answer-no"
-                        >
-                          {UI.quiz[language].no}
-                        </button>
-                      </div>
-                      {currentQuestion > 0 && (
-                        <button
-                          type="button"
-                          onClick={goBack}
-                          className="quiz-back-link mt-3 sm:mt-6"
-                        >
-                          {UI.quiz[language].back}
-                        </button>
-                      )}
-                    </>
-                  );
-                })()}
+                  })()}
+                </div>
               </div>
-            </div>
             </div>
           </div>
         )}
 
-        {screen === "email" && language && (
+        {screen === 'email' && language && (
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="glass-quiz-card w-full max-w-[600px] px-5 py-6 sm:px-10 sm:py-11">
               <h2 className="font-sans text-2xl font-bold text-[#1f36a9]">
@@ -476,9 +448,7 @@ export default function QuizApp() {
                 className="glass-input mt-6 w-full"
               />
               {emailError && (
-                <p className="mt-2 text-sm text-red-600">
-                  {UI.email[language].invalidEmail}
-                </p>
+                <p className="mt-2 text-sm text-red-600">{UI.email[language].invalidEmail}</p>
               )}
               <button
                 type="button"
@@ -501,21 +471,21 @@ export default function QuizApp() {
           </div>
         )}
 
-        {screen === "results" && language && (
+        {screen === 'results' && language && (
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="w-full max-w-[600px] rounded-2xl bg-white px-6 py-8 text-left sm:px-10 sm:py-11">
               <div className="border-b border-[#eee] pb-8 text-center">
                 <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
                   {resultLevelNumber}
                 </p>
-                <p className="mt-2 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
+                <p className="mt-2 font-sans text-[15px] font-semibold text-[#4e6bff] italic">
                   {resultLevelName}
                 </p>
                 {isRoleQuiz && selectedRole && (
                   <p className="mt-2 font-sans text-xs tracking-[0.08em] text-[#8a9ff0]">
                     {ROLE_NAMES[selectedRole][language]}
-                    {" · "}
-                    {language === "es" ? "Escala de confianza" : "Confidence Scale"}
+                    {' · '}
+                    {language === 'es' ? 'Escala de confianza' : 'Confidence Scale'}
                   </p>
                 )}
               </div>
@@ -524,9 +494,9 @@ export default function QuizApp() {
                 <div className="mb-3 flex items-center justify-between text-[15px]">
                   <span className="text-[#333]">
                     {isRoleQuiz
-                      ? language === "es"
-                        ? "Puntuación total"
-                        : "Total score"
+                      ? language === 'es'
+                        ? 'Puntuación total'
+                        : 'Total score'
                       : UI.results[language].affirmativeLabel}
                   </span>
                   <span className="font-bold text-[#111]">
@@ -539,10 +509,7 @@ export default function QuizApp() {
                   <div
                     className="h-[5px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
                     style={{
-                      width:
-                        maxScore > 0
-                          ? `${(score / maxScore) * 100}%`
-                          : "0%",
+                      width: maxScore > 0 ? `${(score / maxScore) * 100}%` : '0%',
                     }}
                   />
                 </div>
@@ -552,9 +519,7 @@ export default function QuizApp() {
                 <div className="avg-score-card">
                   <div className="mb-2 flex items-center justify-between text-[14px]">
                     <span className="text-[#555]">
-                      {language === "es"
-                        ? "Promedio por pregunta"
-                        : "Average score per question"}
+                      {language === 'es' ? 'Promedio por pregunta' : 'Average score per question'}
                     </span>
                     <span className="font-bold text-[#111]">
                       {(score / totalQuestions).toFixed(1)} / 4.0
@@ -577,17 +542,13 @@ export default function QuizApp() {
               {isCompanyQuiz && dimensionScores && language && (
                 <div className="mt-6 rounded-[10px] border border-[#d8defa] px-5 py-5">
                   <p className="mb-4 font-sans text-sm font-bold text-[#1f36a9]">
-                    {language === "es"
-                      ? "Puntuación por dimensión"
-                      : "Score by dimension"}
+                    {language === 'es' ? 'Puntuación por dimensión' : 'Score by dimension'}
                   </p>
                   <div className="space-y-3">
                     {dimensionScores.map(({ dimId, score: ds, max: dm }) => (
                       <div key={dimId}>
                         <div className="mb-1 flex items-center justify-between text-[13px]">
-                          <span className="text-[#444]">
-                            {DIMENSION_NAMES[dimId][language]}
-                          </span>
+                          <span className="text-[#444]">{DIMENSION_NAMES[dimId][language]}</span>
                           <span className="font-semibold text-[#111]">
                             {ds}/{dm}
                             <span className="ml-1 text-[#999]">
@@ -599,13 +560,13 @@ export default function QuizApp() {
                           <div
                             className="h-[4px] rounded-full transition-[width] duration-[350ms] ease-out"
                             style={{
-                              width: dm > 0 ? `${(ds / dm) * 100}%` : "0%",
+                              width: dm > 0 ? `${(ds / dm) * 100}%` : '0%',
                               backgroundColor:
                                 dm > 0 && ds / dm >= 0.7
-                                  ? "#22c55e"
+                                  ? '#22c55e'
                                   : dm > 0 && ds / dm >= 0.4
-                                    ? "#f59e0b"
-                                    : "#ef4444",
+                                    ? '#f59e0b'
+                                    : '#ef4444',
                             }}
                           />
                         </div>
@@ -648,7 +609,7 @@ export default function QuizApp() {
           </div>
         )}
       </div>
-      <FomoCounter language={language ?? "en"} />
+      <FomoCounter language={language ?? 'en'} />
     </div>
   );
 }

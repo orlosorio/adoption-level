@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 interface PixelGridProps {
   pixelSize?: number;
   gap?: number;
-  colorMode?: "palette" | "hsl" | "brand";
+  colorMode?: 'palette' | 'hsl' | 'brand';
   backgroundColor?: string;
   opacity?: number;
   interactive?: boolean;
@@ -20,24 +20,24 @@ interface Pixel {
   speed: number;
 }
 
-const MINT = ["#4ade80", "#6ee7a0", "#86efb4", "#a7f3c8"];
-const ORANGE = ["#fb923c", "#f97316", "#fdba74", "#fed7aa"];
-const WHITE = ["#ffffff", "#f0f0f0", "#e0e0e0", "#cccccc"];
-const GREEN = ["#4ade80", "#22c55e", "#86efac", "#bbf7d0"];
-const MUTED = ["rgba(255,255,255,0.15)", "rgba(255,255,255,0.08)"];
+const MINT = ['#4ade80', '#6ee7a0', '#86efb4', '#a7f3c8'];
+const ORANGE = ['#fb923c', '#f97316', '#fdba74', '#fed7aa'];
+const WHITE = ['#ffffff', '#f0f0f0', '#e0e0e0', '#cccccc'];
+const GREEN = ['#4ade80', '#22c55e', '#86efac', '#bbf7d0'];
+const MUTED = ['rgba(255,255,255,0.15)', 'rgba(255,255,255,0.08)'];
 
 function pick(arr: string[]) {
   return arr[Math.floor(Math.random() * arr.length)]!;
 }
 
-function getColor(mode: PixelGridProps["colorMode"]): string {
-  if (mode === "hsl") {
+function getColor(mode: PixelGridProps['colorMode']): string {
+  if (mode === 'hsl') {
     const h = Math.floor(Math.random() * 360);
     const s = 60 + Math.floor(Math.random() * 40);
     const l = 50 + Math.floor(Math.random() * 30);
     return `hsl(${h}, ${s}%, ${l}%)`;
   }
-  if (mode === "brand") {
+  if (mode === 'brand') {
     const r = Math.random();
     if (r < 0.5) return pick(GREEN);
     if (r < 0.8) return pick(WHITE);
@@ -52,8 +52,8 @@ function getColor(mode: PixelGridProps["colorMode"]): string {
 export default function PixelGrid({
   pixelSize = 4,
   gap = 6,
-  colorMode = "palette",
-  backgroundColor = "#080808",
+  colorMode = 'palette',
+  backgroundColor = '#080808',
   opacity = 1,
   interactive = true,
 }: PixelGridProps) {
@@ -62,17 +62,14 @@ export default function PixelGrid({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const CELL = pixelSize + gap;
     let pixels: Pixel[] = [];
     let animFrameId: number;
     let stopped = false;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isMobile = window.innerWidth < 640;
     const effectivePixelSize = isMobile ? Math.max(3, pixelSize - 1) : pixelSize;
     const effectiveGap = isMobile ? gap + 2 : gap;
@@ -162,17 +159,17 @@ export default function PixelGrid({
       animate();
     }
 
-    window.addEventListener("resize", debouncedResize);
+    window.addEventListener('resize', debouncedResize);
     if (interactive && !prefersReduced) {
-      window.addEventListener("click", handleClick);
+      window.addEventListener('click', handleClick);
     }
 
     return () => {
       stopped = true;
       cancelAnimationFrame(animFrameId);
       clearTimeout(resizeTimer);
-      window.removeEventListener("resize", debouncedResize);
-      window.removeEventListener("click", handleClick);
+      window.removeEventListener('resize', debouncedResize);
+      window.removeEventListener('click', handleClick);
     };
   }, [pixelSize, gap, colorMode, interactive]);
 
@@ -180,13 +177,13 @@ export default function PixelGrid({
     <canvas
       ref={canvasRef}
       style={{
-        position: "fixed",
+        position: 'fixed',
         top: 0,
         left: 0,
-        width: "100%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
         zIndex: 0,
-        pointerEvents: "none",
+        pointerEvents: 'none',
         backgroundColor,
         opacity,
       }}

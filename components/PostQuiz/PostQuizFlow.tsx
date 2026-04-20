@@ -1,29 +1,24 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
-import type { Language } from "@/lib/content";
-import { UI } from "@/lib/content";
-import type { BenchmarkResult } from "@/lib/benchmarkMock";
-import { computeMockBenchmark } from "@/lib/benchmarkMock";
-import { COUNTRIES } from "@/lib/demographics";
-import { COMPANY_TYPES_V2 } from "@/lib/companyTypesV2";
-import { INDUSTRIES } from "@/lib/industries";
-import ValuePropScreen from "./ValuePropScreen";
-import PostQuizEmailScreen from "./PostQuizEmailScreen";
-import DemographicsScreen, { type DemographicsData } from "./DemographicsScreen";
-import BenchmarkPanel from "./BenchmarkPanel";
-import BenchmarkTeaser from "./BenchmarkTeaser";
+import { useCallback, useState } from 'react';
+import type { Language } from '@/lib/content';
+import { UI } from '@/lib/content';
+import type { BenchmarkResult } from '@/lib/benchmarkMock';
+import { computeMockBenchmark } from '@/lib/benchmarkMock';
+import { COUNTRIES } from '@/lib/demographics';
+import { COMPANY_TYPES_V2 } from '@/lib/companyTypesV2';
+import { INDUSTRIES } from '@/lib/industries';
+import ValuePropScreen from './ValuePropScreen';
+import PostQuizEmailScreen from './PostQuizEmailScreen';
+import DemographicsScreen, { type DemographicsData } from './DemographicsScreen';
+import BenchmarkPanel from './BenchmarkPanel';
+import BenchmarkTeaser from './BenchmarkTeaser';
 
-type PostQuizScreen =
-  | "value-prop"
-  | "email"
-  | "demographics"
-  | "results"
-  | "calculating";
+type PostQuizScreen = 'value-prop' | 'email' | 'demographics' | 'results' | 'calculating';
 
 interface PostQuizFlowProps {
   language: Language;
-  assessmentType: "general" | "role" | "company";
+  assessmentType: 'general' | 'role' | 'company';
   roleId?: string | null;
   score: number;
   maxScore: number;
@@ -46,19 +41,19 @@ export default function PostQuizFlow({
   onRestart,
   onEmailSubmit,
 }: PostQuizFlowProps) {
-  const [screen, setScreen] = useState<PostQuizScreen>("value-prop");
-  const [email, setEmail] = useState<string | null>(null);
+  const [screen, setScreen] = useState<PostQuizScreen>('value-prop');
+  const [, setEmail] = useState<string | null>(null);
   const [demographics, setDemographics] = useState<DemographicsData | null>(null);
   const [benchmarkData, setBenchmarkData] = useState<BenchmarkResult | null>(null);
   const [hasCompletedDemographics, setHasCompletedDemographics] = useState(false);
 
   const changeScreen = useCallback((next: PostQuizScreen) => {
     setScreen(next);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleSkipToResults = useCallback(() => {
-    changeScreen("results");
+    changeScreen('results');
   }, [changeScreen]);
 
   const handleEmailSubmit = useCallback(
@@ -80,9 +75,19 @@ export default function PostQuizFlow({
           /* advance regardless */
         }
       }
-      changeScreen("demographics");
+      changeScreen('demographics');
     },
-    [language, assessmentType, roleId, score, maxScore, totalQuestions, resultLevel, onEmailSubmit, changeScreen],
+    [
+      language,
+      assessmentType,
+      roleId,
+      score,
+      maxScore,
+      totalQuestions,
+      resultLevel,
+      onEmailSubmit,
+      changeScreen,
+    ],
   );
 
   const handleDemographicsSubmit = useCallback(
@@ -98,22 +103,22 @@ export default function PostQuizFlow({
         data.industry,
       );
 
-      changeScreen("calculating");
+      changeScreen('calculating');
 
       setTimeout(() => {
         setBenchmarkData(benchmark);
-        changeScreen("results");
+        changeScreen('results');
       }, 1500);
     },
     [score, maxScore, changeScreen],
   );
 
   const handleUnlockFromResults = useCallback(() => {
-    changeScreen("email");
+    changeScreen('email');
   }, [changeScreen]);
 
   const getLabels = () => {
-    if (!demographics) return { country: "", companyType: "", industry: "" };
+    if (!demographics) return { country: '', companyType: '', industry: '' };
     const countryEntry = COUNTRIES.find((c) => c.value === demographics.country);
     const companyEntry = COMPANY_TYPES_V2.find((c) => c.id === demographics.companyType);
     const industryEntry = INDUSTRIES.find((i) => i.id === demographics.industry);
@@ -124,17 +129,17 @@ export default function PostQuizFlow({
     };
   };
 
-  if (screen === "value-prop") {
+  if (screen === 'value-prop') {
     return (
       <ValuePropScreen
         language={language}
-        onContinue={() => changeScreen("email")}
+        onContinue={() => changeScreen('email')}
         onSkip={handleSkipToResults}
       />
     );
   }
 
-  if (screen === "email") {
+  if (screen === 'email') {
     return (
       <PostQuizEmailScreen
         language={language}
@@ -146,7 +151,7 @@ export default function PostQuizFlow({
     );
   }
 
-  if (screen === "demographics") {
+  if (screen === 'demographics') {
     return (
       <DemographicsScreen
         language={language}
@@ -158,7 +163,7 @@ export default function PostQuizFlow({
     );
   }
 
-  if (screen === "calculating") {
+  if (screen === 'calculating') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="text-center">
@@ -181,11 +186,7 @@ export default function PostQuizFlow({
         {/* Benchmark section */}
         {hasCompletedDemographics && benchmarkData ? (
           <div className="bench-reveal mt-4">
-            <BenchmarkPanel
-              language={language}
-              data={benchmarkData}
-              labels={getLabels()}
-            />
+            <BenchmarkPanel language={language} data={benchmarkData} labels={getLabels()} />
           </div>
         ) : (
           <div className="mt-4">

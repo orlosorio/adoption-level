@@ -1,13 +1,7 @@
-interface AuthorSignoffProps {
-  lang: "en" | "es";
-}
-
-export default function AuthorSignoff({ lang }: AuthorSignoffProps) {
+export default function AuthorSignoff() {
   return (
     <div className="about-signoff">
-      <p className="about-signoff-name">
-        &mdash; Orlando Osorio &amp; Alberto Sadde
-      </p>
+      <p className="about-signoff-name">&mdash; Orlando Osorio &amp; Alberto Sadde</p>
       <div className="about-signoff-links">
         <a
           href="https://x.com/orlandosorio_"
