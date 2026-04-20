@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import type { Language } from "@/lib/content";
-import type { RoleId } from "@/lib/roles";
-import { isValidRoleId, ROLE_META, VALID_ROLE_IDS } from "@/lib/routing";
-import RoleQuiz from "@/components/RoleQuiz";
+import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import type { Language } from '@/lib/content';
+import type { RoleId } from '@/lib/roles';
+import { isValidRoleId, ROLE_META, VALID_ROLE_IDS } from '@/lib/routing';
+import RoleQuiz from '@/components/RoleQuiz';
 
 export function generateStaticParams() {
   return VALID_ROLE_IDS.map((id) => ({ roleId: id }));
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { roleId } = await params;
   if (!isValidRoleId(roleId)) {
-    return { title: "Invalid Role | Accionables" };
+    return { title: 'Invalid Role | Accionables' };
   }
   const meta = ROLE_META[roleId];
   return {
@@ -40,14 +40,11 @@ export default async function RolePage({
   const { roleId } = await params;
 
   if (!isValidRoleId(roleId)) {
-    redirect("/assessment?error=invalid-role");
+    redirect('/assessment?error=invalid-role');
   }
 
   const { lang } = await searchParams;
-  const initialLanguage: Language | null =
-    lang === "en" ? "en" : lang === "es" ? "es" : null;
+  const initialLanguage: Language | null = lang === 'en' ? 'en' : lang === 'es' ? 'es' : null;
 
-  return (
-    <RoleQuiz roleId={roleId as RoleId} initialLanguage={initialLanguage} />
-  );
+  return <RoleQuiz roleId={roleId as RoleId} initialLanguage={initialLanguage} />;
 }

@@ -1,32 +1,31 @@
-import type { RoleId } from "@/lib/roles";
-import { ROLE_NAMES } from "@/lib/roles";
+import type { RoleId } from '@/lib/roles';
+import { ROLE_NAMES } from '@/lib/roles';
 
 export const VALID_ROLE_IDS: RoleId[] = [
-  "ux-ui-design",
-  "webflow-developer",
-  "seo-specialist",
-  "growth-marketing",
-  "full-stack-developer",
-  "product-designer",
-  "social-media",
-  "writers-editors",
-  "paid-marketing",
-  "data-analytics",
-  "product-manager",
-  "sales-bdr",
-  "customer-success",
-  "video-editor",
-  "founder-executive",
-  "hr-people-ops",
-  "finance-accounting",
+  'ux-ui-design',
+  'webflow-developer',
+  'seo-specialist',
+  'growth-marketing',
+  'full-stack-developer',
+  'product-designer',
+  'social-media',
+  'writers-editors',
+  'paid-marketing',
+  'data-analytics',
+  'product-manager',
+  'sales-bdr',
+  'customer-success',
+  'video-editor',
+  'founder-executive',
+  'hr-people-ops',
+  'finance-accounting',
 ];
 
 export function isValidRoleId(id: string): id is RoleId {
   return VALID_ROLE_IDS.includes(id as RoleId);
 }
 
-const UUID_REGEX =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export function isValidUUID(str: string): boolean {
   return UUID_REGEX.test(str);
@@ -45,7 +44,4 @@ export const ROLE_META: Record<
       descEs: `Descubre tu nivel de adopción de IA como ${ROLE_NAMES[id].es}. 33 preguntas, escala de confianza.`,
     },
   ]),
-) as Record<
-  RoleId,
-  { titleEn: string; titleEs: string; descEn: string; descEs: string }
->;
+) as Record<RoleId, { titleEn: string; titleEs: string; descEn: string; descEs: string }>;

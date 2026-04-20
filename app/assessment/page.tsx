@@ -1,4 +1,4 @@
-import AssessmentEntry from "@/components/AssessmentEntry";
+import AssessmentEntry from '@/components/AssessmentEntry';
 
 export default async function AssessmentPage({
   searchParams,

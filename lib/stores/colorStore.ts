@@ -1,16 +1,16 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 const PALETTE = [
-  "#365cff",
-  "#4e6bff",
-  "#8a9ff0",
-  "#1f36a9",
-  "rgba(54,92,255,0.3)",
-  "rgba(54,92,255,0.15)",
-  "#4ade80",
-  "rgba(255,255,255,0.18)",
-  "rgba(255,255,255,0.08)",
-  "#d8defa",
+  '#365cff',
+  '#4e6bff',
+  '#8a9ff0',
+  '#1f36a9',
+  'rgba(54,92,255,0.3)',
+  'rgba(54,92,255,0.15)',
+  '#4ade80',
+  'rgba(255,255,255,0.18)',
+  'rgba(255,255,255,0.08)',
+  '#d8defa',
 ];
 
 function randomFromPalette(): string {
@@ -24,7 +24,7 @@ interface ColorStore {
 }
 
 export const useColorStore = create<ColorStore>((set) => ({
-  background: "#365cff",
+  background: '#365cff',
   setRandomColor: () => set({ background: randomFromPalette() }),
   setColor: (color: string) => set({ background: color }),
 }));

@@ -1,34 +1,26 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  type Language,
-  LEVEL_LABELS,
-  UI,
-} from "@/lib/content";
-import { getRoleResultLevel } from "@/lib/scoring";
-import { BEEHIIV_ENDPOINT } from "@/lib/config";
-import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from "@/lib/roles";
-import { ROLE_RESULT_COPY } from "@/lib/roleResults";
-import {
-  clearPersistedState,
-  loadPersistedState,
-  savePersistedState,
-} from "@/lib/sessionState";
-import ScaleButtons from "@/components/ScaleButtons";
-import HeroAI from "@/components/HeroAI";
-import ToolsMarquee from "@/components/ToolsMarquee";
-import PostQuizFlow from "@/components/PostQuiz/PostQuizFlow";
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { type Language, LEVEL_LABELS, UI } from '@/lib/content';
+import { getRoleResultLevel } from '@/lib/scoring';
+import { BEEHIIV_ENDPOINT } from '@/lib/config';
+import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from '@/lib/roles';
+import { ROLE_RESULT_COPY } from '@/lib/roleResults';
+import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
+import ScaleButtons from '@/components/ScaleButtons';
+import HeroAI from '@/components/HeroAI';
+import ToolsMarquee from '@/components/ToolsMarquee';
+import PostQuizFlow from '@/components/PostQuiz/PostQuizFlow';
 
-type Screen = "language" | "quiz" | "post-quiz";
+type Screen = 'language' | 'quiz' | 'post-quiz';
 
 function splitLevelLabel(label: string): { number: string; name: string } {
-  const parts = label.split(" — ");
+  const parts = label.split(' — ');
   if (parts.length >= 2) {
-    return { number: parts[0]!, name: parts.slice(1).join(" — ") };
+    return { number: parts[0]!, name: parts.slice(1).join(' — ') };
   }
-  return { number: label, name: "" };
+  return { number: label, name: '' };
 }
 
 export default function RoleQuiz({
@@ -42,9 +34,7 @@ export default function RoleQuiz({
   const [language, setLanguage] = useState<Language | null>(initialLanguage);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
-  const [screen, setScreen] = useState<Screen>(
-    initialLanguage ? "quiz" : "language",
-  );
+  const [screen, setScreen] = useState<Screen>(initialLanguage ? 'quiz' : 'language');
   const [hydrated, setHydrated] = useState(false);
 
   const roleAssessment = ROLE_ASSESSMENTS[roleId];
@@ -55,7 +45,7 @@ export default function RoleQuiz({
     const persisted = loadPersistedState();
     if (
       persisted &&
-      persisted.assessmentType === "role" &&
+      persisted.assessmentType === 'role' &&
       persisted.roleId === roleId &&
       persisted.answers.length > 0 &&
       persisted.answers.length < totalQuestions
@@ -63,21 +53,21 @@ export default function RoleQuiz({
       setLanguage(persisted.language);
       setCurrentQuestion(persisted.currentQuestion);
       setAnswers(persisted.answers);
-      setScreen("quiz");
+      setScreen('quiz');
     }
     setHydrated(true);
   }, [roleId, totalQuestions]);
 
   const changeScreen = useCallback((next: Screen) => {
     setScreen(next);
-    window.history.replaceState(null, "", window.location.href);
+    window.history.replaceState(null, '', window.location.href);
   }, []);
 
   const persist = useCallback(
     (q: number, a: number[]) => {
       if (!language) return;
       savePersistedState({
-        assessmentType: "role",
+        assessmentType: 'role',
         roleId,
         language,
         currentQuestion: q,
@@ -91,7 +81,7 @@ export default function RoleQuiz({
     setLanguage(lang);
     setCurrentQuestion(0);
     setAnswers([]);
-    changeScreen("quiz");
+    changeScreen('quiz');
   };
 
   const answerQuestion = useCallback(
@@ -102,11 +92,11 @@ export default function RoleQuiz({
       if (nextQ >= totalQuestions) {
         persist(nextQ, nextAnswers);
         clearPersistedState();
-        setScreen("post-quiz");
+        setScreen('post-quiz');
       } else {
         setCurrentQuestion(nextQ);
         persist(nextQ, nextAnswers);
-        window.history.replaceState(null, "", window.location.href);
+        window.history.replaceState(null, '', window.location.href);
       }
     },
     [answers, currentQuestion, totalQuestions, persist],
@@ -123,31 +113,26 @@ export default function RoleQuiz({
 
   const score = answers.reduce((sum, v) => sum + v, 0);
   const maxScore = totalQuestions * 4;
-  const resultLevel =
-    answers.length > 0 ? getRoleResultLevel(score, maxScore) : 0;
-  const resultLabel = language != null ? LEVEL_LABELS[resultLevel]![language] : "";
-  const { number: resultLevelNumber, name: resultLevelName } =
-    splitLevelLabel(resultLabel);
+  const resultLevel = answers.length > 0 ? getRoleResultLevel(score, maxScore) : 0;
+  const resultLabel = language != null ? LEVEL_LABELS[resultLevel]![language] : '';
+  const { number: resultLevelNumber, name: resultLevelName } = splitLevelLabel(resultLabel);
 
-  const quizProgressPct =
-    totalQuestions > 0
-      ? ((currentQuestion + 1) / totalQuestions) * 100
-      : 0;
+  const quizProgressPct = totalQuestions > 0 ? ((currentQuestion + 1) / totalQuestions) * 100 : 0;
 
   const restart = () => {
     clearPersistedState();
-    router.push("/assessment");
+    router.push('/assessment');
   };
 
   const handleEmailSubmit = async (payload: Record<string, unknown>) => {
-    if (BEEHIIV_ENDPOINT && BEEHIIV_ENDPOINT !== "YOUR_BEEHIIV_ENDPOINT") {
+    if (BEEHIIV_ENDPOINT && BEEHIIV_ENDPOINT !== 'YOUR_BEEHIIV_ENDPOINT') {
       await fetch(BEEHIIV_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...payload,
           roleId,
-          roleName: language ? ROLE_NAMES[roleId][language] : "",
+          roleName: language ? ROLE_NAMES[roleId][language] : '',
         }),
       });
     }
@@ -161,20 +146,20 @@ export default function RoleQuiz({
         <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
           {resultLevelNumber}
         </p>
-        <p className="mt-2 font-sans text-[15px] font-semibold italic text-[#4e6bff]">
+        <p className="mt-2 font-sans text-[15px] font-semibold text-[#4e6bff] italic">
           {resultLevelName}
         </p>
         <p className="mt-2 font-sans text-xs tracking-[0.08em] text-[#8a9ff0]">
           {ROLE_NAMES[roleId][language]}
-          {" · "}
-          {language === "es" ? "Escala de confianza" : "Confidence Scale"}
+          {' · '}
+          {language === 'es' ? 'Escala de confianza' : 'Confidence Scale'}
         </p>
       </div>
 
       <div className="mt-8 rounded-[10px] bg-[#eef1ff] px-5 py-4">
         <div className="mb-3 flex items-center justify-between text-[15px]">
           <span className="text-[#333]">
-            {language === "es" ? "Puntuación total" : "Total score"}
+            {language === 'es' ? 'Puntuación total' : 'Total score'}
           </span>
           <span className="font-bold text-[#111]">
             {score} / {maxScore}
@@ -184,7 +169,7 @@ export default function RoleQuiz({
           <div
             className="h-[5px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
             style={{
-              width: maxScore > 0 ? `${(score / maxScore) * 100}%` : "0%",
+              width: maxScore > 0 ? `${(score / maxScore) * 100}%` : '0%',
             }}
           />
         </div>
@@ -193,11 +178,9 @@ export default function RoleQuiz({
       <div className="avg-score-card">
         <div className="mb-2 flex items-center justify-between text-[14px]">
           <span className="text-[#555]">
-            {language === "es" ? "Promedio por pregunta" : "Average score per question"}
+            {language === 'es' ? 'Promedio por pregunta' : 'Average score per question'}
           </span>
-          <span className="font-bold text-[#111]">
-            {(score / totalQuestions).toFixed(1)} / 4.0
-          </span>
+          <span className="font-bold text-[#111]">{(score / totalQuestions).toFixed(1)} / 4.0</span>
         </div>
         <div className="h-[4px] w-full rounded-full bg-[#d7ddfb]">
           <div
@@ -227,7 +210,7 @@ export default function RoleQuiz({
 
   return (
     <div className="quiz-in-progress contents">
-      {screen === "language" && (
+      {screen === 'language' && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px] text-center">
             <h1 className="hero-title mb-[clamp(8px,1.5vh,20px)]">
@@ -243,18 +226,10 @@ export default function RoleQuiz({
               33 questions &middot; ~4 min &middot; Confidence scale
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-5">
-              <button
-                type="button"
-                onClick={() => startQuiz("en")}
-                className="glass-cta"
-              >
+              <button type="button" onClick={() => startQuiz('en')} className="glass-cta">
                 <span className="glass-cta-label">{UI.language.en}</span>
               </button>
-              <button
-                type="button"
-                onClick={() => startQuiz("es")}
-                className="glass-cta"
-              >
+              <button type="button" onClick={() => startQuiz('es')} className="glass-cta">
                 <span className="glass-cta-label">{UI.language.es}</span>
               </button>
             </div>
@@ -265,22 +240,13 @@ export default function RoleQuiz({
         </div>
       )}
 
-      {screen === "quiz" && language && (
+      {screen === 'quiz' && language && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px]">
-            <header className="mb-3 sm:mb-5 w-full shrink-0">
-              <div className="mb-1.5 sm:mb-2 flex flex-wrap items-center justify-between gap-2 text-[12px] sm:text-[14px] text-[#365cff]">
-                <span>
-                  {UI.quiz[language].levelOf(
-                    roleQuestions[currentQuestion]!.level + 1,
-                  )}
-                </span>
-                <span>
-                  {UI.quiz[language].questionOf(
-                    currentQuestion + 1,
-                    totalQuestions,
-                  )}
-                </span>
+            <header className="mb-3 w-full shrink-0 sm:mb-5">
+              <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#365cff] sm:mb-2 sm:text-[14px]">
+                <span>{UI.quiz[language].levelOf(roleQuestions[currentQuestion]!.level + 1)}</span>
+                <span>{UI.quiz[language].questionOf(currentQuestion + 1, totalQuestions)}</span>
               </div>
               <div
                 className="h-1 w-full rounded-sm bg-[#d8defa]"
@@ -300,27 +266,22 @@ export default function RoleQuiz({
               <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
                 {(() => {
                   const q = roleQuestions[currentQuestion]!;
-                  const { number, name } = splitLevelLabel(
-                    q.levelLabel[language],
-                  );
+                  const { number, name } = splitLevelLabel(q.levelLabel[language]);
                   const text = q.statement[language];
                   return (
                     <>
                       <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
-                        <p className="font-serif text-[20px] font-bold leading-tight text-[#1f36a9] sm:text-[28px]">
+                        <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
                           {number}
                         </p>
-                        <p className="font-sans text-[13px] font-semibold italic text-[#4e6bff]/50 sm:mt-1 sm:text-[15px]">
+                        <p className="font-sans text-[13px] font-semibold text-[#4e6bff]/50 italic sm:mt-1 sm:text-[15px]">
                           {name}
                         </p>
                       </div>
-                      <p className="mt-3 font-sans text-[14px] font-semibold leading-[1.6] text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
+                      <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
                         {text}
                       </p>
-                      <ScaleButtons
-                        onChange={answerQuestion}
-                        language={language}
-                      />
+                      <ScaleButtons onChange={answerQuestion} language={language} />
                       {currentQuestion > 0 && (
                         <button
                           type="button"
@@ -339,7 +300,7 @@ export default function RoleQuiz({
         </div>
       )}
 
-      {screen === "post-quiz" && language && (
+      {screen === 'post-quiz' && language && (
         <PostQuizFlow
           language={language}
           assessmentType="role"

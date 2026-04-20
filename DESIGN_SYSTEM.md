@@ -4,19 +4,19 @@
 
 Three Google Fonts are loaded in `app/layout.tsx`:
 
-| Font               | CSS Variable       | Role                        | Weights        |
-| ------------------ | ------------------ | --------------------------- | -------------- |
-| **Inter**          | `--font-inter`     | Sans-serif (body, UI text)  | Default (variable) |
-| **Playfair Display** | `--font-playfair` | Serif (headlines, display)  | 400, 700       |
-| **Space Mono**     | `--font-mono`      | Monospace (labels, badges)  | 400, 700       |
+| Font                 | CSS Variable      | Role                       | Weights            |
+| -------------------- | ----------------- | -------------------------- | ------------------ |
+| **Inter**            | `--font-inter`    | Sans-serif (body, UI text) | Default (variable) |
+| **Playfair Display** | `--font-playfair` | Serif (headlines, display) | 400, 700           |
+| **Space Mono**       | `--font-mono`     | Monospace (labels, badges) | 400, 700           |
 
 These are mapped to Tailwind theme families in `globals.css`:
 
 ```css
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-mono), ui-monospace, "SF Mono", "Cascadia Code", monospace;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-mono), ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
 }
 ```
 
@@ -32,28 +32,28 @@ These are mapped to Tailwind theme families in `globals.css`:
 
 ### CSS Custom Properties (`:root`)
 
-| Token          | Hex       | Usage                                      |
-| -------------- | --------- | ------------------------------------------ |
-| `--bg-soft`    | `#f3f4f7` | Page background (light warm gray)          |
-| `--brand-700`  | `#1f36a9` | Deepest brand blue (headlines, CTA text)   |
-| `--brand-600`  | `#365cff` | Primary brand blue (progress bars, links, borders) |
-| `--brand-500`  | `#4e6bff` | Mid brand blue (hover states, glitch accents) |
-| `--brand-300`  | `#8a9ff0` | Light brand blue (secondary accents)       |
+| Token         | Hex       | Usage                                              |
+| ------------- | --------- | -------------------------------------------------- |
+| `--bg-soft`   | `#f3f4f7` | Page background (light warm gray)                  |
+| `--brand-700` | `#1f36a9` | Deepest brand blue (headlines, CTA text)           |
+| `--brand-600` | `#365cff` | Primary brand blue (progress bars, links, borders) |
+| `--brand-500` | `#4e6bff` | Mid brand blue (hover states, glitch accents)      |
+| `--brand-300` | `#8a9ff0` | Light brand blue (secondary accents)               |
 
 ### Additional Colors Used Inline
 
-| Color            | Hex / Value     | Where                                |
-| ---------------- | --------------- | ------------------------------------ |
-| Body text        | `neutral-900`   | Base body color                      |
-| Muted text       | `#4d5b9a`       | Hero subtitle                        |
-| Brand at 80%     | `#365cff` / 80% | Meta text                            |
-| Progress track   | `#d8defa`       | Quiz progress bar background         |
-| Green accent     | `#4ade80`       | "Yes" buttons, score bars, newsletter CTA |
-| Green hover      | `#22c55e`       | "Yes" button hover                   |
-| Dark green text  | `#052e16`       | Text on green buttons                |
-| Green at 70%     | `#4ade80` / 70% | Level name labels                    |
-| Error red        | `red-400`       | Email validation error               |
-| White card       | `#ffffff`       | Quiz question card                   |
+| Color           | Hex / Value     | Where                                     |
+| --------------- | --------------- | ----------------------------------------- |
+| Body text       | `neutral-900`   | Base body color                           |
+| Muted text      | `#4d5b9a`       | Hero subtitle                             |
+| Brand at 80%    | `#365cff` / 80% | Meta text                                 |
+| Progress track  | `#d8defa`       | Quiz progress bar background              |
+| Green accent    | `#4ade80`       | "Yes" buttons, score bars, newsletter CTA |
+| Green hover     | `#22c55e`       | "Yes" button hover                        |
+| Dark green text | `#052e16`       | Text on green buttons                     |
+| Green at 70%    | `#4ade80` / 70% | Level name labels                         |
+| Error red       | `red-400`       | Email validation error                    |
+| White card      | `#ffffff`       | Quiz question card                        |
 
 ### Transparency / Glassmorphism Values
 

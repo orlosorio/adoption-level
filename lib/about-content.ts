@@ -97,7 +97,8 @@ export const ABOUT_CONTENT: Record<'en' | 'es', AboutContent> = {
   es: {
     meta: {
       title: 'Algo grande est\u00e1 pasando. La mayor\u00eda todav\u00eda no lo sabe.',
-      subtitle: 'Por qu\u00e9 construimos esta encuesta global de adopci\u00f3n de IA \u2014 y por qu\u00e9 importa ahora mismo.',
+      subtitle:
+        'Por qu\u00e9 construimos esta encuesta global de adopci\u00f3n de IA \u2014 y por qu\u00e9 importa ahora mismo.',
       author: 'Orlando Osorio & Alberto Sadde',
       authorHandle: '@orlandosorio_ · @aesadde',
       publishedDate: '2026',

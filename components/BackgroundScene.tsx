@@ -1,15 +1,13 @@
-"use client";
+'use client';
 
-import { motion, useReducedMotion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { motion, useReducedMotion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function BackgroundScene() {
   const prefersReduced = useReducedMotion();
   const pathname = usePathname();
 
-  const quizActive =
-    pathname === "/assessment/general" ||
-    pathname.startsWith("/assessment/role/");
+  const quizActive = pathname === '/assessment/general' || pathname.startsWith('/assessment/role/');
 
   const slow = quizActive ? 5 : 1;
 
@@ -21,14 +19,14 @@ export default function BackgroundScene() {
         transition={{
           duration: 120 * slow,
           repeat: Infinity,
-          ease: "linear",
+          ease: 'linear',
         }}
         style={{
-          position: "absolute",
+          position: 'absolute',
           inset: 0,
           zIndex: 0,
-          pointerEvents: "none",
-          overflow: "hidden",
+          pointerEvents: 'none',
+          overflow: 'hidden',
         }}
       >
         <div className="quiz-aurora-layer">
@@ -47,10 +45,10 @@ export default function BackgroundScene() {
           transition={{
             duration: 20 * slow,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: 'preserve-3d',
             width: 42,
             height: 42,
           }}
@@ -70,10 +68,10 @@ export default function BackgroundScene() {
           transition={{
             duration: 28 * slow,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: 'preserve-3d',
             width: 48,
             height: 48,
           }}
@@ -93,10 +91,10 @@ export default function BackgroundScene() {
           transition={{
             duration: 24 * slow,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: 'preserve-3d',
             width: 36,
             height: 36,
           }}

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { Language } from "@/lib/content";
-import type { RoleId } from "@/lib/roles";
-import { ROLE_NAMES } from "@/lib/roles";
+import { useState } from 'react';
+import type { Language } from '@/lib/content';
+import type { RoleId } from '@/lib/roles';
+import { ROLE_NAMES } from '@/lib/roles';
 
 interface RoleSelectorProps {
   language: Language;
@@ -11,33 +11,33 @@ interface RoleSelectorProps {
 }
 
 const ROLE_ORDER: RoleId[] = [
-  "product-manager",
-  "founder-executive",
-  "full-stack-developer",
-  "ux-ui-design",
-  "product-designer",
-  "growth-marketing",
-  "sales-bdr",
-  "customer-success",
-  "data-analytics",
-  "video-editor",
-  "social-media",
-  "writers-editors",
-  "paid-marketing",
-  "hr-people-ops",
-  "finance-accounting",
-  "seo-specialist",
-  "webflow-developer",
+  'product-manager',
+  'founder-executive',
+  'full-stack-developer',
+  'ux-ui-design',
+  'product-designer',
+  'growth-marketing',
+  'sales-bdr',
+  'customer-success',
+  'data-analytics',
+  'video-editor',
+  'social-media',
+  'writers-editors',
+  'paid-marketing',
+  'hr-people-ops',
+  'finance-accounting',
+  'seo-specialist',
+  'webflow-developer',
 ];
 
 const UI_TEXT = {
   es: {
-    heading: "Elige tu rol profesional",
-    start: "Iniciar evaluación →",
+    heading: 'Elige tu rol profesional',
+    start: 'Iniciar evaluación →',
   },
   en: {
-    heading: "Select your professional role",
-    start: "Start Assessment →",
+    heading: 'Select your professional role',
+    start: 'Start Assessment →',
   },
 } as const;
 
@@ -47,7 +47,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[720px] text-center">
-        <h2 className="mb-3 sm:mb-5 font-sans text-sm sm:text-base font-semibold text-[#1f36a9]">
+        <h2 className="mb-3 font-sans text-sm font-semibold text-[#1f36a9] sm:mb-5 sm:text-base">
           {UI_TEXT[language].heading}
         </h2>
 
@@ -61,12 +61,12 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
               aria-pressed={selected === roleId}
               onClick={() => setSelected(roleId)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
+                if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   setSelected(roleId);
                 }
               }}
-              className={`role-card ${selected === roleId ? "role-card-selected" : ""}`}
+              className={`role-card ${selected === roleId ? 'role-card-selected' : ''}`}
             >
               {ROLE_NAMES[roleId][language]}
             </button>
@@ -74,11 +74,11 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
         </div>
 
         <div
-          className="mt-4 sm:mt-6 transition-all duration-300 ease-out"
+          className="mt-4 transition-all duration-300 ease-out sm:mt-6"
           style={{
             opacity: selected ? 1 : 0,
-            transform: selected ? "translateY(0)" : "translateY(8px)",
-            pointerEvents: selected ? "auto" : "none",
+            transform: selected ? 'translateY(0)' : 'translateY(8px)',
+            pointerEvents: selected ? 'auto' : 'none',
           }}
         >
           <button

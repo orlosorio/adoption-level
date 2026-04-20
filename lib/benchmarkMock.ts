@@ -42,7 +42,7 @@ export function computeMockBenchmark(
 
   const clamp = (n: number) => Math.max(12, Math.min(97, n));
 
-  const overallOffset = (hash("overall" + score) % 11) - 5;
+  const overallOffset = (hash('overall' + score) % 11) - 5;
   const countryOffset = (hash(country + score) % 13) - 6;
   const companyOffset = (hash(companyType + score) % 11) - 5;
   const industryOffset = (hash(industry + score) % 15) - 7;

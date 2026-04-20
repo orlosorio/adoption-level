@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -7,18 +7,18 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/assessment/role",
-        destination: "/assessment",
+        source: '/assessment/role',
+        destination: '/assessment',
         permanent: false,
       },
       {
-        source: "/assessment/results",
-        destination: "/assessment",
+        source: '/assessment/results',
+        destination: '/assessment',
         permanent: false,
       },
       {
-        source: "/assessment/results/:path*",
-        destination: "/assessment",
+        source: '/assessment/results/:path*',
+        destination: '/assessment',
         permanent: false,
       },
     ];

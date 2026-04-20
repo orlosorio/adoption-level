@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import type { Language } from "@/lib/content";
-import { UI } from "@/lib/content";
-import type { BenchmarkResult } from "@/lib/benchmarkMock";
+import type { Language } from '@/lib/content';
+import { UI } from '@/lib/content';
+import type { BenchmarkResult } from '@/lib/benchmarkMock';
 
 interface BenchmarkPanelProps {
   language: Language;
@@ -28,14 +28,8 @@ function PercentileBar({
     <div className="bench-section">
       <p className="bench-label">{label}</p>
       <p className="bench-statement">{statement}</p>
-      <div
-        className="bench-track"
-        aria-label={statement}
-      >
-        <div
-          className="bench-fill"
-          style={{ width: `${percentile}%` }}
-        />
+      <div className="bench-track" aria-label={statement}>
+        <div className="bench-fill" style={{ width: `${percentile}%` }} />
       </div>
       <p className="bench-pct">{percentile}%</p>
     </div>
@@ -54,19 +48,15 @@ export default function BenchmarkPanel({
   return (
     <div className="bench-panel">
       <p className="bench-heading">📊 {copy.panelHeading}</p>
-      <p className="bench-respondents">
-        {copy.respondentCount(data.totalRespondents)}
-      </p>
+      <p className="bench-respondents">{copy.respondentCount(data.totalRespondents)}</p>
 
       {!hasEnoughTotal ? (
-        <p className="bench-not-enough italic">
-          {copy.notEnoughData}
-        </p>
+        <p className="bench-not-enough italic">{copy.notEnoughData}</p>
       ) : (
         <>
           <PercentileBar
             label={copy.overallLabel}
-            statement={copy.percentileText(data.overall, "")}
+            statement={copy.percentileText(data.overall, '')}
             percentile={data.overall}
           />
 

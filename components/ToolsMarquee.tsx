@@ -1,10 +1,10 @@
-import type { Language } from "@/lib/content";
-import type { Tool } from "@/lib/tools";
-import { ROW_1, ROW_2 } from "@/lib/tools";
+import type { Language } from '@/lib/content';
+import type { Tool } from '@/lib/tools';
+import { ROW_1, ROW_2 } from '@/lib/tools';
 
 const LABELS = {
-  es: "Las herramientas que están usando los mejores",
-  en: "Tools the best professionals are using",
+  es: 'Las herramientas que están usando los mejores',
+  en: 'Tools the best professionals are using',
 } as const;
 
 function ToolPill({ emoji, name }: Tool) {
@@ -21,7 +21,7 @@ function MarqueeRow({
   direction,
 }: {
   tools: Tool[];
-  direction: "marquee-scroll-left" | "marquee-scroll-right";
+  direction: 'marquee-scroll-left' | 'marquee-scroll-right';
 }) {
   const doubled = [...tools, ...tools];
   return (

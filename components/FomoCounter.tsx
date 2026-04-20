@@ -1,25 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const COPY = {
   es: {
-    live: "EN VIVO",
-    sub1: "de los profesionales usa IA como verdadero experto.",
-    sub2: "¿Eres uno de ellos?",
+    live: 'EN VIVO',
+    sub1: 'de los profesionales usa IA como verdadero experto.',
+    sub2: '¿Eres uno de ellos?',
   },
   en: {
-    live: "LIVE",
-    sub1: "of professionals are using AI at an expert level.",
-    sub2: "Are you one of them?",
+    live: 'LIVE',
+    sub1: 'of professionals are using AI at an expert level.',
+    sub2: 'Are you one of them?',
   },
 } as const;
 
-export default function FomoCounter({
-  language = "en",
-}: {
-  language?: "es" | "en";
-}) {
+export default function FomoCounter({ language = 'en' }: { language?: 'es' | 'en' }) {
   const [ticks, setTicks] = useState(0);
   const copy = COPY[language];
 

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ComponentType } from "react";
-import { useColorStore } from "@/lib/stores/colorStore";
+import { motion, useReducedMotion } from 'framer-motion';
+import type { ComponentType } from 'react';
+import { useColorStore } from '@/lib/stores/colorStore';
 
 interface RandomColorConfig {
-  property?: "background" | "color" | "borderColor";
+  property?: 'background' | 'color' | 'borderColor';
   duration?: number;
   triggerOnClick?: boolean;
   triggerOnHover?: boolean;
@@ -16,7 +16,7 @@ export function withRandomColor<P extends object>(
   config: RandomColorConfig = {},
 ) {
   const {
-    property = "background",
+    property = 'background',
     duration = 0.4,
     triggerOnClick = true,
     triggerOnHover = false,
@@ -31,8 +31,8 @@ export function withRandomColor<P extends object>(
         <div
           onClick={triggerOnClick ? setRandomColor : undefined}
           style={{
-            display: "inline-block",
-            cursor: triggerOnClick ? "pointer" : "default",
+            display: 'inline-block',
+            cursor: triggerOnClick ? 'pointer' : 'default',
             [property]: background,
           }}
         >
@@ -44,12 +44,12 @@ export function withRandomColor<P extends object>(
     return (
       <motion.div
         animate={{ [property]: background }}
-        transition={{ duration, ease: "easeInOut" }}
+        transition={{ duration, ease: 'easeInOut' }}
         onClick={triggerOnClick ? setRandomColor : undefined}
         onHoverStart={triggerOnHover ? setRandomColor : undefined}
         style={{
-          display: "inline-block",
-          cursor: triggerOnClick ? "pointer" : "default",
+          display: 'inline-block',
+          cursor: triggerOnClick ? 'pointer' : 'default',
         }}
       >
         <Component {...props} />

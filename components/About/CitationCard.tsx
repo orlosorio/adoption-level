@@ -1,4 +1,4 @@
-import type { AboutCitation } from "@/lib/about-content";
+import type { AboutCitation } from '@/lib/about-content';
 
 interface CitationCardProps {
   citation: AboutCitation;

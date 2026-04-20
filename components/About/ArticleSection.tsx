@@ -4,7 +4,7 @@ interface ArticleSectionProps {
 }
 
 export default function ArticleSection({ heading, body }: ArticleSectionProps) {
-  const paragraphs = body.split("\n\n");
+  const paragraphs = body.split('\n\n');
 
   return (
     <section className="about-section">

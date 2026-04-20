@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { Language } from "@/lib/content";
-import { UI } from "@/lib/content";
-import { COUNTRIES } from "@/lib/demographics";
-import { SALARY_RANGES } from "@/lib/salaryRanges";
-import { COMPANY_TYPES_V2 } from "@/lib/companyTypesV2";
-import { INDUSTRIES } from "@/lib/industries";
+import { useState } from 'react';
+import type { Language } from '@/lib/content';
+import { UI } from '@/lib/content';
+import { COUNTRIES } from '@/lib/demographics';
+import { SALARY_RANGES } from '@/lib/salaryRanges';
+import { COMPANY_TYPES_V2 } from '@/lib/companyTypesV2';
+import { INDUSTRIES } from '@/lib/industries';
 
 export interface DemographicsData {
   country: string;
@@ -31,10 +31,10 @@ export default function DemographicsScreen({
   totalSteps,
 }: DemographicsScreenProps) {
   const copy = UI.postQuizDemographics[language];
-  const [country, setCountry] = useState("");
-  const [salary, setSalary] = useState("");
-  const [companyType, setCompanyType] = useState("");
-  const [industry, setIndustry] = useState("");
+  const [country, setCountry] = useState('');
+  const [salary, setSalary] = useState('');
+  const [companyType, setCompanyType] = useState('');
+  const [industry, setIndustry] = useState('');
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
   const validate = () => {
@@ -57,18 +57,13 @@ export default function DemographicsScreen({
       <div className="w-full max-w-[560px]">
         <div className="pq-step-indicator mb-5">
           {Array.from({ length: totalSteps }, (_, i) => (
-            <span
-              key={i}
-              className={`pq-step-dot ${i < step ? "pq-step-active" : ""}`}
-            />
+            <span key={i} className={`pq-step-dot ${i < step ? 'pq-step-active' : ''}`} />
           ))}
           <span className="pq-step-label">{copy.step(step, totalSteps)}</span>
         </div>
 
         <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
-          <h2 className="font-sans text-lg font-bold text-[#1f36a9] sm:text-xl">
-            {copy.heading}
-          </h2>
+          <h2 className="font-sans text-lg font-bold text-[#1f36a9] sm:text-xl">{copy.heading}</h2>
           <p className="mt-2 font-sans text-[13px] leading-[1.6] text-[#2a2a2a]/70 sm:text-[14px]">
             {copy.subtitle}
           </p>
@@ -82,7 +77,7 @@ export default function DemographicsScreen({
                 setCountry(e.target.value);
                 setErrors((p) => ({ ...p, country: false }));
               }}
-              className={`demo-select ${!country ? "placeholder" : ""} ${errors.country ? "demo-error" : ""}`}
+              className={`demo-select ${!country ? 'placeholder' : ''} ${errors.country ? 'demo-error' : ''}`}
             >
               <option value="" disabled>
                 {copy.countryPlaceholder}
@@ -110,7 +105,7 @@ export default function DemographicsScreen({
                     setSalary(r.id);
                     setErrors((p) => ({ ...p, salary: false }));
                   }}
-                  className={`demo-salary-btn ${salary === r.id ? "demo-salary-selected" : ""} ${errors.salary ? "demo-error" : ""}`}
+                  className={`demo-salary-btn ${salary === r.id ? 'demo-salary-selected' : ''} ${errors.salary ? 'demo-error' : ''}`}
                 >
                   {r.label[language]}
                 </button>
@@ -132,7 +127,7 @@ export default function DemographicsScreen({
                     setCompanyType(ct.id);
                     setErrors((p) => ({ ...p, companyType: false }));
                   }}
-                  className={`demo-company-card ${companyType === ct.id ? "demo-company-selected" : ""} ${errors.companyType ? "demo-error" : ""}`}
+                  className={`demo-company-card ${companyType === ct.id ? 'demo-company-selected' : ''} ${errors.companyType ? 'demo-error' : ''}`}
                 >
                   <span className="demo-company-icon">{ct.icon}</span>
                   <span className="demo-company-title">{ct.title[language]}</span>
@@ -152,7 +147,7 @@ export default function DemographicsScreen({
                 setIndustry(e.target.value);
                 setErrors((p) => ({ ...p, industry: false }));
               }}
-              className={`demo-select ${!industry ? "placeholder" : ""} ${errors.industry ? "demo-error" : ""}`}
+              className={`demo-select ${!industry ? 'placeholder' : ''} ${errors.industry ? 'demo-error' : ''}`}
             >
               <option value="" disabled>
                 {copy.industryPlaceholder}
@@ -165,20 +160,12 @@ export default function DemographicsScreen({
             </select>
           </div>
 
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="vprop-cta mt-6 w-full"
-          >
+          <button type="button" onClick={handleSubmit} className="vprop-cta mt-6 w-full">
             {copy.submit}
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onSkip}
-          className="vprop-skip mt-5"
-        >
+        <button type="button" onClick={onSkip} className="vprop-skip mt-5">
           {copy.skip}
         </button>
       </div>
