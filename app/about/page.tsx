@@ -73,33 +73,43 @@ export default function AboutPage() {
   return (
     <>
       <ReadingProgress />
-      <div className={styles.pageLayout}>
-        <div className={styles.container}>
+      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+        <div className="pt-10 pb-[120px]">
           <ArticleHeader meta={content.meta} lang={lang} onLangChange={setLang} />
 
           {content.sections.map((section, i) => (
             <div key={section.id}>
               <ArticleSection heading={section.heading} body={section.body} />
               {i === citationAfterIndex && <CitationCard citation={content.citation} />}
-              {i < content.sections.length - 1 && <hr className={styles.divider} />}
+              {i < content.sections.length - 1 && (
+                <hr className="my-10 border-t border-none border-t-[#d8defa]" />
+              )}
             </div>
           ))}
 
           <AuthorSignoff />
 
-          <div className={styles.bottomCta}>
-            <h2 className={styles.bottomCtaHeading}>{cta.heading}</h2>
-            <p className={styles.bottomCtaText}>{cta.text}</p>
+          <div className="mt-14 mb-12 border-t border-t-[rgba(31,54,169,0.08)] py-10 text-center">
+            <h2 className="text-brand-700 m-0 mb-2 font-sans text-[22px] font-bold">
+              {cta.heading}
+            </h2>
+            <p className="text-brand-700 m-0 mb-6 font-sans text-[15px] font-normal opacity-55">
+              {cta.text}
+            </p>
             <a href="/assessment" className={styles.bottomCtaBtn}>
               {cta.button}
             </a>
           </div>
         </div>
 
-        <aside className={styles.sidebarCol}>
+        <aside className="hidden lg:block">
           <div className={styles.sidebarCard}>
-            <p className={styles.sidebarHeading}>{sidebar.heading}</p>
-            <p className={styles.sidebarText}>{sidebar.text}</p>
+            <p className="text-brand-700 font-sans text-[15px] leading-[1.35] font-semibold">
+              {sidebar.heading}
+            </p>
+            <p className="text-brand-700 font-sans text-[13px] leading-[1.55] font-normal opacity-65">
+              {sidebar.text}
+            </p>
             <button
               type="button"
               onClick={() => router.push('/assessment')}
