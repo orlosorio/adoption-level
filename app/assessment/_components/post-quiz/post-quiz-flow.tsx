@@ -11,7 +11,7 @@ import { INDUSTRIES } from '@/lib/industries';
 import ValuePropScreen from './value-prop-screen';
 import PostQuizEmailScreen from './post-quiz-email-screen';
 import DemographicsScreen, { type DemographicsData } from './demographics-screen';
-import BenchmarkPanel from './benchmark-panel';
+import BenchmarkPanel, { benchmarkStyles } from './benchmark-panel';
 import BenchmarkTeaser from './benchmark-teaser';
 
 type PostQuizScreen = 'value-prop' | 'email' | 'demographics' | 'results' | 'calculating';
@@ -167,7 +167,7 @@ export default function PostQuizFlow({
     return (
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="text-center">
-          <div className="bench-calculating-spinner" />
+          <div className={benchmarkStyles.spinner} />
           <p className="mt-4 font-sans text-[15px] font-semibold text-[#1f36a9]">
             {UI.benchmark[language].calculating}
           </p>
@@ -185,7 +185,7 @@ export default function PostQuizFlow({
 
         {/* Benchmark section */}
         {hasCompletedDemographics && benchmarkData ? (
-          <div className="bench-reveal mt-4">
+          <div className={`${benchmarkStyles.reveal} mt-4`}>
             <BenchmarkPanel language={language} data={benchmarkData} labels={getLabels()} />
           </div>
         ) : (

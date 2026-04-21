@@ -1,0 +1,235 @@
+/* ── Benchmark Panel ── */
+
+.panel {
+  padding: 24px 20px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid #d8defa;
+}
+
+.heading {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1f36a9;
+}
+
+.respondents {
+  margin-top: 4px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #888;
+}
+
+.section {
+  margin-top: 16px;
+}
+
+.label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+.statement {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.track {
+  margin-top: 6px;
+  height: 8px;
+  border-radius: 4px;
+  background: #eef1ff;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #365cff 0%, #5b7aff 100%);
+  transition: width 0.8s ease-out;
+}
+
+.pct {
+  margin-top: 2px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1f36a9;
+  text-align: right;
+}
+
+.divider {
+  margin: 12px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.notEnough {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 8px;
+}
+
+/* ── Benchmark Teaser (blurred) ── */
+
+.teaserWrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #d8defa;
+}
+
+.teaserBlur {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.teaserOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.teaserLockIcon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.teaserLockTitle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1f36a9;
+}
+
+.teaserLockSub {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: #4d5b9a;
+  margin-top: 2px;
+}
+
+.teaserCtaSection {
+  padding: 20px;
+  text-align: center;
+}
+
+.teaserCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #365cff 0%, #5b7aff 100%);
+  color: white;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(54, 92, 255, 0.25);
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.teaserCta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(54, 92, 255, 0.35);
+}
+
+.teaserCta:active {
+  transform: translateY(0);
+}
+
+.teaserSkip {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  color: #1f36a9;
+  opacity: 0.3;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.teaserSkip:hover {
+  opacity: 0.5;
+}
+
+/* Benchmark reveal animation */
+.reveal {
+  animation: benchReveal 0.6s ease-out forwards;
+}
+
+@keyframes benchReveal {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* Calculating spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #d8defa;
+  border-top-color: #365cff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 639px) {
+  .panel {
+    padding: 18px 16px;
+  }
+  .heading {
+    font-size: 16px;
+  }
+  .pct {
+    font-size: 17px;
+  }
+  .teaserLockIcon {
+    font-size: 26px;
+  }
+  .teaserLockTitle {
+    font-size: 14px;
+  }
+  .teaserLockSub {
+    font-size: 12px;
+  }
+  .teaserCtaSection {
+    padding: 16px;
+  }
+}

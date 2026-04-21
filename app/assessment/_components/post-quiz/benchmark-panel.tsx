@@ -3,6 +3,7 @@
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
 import type { BenchmarkResult } from '@/lib/benchmarkMock';
+import styles from './benchmark.module.css';
 
 interface BenchmarkPanelProps {
   language: Language;
@@ -25,13 +26,13 @@ function PercentileBar({
   percentile: number;
 }) {
   return (
-    <div className="bench-section">
-      <p className="bench-label">{label}</p>
-      <p className="bench-statement">{statement}</p>
-      <div className="bench-track" aria-label={statement}>
-        <div className="bench-fill" style={{ width: `${percentile}%` }} />
+    <div className={styles.section}>
+      <p className={styles.label}>{label}</p>
+      <p className={styles.statement}>{statement}</p>
+      <div className={styles.track} aria-label={statement}>
+        <div className={styles.fill} style={{ width: `${percentile}%` }} />
       </div>
-      <p className="bench-pct">{percentile}%</p>
+      <p className={styles.pct}>{percentile}%</p>
     </div>
   );
 }
@@ -46,12 +47,12 @@ export default function BenchmarkPanel({
   const hasEnoughTotal = data.totalRespondents >= 50;
 
   return (
-    <div className="bench-panel">
-      <p className="bench-heading">📊 {copy.panelHeading}</p>
-      <p className="bench-respondents">{copy.respondentCount(data.totalRespondents)}</p>
+    <div className={styles.panel}>
+      <p className={styles.heading}>📊 {copy.panelHeading}</p>
+      <p className={styles.respondents}>{copy.respondentCount(data.totalRespondents)}</p>
 
       {!hasEnoughTotal ? (
-        <p className="bench-not-enough italic">{copy.notEnoughData}</p>
+        <p className={`${styles.notEnough} italic`}>{copy.notEnoughData}</p>
       ) : (
         <>
           <PercentileBar
@@ -60,7 +61,7 @@ export default function BenchmarkPanel({
             percentile={data.overall}
           />
 
-          <hr className="bench-divider" />
+          <hr className={styles.divider} />
 
           {data.totalRespondents >= minSegmentSize ? (
             <PercentileBar
@@ -69,13 +70,13 @@ export default function BenchmarkPanel({
               percentile={data.country}
             />
           ) : (
-            <div className="bench-section">
-              <p className="bench-label">{copy.countryLabel(labels.country)}</p>
-              <p className="bench-not-enough italic">{copy.notEnoughData}</p>
+            <div className={styles.section}>
+              <p className={styles.label}>{copy.countryLabel(labels.country)}</p>
+              <p className={`${styles.notEnough} italic`}>{copy.notEnoughData}</p>
             </div>
           )}
 
-          <hr className="bench-divider" />
+          <hr className={styles.divider} />
 
           <PercentileBar
             label={copy.companyLabel(labels.companyType)}
@@ -83,7 +84,7 @@ export default function BenchmarkPanel({
             percentile={data.companyType}
           />
 
-          <hr className="bench-divider" />
+          <hr className={styles.divider} />
 
           <PercentileBar
             label={copy.industryLabel(labels.industry)}
@@ -95,3 +96,5 @@ export default function BenchmarkPanel({
     </div>
   );
 }
+
+export { styles as benchmarkStyles };

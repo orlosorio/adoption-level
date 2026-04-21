@@ -3,7 +3,7 @@
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
 import { SEED_BENCHMARK } from '@/lib/benchmarkMock';
-import BenchmarkPanel from './benchmark-panel';
+import BenchmarkPanel, { benchmarkStyles } from './benchmark-panel';
 
 interface BenchmarkTeaserProps {
   language: Language;
@@ -21,31 +21,31 @@ export default function BenchmarkTeaser({ language, onUnlock, onSkip }: Benchmar
   };
 
   return (
-    <div className="bench-teaser-wrapper">
+    <div className={benchmarkStyles.teaserWrapper}>
       {/* Blurred benchmark preview */}
-      <div className="bench-teaser-blur" aria-hidden>
+      <div className={benchmarkStyles.teaserBlur} aria-hidden>
         <BenchmarkPanel language={language} data={SEED_BENCHMARK} labels={mockLabels} />
       </div>
 
       {/* Lock overlay */}
-      <div className="bench-teaser-overlay">
-        <div className="bench-teaser-lock-icon">🔒</div>
-        <p className="bench-teaser-lock-title">{copy.teaserLockLabel}</p>
-        <p className="bench-teaser-lock-sub">{copy.teaserLockSub}</p>
+      <div className={benchmarkStyles.teaserOverlay}>
+        <div className={benchmarkStyles.teaserLockIcon}>🔒</div>
+        <p className={benchmarkStyles.teaserLockTitle}>{copy.teaserLockLabel}</p>
+        <p className={benchmarkStyles.teaserLockSub}>{copy.teaserLockSub}</p>
       </div>
 
       {/* CTA section below */}
-      <div className="bench-teaser-cta-section">
+      <div className={benchmarkStyles.teaserCtaSection}>
         <p className="font-sans text-[16px] font-bold text-[#1f36a9] sm:text-[18px]">
           {copy.teaserHeading}
         </p>
         <p className="mt-2 font-sans text-[13px] leading-relaxed text-[#4d5b9a] sm:text-[14px]">
           {copy.teaserBody}
         </p>
-        <button type="button" onClick={onUnlock} className="bench-teaser-cta mt-5">
+        <button type="button" onClick={onUnlock} className={`${benchmarkStyles.teaserCta} mt-5`}>
           {copy.teaserCta}
         </button>
-        <button type="button" onClick={onSkip} className="bench-teaser-skip mt-3">
+        <button type="button" onClick={onSkip} className={`${benchmarkStyles.teaserSkip} mt-3`}>
           {copy.teaserSkip}
         </button>
       </div>
