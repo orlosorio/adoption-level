@@ -140,7 +140,7 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
         </div>
       </div>
 
-      <div className="avg-score-card">
+      <div className="mt-4 rounded-[10px] bg-[#eef1ff] px-5 py-4">
         <div className="mb-2 flex items-center justify-between text-[14px]">
           <span className="text-[#555]">
             {language === 'es' ? 'Promedio por pregunta' : 'Average score per question'}
