@@ -1,0 +1,10 @@
+---
+description: Project code conventions — folder structure, file naming, and styling precedence (Tailwind → CSS Modules → global CSS). Triggers when creating, renaming, or moving files, or choosing where styles should live.
+globs:
+  - "app/**/*.{ts,tsx,js,jsx,css,scss}"
+  - "components/**/*.{ts,tsx,js,jsx,css,scss}"
+  - "lib/**/*.{ts,tsx,js,jsx}"
+alwaysApply: false
+---
+
+@.claude/skills/code-convention/SKILL.md
