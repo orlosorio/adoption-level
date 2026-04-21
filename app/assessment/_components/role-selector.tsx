@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/cn';
 import type { Language } from '@/lib/content';
 import type { RoleId } from '@/lib/roles';
 import { ROLE_NAMES } from '@/lib/roles';
+import styles from './role-selector.module.css';
 
 interface RoleSelectorProps {
   language: Language;
@@ -51,7 +53,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
           {UI_TEXT[language].heading}
         </h2>
 
-        <div className="role-grid">
+        <div className={styles.grid}>
           {ROLE_ORDER.map((roleId) => (
             <button
               key={roleId}
@@ -66,7 +68,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
                   setSelected(roleId);
                 }
               }}
-              className={`role-card ${selected === roleId ? 'role-card-selected' : ''}`}
+              className={cn(styles.card, selected === roleId && styles.cardSelected)}
             >
               {ROLE_NAMES[roleId][language]}
             </button>

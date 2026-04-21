@@ -722,79 +722,6 @@
     inset 0 -1px 0 rgba(253, 1, 53, 0.04);
 }
 
-/* ── Role selector grid ── */
-
-.role-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-@media (max-width: 639px) {
-  .role-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-}
-
-.role-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 80px;
-  padding: 20px;
-  text-align: center;
-  font-family: var(--font-sans);
-  font-size: 15px;
-  font-weight: 500;
-  color: #1f36a9;
-  border-radius: 10px;
-  border: 1.5px solid rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.15s ease;
-}
-
-.role-card:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(54, 92, 255, 0.25);
-  box-shadow: 0 4px 16px rgba(31, 54, 169, 0.08);
-  transform: translateY(-1px);
-}
-
-.role-card-selected {
-  background: rgba(54, 92, 255, 0.1);
-  border-color: var(--brand-600);
-  box-shadow:
-    0 0 0 2px rgba(54, 92, 255, 0.12),
-    0 4px 16px rgba(54, 92, 255, 0.08);
-}
-
-.role-card-selected:hover {
-  background: rgba(54, 92, 255, 0.14);
-  border-color: var(--brand-600);
-}
-
-@media (max-width: 639px) {
-  .role-card {
-    font-size: 12px;
-    min-height: 56px;
-    padding: 12px 14px;
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
 /* ── Scale option buttons (vertical list) ── */
 
 .scale-option-btn {
@@ -1429,15 +1356,6 @@ body {
 
   .scale-option-btn {
     padding: clamp(8px, 1.2vh, 11px) 16px;
-  }
-
-  .role-card {
-    min-height: 56px;
-    padding: clamp(10px, 1.5vh, 20px);
-  }
-
-  .role-grid {
-    gap: clamp(8px, 1vh, 14px);
   }
 }
 
