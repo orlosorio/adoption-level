@@ -9,7 +9,7 @@ import { COMPANY_QUESTIONS, DIMENSION_NAMES, DIMENSION_ORDER } from '@/lib/compa
 import { COMPANY_RESULT_COPY } from '@/lib/companyResults';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
 import ScaleButtons from '@/app/assessment/_components/scale-buttons';
-import HeroAI from '@/app/assessment/_components/hero-ai';
+import HeroAI, { heroAiStyles } from '@/app/assessment/_components/hero-ai';
 import ToolsMarquee from '@/app/assessment/_components/tools-marquee';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
 
@@ -250,11 +250,11 @@ export default function CompanyQuiz({ initialLanguage }: { initialLanguage: Lang
       {screen === 'language' && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px] text-center">
-            <h1 className="hero-title mb-5">
+            <h1 className="mb-5 flex flex-col items-center text-center">
               <HeroAI />
-              <span className="hero-title-adoption">Adoption</span>
-              <hr className="hero-title-rule" />
-              <span className="hero-title-assessment">Company Assessment</span>
+              <span className={heroAiStyles.adoption}>Adoption</span>
+              <hr className={heroAiStyles.rule} />
+              <span className={heroAiStyles.subtitle}>Company Assessment</span>
             </h1>
             <p className="mb-3 font-sans text-[15px] leading-relaxed text-[#4d5b9a] sm:text-base">
               AI Company Readiness &middot; 7 Dimensions

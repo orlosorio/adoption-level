@@ -9,7 +9,7 @@ import { ROLE_ASSESSMENTS, ROLE_NAMES, type RoleId } from '@/lib/roles';
 import { ROLE_RESULT_COPY } from '@/lib/roleResults';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
 import ScaleButtons from '@/app/assessment/_components/scale-buttons';
-import HeroAI from '@/app/assessment/_components/hero-ai';
+import HeroAI, { heroAiStyles } from '@/app/assessment/_components/hero-ai';
 import ToolsMarquee from '@/app/assessment/_components/tools-marquee';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
 
@@ -213,11 +213,11 @@ export default function RoleQuiz({
       {screen === 'language' && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px] text-center">
-            <h1 className="hero-title mb-[clamp(8px,1.5vh,20px)]">
+            <h1 className="mb-[clamp(8px,1.5vh,20px)] flex flex-col items-center text-center">
               <HeroAI />
-              <span className="hero-title-adoption">Adoption</span>
-              <hr className="hero-title-rule" />
-              <span className="hero-title-assessment">Self-Assessment</span>
+              <span className={heroAiStyles.adoption}>Adoption</span>
+              <hr className={heroAiStyles.rule} />
+              <span className={heroAiStyles.subtitle}>Self-Assessment</span>
             </h1>
             <p className="mb-[clamp(4px,1vh,16px)] font-sans text-[15px] leading-relaxed text-[#4d5b9a] sm:text-base">
               {ROLE_NAMES[roleId].en} / {ROLE_NAMES[roleId].es}

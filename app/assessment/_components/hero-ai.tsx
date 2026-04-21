@@ -1,3 +1,6 @@
+import { cn } from '@/lib/cn';
+import styles from './hero-ai.module.css';
+
 const A_PATH =
   'M 0 150 L 50 0 L 80 0 L 130 150 L 104 150 L 86 92 L 44 92 L 26 150 Z M 50 78 L 65 24 L 80 78 Z';
 const I_PATH =
@@ -31,12 +34,12 @@ const ANCHORS: [number, number][] = [
 
 export default function HeroAI() {
   return (
-    <svg viewBox="-6 -6 222 162" className="hero-ai-svg" role="img" aria-label="AI">
-      <path d={A_PATH} fillRule="evenodd" className="ai-fill" />
-      <path d={I_PATH} className="ai-fill ai-fill-i" />
+    <svg viewBox="-6 -6 222 162" className={styles.svg} role="img" aria-label="AI">
+      <path d={A_PATH} fillRule="evenodd" className={styles.fill} />
+      <path d={I_PATH} className={cn(styles.fill, styles.fillI)} />
 
-      <path d={A_PATH} fillRule="evenodd" className="ai-stroke" pathLength={1} />
-      <path d={I_PATH} className="ai-stroke ai-stroke-i" pathLength={1} />
+      <path d={A_PATH} fillRule="evenodd" className={styles.stroke} pathLength={1} />
+      <path d={I_PATH} className={cn(styles.stroke, styles.strokeI)} pathLength={1} />
 
       {ANCHORS.map(([x, y], i) => (
         <circle
@@ -44,10 +47,12 @@ export default function HeroAI() {
           cx={x}
           cy={y}
           r={4.5}
-          className="ai-anchor"
+          className={styles.anchor}
           style={{ '--ai-i': i } as React.CSSProperties}
         />
       ))}
     </svg>
   );
 }
+
+export { styles as heroAiStyles };
