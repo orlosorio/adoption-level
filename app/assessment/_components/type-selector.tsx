@@ -1,6 +1,8 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import type { Language } from '@/lib/content';
+import styles from './type-selector.module.css';
 
 export type AssessmentType = 'general' | 'role' | 'company';
 
@@ -113,7 +115,7 @@ export default function TypeSelector({ language, onSelect, onLanguageChange }: T
                   onSelect(card.type);
                 }
               }}
-              className={`type-selector-card relative ${card.recommended ? 'type-selector-card-recommended' : ''}`}
+              className={cn(styles.card, 'relative', card.recommended && styles.recommended)}
             >
               {card.recommended && (
                 <span className="absolute -top-3 right-4 rounded-full bg-[#365cff] px-3 py-0.5 text-[11px] font-semibold tracking-wide text-white shadow-sm">
