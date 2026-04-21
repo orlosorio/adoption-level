@@ -1,3 +1,5 @@
+import styles from '../about.module.css';
+
 interface ArticleSectionProps {
   heading?: string;
   body: string;
@@ -7,10 +9,10 @@ export default function ArticleSection({ heading, body }: ArticleSectionProps) {
   const paragraphs = body.split('\n\n');
 
   return (
-    <section className="about-section">
-      {heading && <h2 className="about-section-heading">{heading}</h2>}
+    <section>
+      {heading && <h2 className={styles.sectionHeading}>{heading}</h2>}
       {paragraphs.map((p, i) => (
-        <p key={i} className="about-body">
+        <p key={i} className={styles.body}>
           {p}
         </p>
       ))}

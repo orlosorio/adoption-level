@@ -9,6 +9,7 @@ import CitationCard from './_components/citation-card';
 import AuthorSignoff from './_components/author-signoff';
 import StickyAssessmentBar from './_components/sticky-assessment-bar';
 import ReadingProgress from './_components/reading-progress';
+import styles from './about.module.css';
 
 type Lang = 'en' | 'es';
 
@@ -72,37 +73,37 @@ export default function AboutPage() {
   return (
     <>
       <ReadingProgress />
-      <div className="about-page-layout">
-        <div className="about-container">
+      <div className={styles.pageLayout}>
+        <div className={styles.container}>
           <ArticleHeader meta={content.meta} lang={lang} onLangChange={setLang} />
 
           {content.sections.map((section, i) => (
             <div key={section.id}>
               <ArticleSection heading={section.heading} body={section.body} />
               {i === citationAfterIndex && <CitationCard citation={content.citation} />}
-              {i < content.sections.length - 1 && <hr className="about-divider" />}
+              {i < content.sections.length - 1 && <hr className={styles.divider} />}
             </div>
           ))}
 
           <AuthorSignoff />
 
-          <div className="about-bottom-cta">
-            <h2 className="about-bottom-cta-heading">{cta.heading}</h2>
-            <p className="about-bottom-cta-text">{cta.text}</p>
-            <a href="/assessment" className="about-bottom-cta-btn">
+          <div className={styles.bottomCta}>
+            <h2 className={styles.bottomCtaHeading}>{cta.heading}</h2>
+            <p className={styles.bottomCtaText}>{cta.text}</p>
+            <a href="/assessment" className={styles.bottomCtaBtn}>
               {cta.button}
             </a>
           </div>
         </div>
 
-        <aside className="about-sidebar-col">
-          <div className="about-sidebar-card">
-            <p className="about-sidebar-heading">{sidebar.heading}</p>
-            <p className="about-sidebar-text">{sidebar.text}</p>
+        <aside className={styles.sidebarCol}>
+          <div className={styles.sidebarCard}>
+            <p className={styles.sidebarHeading}>{sidebar.heading}</p>
+            <p className={styles.sidebarText}>{sidebar.text}</p>
             <button
               type="button"
               onClick={() => router.push('/assessment')}
-              className="about-sidebar-btn"
+              className={styles.sidebarBtn}
             >
               {sidebar.button}
             </button>

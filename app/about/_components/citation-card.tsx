@@ -1,4 +1,5 @@
 import type { AboutCitation } from '@/lib/about-content';
+import styles from '../about.module.css';
 
 interface CitationCardProps {
   citation: AboutCitation;
@@ -6,9 +7,9 @@ interface CitationCardProps {
 
 export default function CitationCard({ citation }: CitationCardProps) {
   return (
-    <blockquote className="about-citation">
-      <p className="about-citation-text">&ldquo;{citation.text}&rdquo;</p>
-      <footer className="about-citation-footer">
+    <blockquote className={styles.citation}>
+      <p className={styles.citationText}>&ldquo;{citation.text}&rdquo;</p>
+      <footer className={styles.citationFooter}>
         <span>&mdash; {citation.author}</span>
         <br />
         <span>{citation.source}</span>
@@ -17,7 +18,7 @@ export default function CitationCard({ citation }: CitationCardProps) {
           href={citation.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="about-citation-link"
+          className={styles.citationLink}
         >
           {citation.views}
         </a>

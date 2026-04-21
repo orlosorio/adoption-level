@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from '../about.module.css';
 
 export default function ReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -16,6 +17,6 @@ export default function ReadingProgress() {
   }, []);
 
   return (
-    <div className="about-progress-bar" style={{ width: `${progress}%` }} aria-hidden="true" />
+    <div className={styles.progressBar} style={{ width: `${progress}%` }} aria-hidden="true" />
   );
 }

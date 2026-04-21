@@ -1,4 +1,6 @@
 import type { AboutContent } from '@/lib/about-content';
+import { cn } from '@/lib/cn';
+import styles from '../about.module.css';
 
 interface ArticleHeaderProps {
   meta: AboutContent['meta'];
@@ -8,8 +10,8 @@ interface ArticleHeaderProps {
 
 export default function ArticleHeader({ meta, lang, onLangChange }: ArticleHeaderProps) {
   return (
-    <header className="about-header">
-      <nav className="about-nav">
+    <header>
+      <nav className={styles.nav}>
         <a
           href="/assessment"
           className="flex items-center gap-1.5 rounded-lg border border-white/40 bg-white/25 px-3 py-1.5 text-[13px] font-medium text-[#1f36a9]/60 backdrop-blur-md transition-all hover:bg-white/40 hover:text-[#1f36a9]"
@@ -26,12 +28,12 @@ export default function ArticleHeader({ meta, lang, onLangChange }: ArticleHeade
           </svg>
           <span className="hidden sm:inline">Home</span>
         </a>
-        <div className="about-lang-toggle">
+        <div className={styles.langToggle}>
           <button
             type="button"
             aria-pressed={lang === 'en'}
             onClick={() => onLangChange('en')}
-            className={`about-lang-btn ${lang === 'en' ? 'about-lang-btn-active' : ''}`}
+            className={cn(styles.langBtn, lang === 'en' && styles.langBtnActive)}
           >
             English
           </button>
@@ -39,16 +41,16 @@ export default function ArticleHeader({ meta, lang, onLangChange }: ArticleHeade
             type="button"
             aria-pressed={lang === 'es'}
             onClick={() => onLangChange('es')}
-            className={`about-lang-btn ${lang === 'es' ? 'about-lang-btn-active' : ''}`}
+            className={cn(styles.langBtn, lang === 'es' && styles.langBtnActive)}
           >
             Español
           </button>
         </div>
       </nav>
 
-      <h1 className="about-title">{meta.title}</h1>
-      <p className="about-subtitle">{meta.subtitle}</p>
-      <p className="about-byline">
+      <h1 className={styles.title}>{meta.title}</h1>
+      <p className={styles.subtitle}>{meta.subtitle}</p>
+      <p className={styles.byline}>
         {meta.author} &middot; {meta.authorHandle} &middot; {meta.readTime}
       </p>
     </header>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import styles from '../about.module.css';
 
 interface StickyAssessmentBarProps {
   lang: 'en' | 'es';
@@ -22,9 +23,9 @@ export default function StickyAssessmentBar({ lang }: StickyAssessmentBarProps) 
   const copy = COPY[lang];
 
   return (
-    <div className="about-sticky-bar">
-      <p className="about-sticky-text">{copy.text}</p>
-      <button type="button" onClick={() => router.push('/assessment')} className="about-sticky-btn">
+    <div className={styles.stickyBar}>
+      <p className={styles.stickyText}>{copy.text}</p>
+      <button type="button" onClick={() => router.push('/assessment')} className={styles.stickyBtn}>
         {copy.button}
       </button>
     </div>
