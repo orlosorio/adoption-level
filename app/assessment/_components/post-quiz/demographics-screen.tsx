@@ -8,6 +8,7 @@ import { SALARY_RANGES } from '@/lib/salaryRanges';
 import { COMPANY_TYPES_V2 } from '@/lib/companyTypesV2';
 import { INDUSTRIES } from '@/lib/industries';
 import glass from '@/app/assessment/_components/glass.module.css';
+import { valuePropStyles } from './value-prop-screen';
 
 export interface DemographicsData {
   country: string;
@@ -161,12 +162,16 @@ export default function DemographicsScreen({
             </select>
           </div>
 
-          <button type="button" onClick={handleSubmit} className="vprop-cta mt-6 w-full">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className={`${valuePropStyles.cta} mt-6 w-full`}
+          >
             {copy.submit}
           </button>
         </div>
 
-        <button type="button" onClick={onSkip} className="vprop-skip mt-5">
+        <button type="button" onClick={onSkip} className={`${valuePropStyles.skip} mt-5`}>
           {copy.skip}
         </button>
       </div>

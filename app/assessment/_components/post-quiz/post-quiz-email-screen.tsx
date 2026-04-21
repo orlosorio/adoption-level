@@ -5,6 +5,7 @@ import { cn } from '@/lib/cn';
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
+import { valuePropStyles } from './value-prop-screen';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -88,7 +89,7 @@ export default function PostQuizEmailScreen({
           </p>
         </div>
 
-        <button type="button" onClick={onSkip} className="vprop-skip mt-5">
+        <button type="button" onClick={onSkip} className={`${valuePropStyles.skip} mt-5`}>
           {UI.valueProp[language].skip}
         </button>
       </div>

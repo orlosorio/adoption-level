@@ -384,93 +384,6 @@
   color: rgba(31, 54, 169, 0.6);
 }
 
-/* ── Value-Prop Screen ── */
-
-.vprop-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  text-align: left;
-  padding: 16px 18px;
-  border-radius: 14px;
-  background: white;
-  border: 1px solid #d8defa;
-  transition: border-color 0.2s;
-}
-.vprop-card:hover {
-  border-color: #365cff40;
-}
-.vprop-icon {
-  flex-shrink: 0;
-  font-size: 24px;
-  line-height: 1;
-  margin-top: 2px;
-}
-.vprop-title {
-  font-family: var(--font-inter), sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1f36a9;
-}
-.vprop-desc {
-  font-family: var(--font-inter), sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #555;
-  margin-top: 2px;
-}
-.vprop-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 14px 28px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #365cff 0%, #5b7aff 100%);
-  color: white;
-  font-family: var(--font-inter), sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 2px 12px rgba(54, 92, 255, 0.25);
-  transition:
-    transform 0.15s,
-    box-shadow 0.15s;
-}
-.vprop-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(54, 92, 255, 0.35);
-}
-.vprop-cta:active {
-  transform: translateY(0);
-}
-.vprop-skip {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-family: var(--font-inter), sans-serif;
-  font-size: 13px;
-  color: #1f36a9;
-  opacity: 0.3;
-  text-decoration: underline;
-  text-decoration-color: rgba(31, 54, 169, 0.15);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.vprop-skip:hover {
-  opacity: 0.5;
-}
-.vprop-live-counter {
-  font-family: var(--font-inter), sans-serif;
-  font-size: 12px;
-  color: #1f36a9;
-  opacity: 0.35;
-  text-align: center;
-}
-
 /* ── Step Indicator (Pills) ── */
 
 .pq-step-indicator {
@@ -830,23 +743,6 @@
 /* ── Mobile responsive tweaks for post-quiz ── */
 
 @media (max-width: 639px) {
-  .vprop-card {
-    padding: 12px 14px;
-    gap: 10px;
-  }
-  .vprop-icon {
-    font-size: 20px;
-  }
-  .vprop-title {
-    font-size: 14px;
-  }
-  .vprop-desc {
-    font-size: 12px;
-  }
-  .vprop-cta {
-    padding: 12px 20px;
-    font-size: 14px;
-  }
   .bench-panel {
     padding: 18px 16px;
   }
