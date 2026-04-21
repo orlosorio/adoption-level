@@ -12,6 +12,7 @@ import ScaleButtons from '@/app/assessment/_components/scale-buttons';
 import HeroAI, { heroAiStyles } from '@/app/assessment/_components/hero-ai';
 import ToolsMarquee from '@/app/assessment/_components/tools-marquee';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
+import glass from '@/app/assessment/_components/glass.module.css';
 
 type Screen = 'language' | 'quiz' | 'post-quiz';
 
@@ -263,11 +264,11 @@ export default function CompanyQuiz({ initialLanguage }: { initialLanguage: Lang
               35 questions &middot; ~4 min &middot; Confidence scale
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
-              <button type="button" onClick={() => startQuiz('en')} className="glass-cta">
-                <span className="glass-cta-label">{UI.language.en}</span>
+              <button type="button" onClick={() => startQuiz('en')} className={glass.cta}>
+                <span className={glass.ctaLabel}>{UI.language.en}</span>
               </button>
-              <button type="button" onClick={() => startQuiz('es')} className="glass-cta">
-                <span className="glass-cta-label">{UI.language.es}</span>
+              <button type="button" onClick={() => startQuiz('es')} className={glass.cta}>
+                <span className={glass.ctaLabel}>{UI.language.es}</span>
               </button>
             </div>
             <div className="relative left-1/2 mt-6 -ml-[50vw] w-screen">
@@ -302,7 +303,7 @@ export default function CompanyQuiz({ initialLanguage }: { initialLanguage: Lang
             </header>
 
             <div className="mx-auto w-full max-w-[600px]">
-              <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
+              <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
                 {(() => {
                   const q = COMPANY_QUESTIONS[currentQuestion]!;
                   const { number, name } = splitLevelLabel(q.levelLabel[language]);

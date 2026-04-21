@@ -5,6 +5,7 @@ import { cn } from '@/lib/cn';
 import type { Language } from '@/lib/content';
 import type { RoleId } from '@/lib/roles';
 import { ROLE_NAMES } from '@/lib/roles';
+import glass from './glass.module.css';
 import styles from './role-selector.module.css';
 
 interface RoleSelectorProps {
@@ -86,7 +87,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
           <button
             type="button"
             onClick={() => selected && onSelect(selected)}
-            className="glass-answer-btn glass-answer-yes px-8"
+            className={cn(glass.answerBtn, glass.answerYes, 'px-8')}
           >
             {UI_TEXT[language].start}
           </button>

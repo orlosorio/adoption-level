@@ -9,6 +9,7 @@ import TypeSelector, { type AssessmentType } from './type-selector';
 import RoleSelector from './role-selector';
 import ToolsMarquee from './tools-marquee';
 import HeroAI, { heroAiStyles } from './hero-ai';
+import glass from './glass.module.css';
 
 type Screen = 'type-selector' | 'language' | 'role-selector';
 
@@ -70,11 +71,11 @@ export default function AssessmentEntry({ errorParam }: { errorParam?: string | 
               {UI.language.meta}
             </p>
             <div className="flex flex-row justify-center gap-4 sm:gap-5">
-              <button type="button" onClick={() => pickLanguage('en')} className="glass-cta">
-                <span className="glass-cta-label">{UI.language.en}</span>
+              <button type="button" onClick={() => pickLanguage('en')} className={glass.cta}>
+                <span className={glass.ctaLabel}>{UI.language.en}</span>
               </button>
-              <button type="button" onClick={() => pickLanguage('es')} className="glass-cta">
-                <span className="glass-cta-label">{UI.language.es}</span>
+              <button type="button" onClick={() => pickLanguage('es')} className={glass.cta}>
+                <span className={glass.ctaLabel}>{UI.language.es}</span>
               </button>
             </div>
             <div className="relative left-1/2 mt-[clamp(20px,4vh,48px)] -ml-[50vw] w-screen">

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/cn';
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
+import glass from '@/app/assessment/_components/glass.module.css';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,7 +52,7 @@ export default function PostQuizEmailScreen({
           <span className="pq-step-label">{copy.step(step, totalSteps)}</span>
         </div>
 
-        <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
+        <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
           <h2 className="font-sans text-lg font-bold text-[#1f36a9] sm:text-xl">{copy.heading}</h2>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -64,13 +66,17 @@ export default function PostQuizEmailScreen({
               }}
               onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
               placeholder={copy.placeholder}
-              className={`glass-input flex-1 ${error ? '!border-red-400' : ''}`}
+              className={cn(glass.input, 'flex-1', error && '!border-red-400')}
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={loading}
-              className="glass-answer-btn glass-answer-yes shrink-0 justify-center whitespace-nowrap"
+              className={cn(
+                glass.answerBtn,
+                glass.answerYes,
+                'shrink-0 justify-center whitespace-nowrap',
+              )}
             >
               {loading ? '...' : copy.submit}
             </button>

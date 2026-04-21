@@ -8,6 +8,7 @@ import { BEEHIIV_ENDPOINT } from '@/lib/config';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
 import ScaleButtons from '@/app/assessment/_components/scale-buttons';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
+import glass from '@/app/assessment/_components/glass.module.css';
 
 type Screen = 'quiz' | 'post-quiz';
 
@@ -202,7 +203,7 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
             </header>
 
             <div className="mx-auto w-full max-w-[600px]">
-              <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
+              <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
                 {(() => {
                   const q = QUESTIONS[currentQuestion]!;
                   const full = LEVEL_LABELS[q.level]![language];

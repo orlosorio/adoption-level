@@ -7,6 +7,7 @@ import { COUNTRIES } from '@/lib/demographics';
 import { SALARY_RANGES } from '@/lib/salaryRanges';
 import { COMPANY_TYPES_V2 } from '@/lib/companyTypesV2';
 import { INDUSTRIES } from '@/lib/industries';
+import glass from '@/app/assessment/_components/glass.module.css';
 
 export interface DemographicsData {
   country: string;
@@ -62,7 +63,7 @@ export default function DemographicsScreen({
           <span className="pq-step-label">{copy.step(step, totalSteps)}</span>
         </div>
 
-        <div className="glass-quiz-card px-5 py-6 sm:px-8 sm:py-8">
+        <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
           <h2 className="font-sans text-lg font-bold text-[#1f36a9] sm:text-xl">{copy.heading}</h2>
           <p className="mt-2 font-sans text-[13px] leading-[1.6] text-[#2a2a2a]/70 sm:text-[14px]">
             {copy.subtitle}
