@@ -384,32 +384,6 @@
   color: rgba(31, 54, 169, 0.6);
 }
 
-/* ── Step Indicator (Pills) ── */
-
-.pq-step-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.pq-step-dot {
-  width: 24px;
-  height: 4px;
-  border-radius: 2px;
-  background: #d8defa;
-  transition: background 0.25s;
-}
-.pq-step-active {
-  background: #365cff;
-}
-.pq-step-label {
-  margin-left: 8px;
-  font-family: var(--font-inter), sans-serif;
-  font-size: 12px;
-  color: #365cff;
-  opacity: 0.7;
-}
-
 /* ── Demographics Form Fields ── */
 
 .demo-field {

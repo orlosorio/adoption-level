@@ -7,8 +7,10 @@ import { COUNTRIES } from '@/lib/demographics';
 import { SALARY_RANGES } from '@/lib/salaryRanges';
 import { COMPANY_TYPES_V2 } from '@/lib/companyTypesV2';
 import { INDUSTRIES } from '@/lib/industries';
+import { cn } from '@/lib/cn';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { valuePropStyles } from './value-prop-screen';
+import stepStyles from './step-indicator.module.css';
 
 export interface DemographicsData {
   country: string;
@@ -57,11 +59,11 @@ export default function DemographicsScreen({
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[560px]">
-        <div className="pq-step-indicator mb-5">
+        <div className={`${stepStyles.root} mb-5`}>
           {Array.from({ length: totalSteps }, (_, i) => (
-            <span key={i} className={`pq-step-dot ${i < step ? 'pq-step-active' : ''}`} />
+            <span key={i} className={cn(stepStyles.dot, i < step && stepStyles.active)} />
           ))}
-          <span className="pq-step-label">{copy.step(step, totalSteps)}</span>
+          <span className={stepStyles.label}>{copy.step(step, totalSteps)}</span>
         </div>
 
         <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
