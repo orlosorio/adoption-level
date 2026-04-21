@@ -6,7 +6,6 @@ import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { valuePropStyles } from './value-prop-screen';
-import stepStyles from './step-indicator.module.css';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -47,11 +46,19 @@ export default function PostQuizEmailScreen({
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[520px]">
-        <div className={`${stepStyles.root} mb-5`}>
+        <div className="mb-5 flex items-center justify-center gap-1.5">
           {Array.from({ length: totalSteps }, (_, i) => (
-            <span key={i} className={cn(stepStyles.dot, i < step && stepStyles.active)} />
+            <span
+              key={i}
+              className={cn(
+                'h-1 w-6 rounded-sm transition-colors duration-[250ms]',
+                i < step ? 'bg-brand-600' : 'bg-[#d8defa]',
+              )}
+            />
           ))}
-          <span className={stepStyles.label}>{copy.step(step, totalSteps)}</span>
+          <span className="text-brand-600/70 ml-2 font-sans text-xs">
+            {copy.step(step, totalSteps)}
+          </span>
         </div>
 
         <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
