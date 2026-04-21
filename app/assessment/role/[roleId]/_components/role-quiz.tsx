@@ -287,7 +287,7 @@ export default function RoleQuiz({
                         <button
                           type="button"
                           onClick={goBack}
-                          className="quiz-back-link mt-3 sm:mt-6"
+                          className="mt-3 block w-full cursor-pointer border-none bg-transparent py-0.5 text-center font-sans text-[13px] font-medium text-[rgba(23,23,23,0.3)] transition-colors duration-200 hover:text-[#1f36a9]/60 sm:mt-6"
                         >
                           {UI.quiz[language].back}
                         </button>
