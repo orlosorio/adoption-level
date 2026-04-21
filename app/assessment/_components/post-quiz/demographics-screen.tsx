@@ -11,6 +11,7 @@ import { cn } from '@/lib/cn';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { valuePropStyles } from './value-prop-screen';
 import stepStyles from './step-indicator.module.css';
+import styles from './demographics-screen.module.css';
 
 export interface DemographicsData {
   country: string;
@@ -73,15 +74,19 @@ export default function DemographicsScreen({
           </p>
 
           {/* Field 1 — Country */}
-          <div className="demo-field mt-5">
-            <label className="demo-label">{copy.countryLabel}</label>
+          <div className={`${styles.field} mt-5`}>
+            <label className={styles.label}>{copy.countryLabel}</label>
             <select
               value={country}
               onChange={(e) => {
                 setCountry(e.target.value);
                 setErrors((p) => ({ ...p, country: false }));
               }}
-              className={`demo-select ${!country ? 'placeholder' : ''} ${errors.country ? 'demo-error' : ''}`}
+              className={cn(
+                styles.select,
+                !country && styles.selectPlaceholder,
+                errors.country && styles.error,
+              )}
             >
               <option value="" disabled>
                 {copy.countryPlaceholder}
@@ -95,10 +100,10 @@ export default function DemographicsScreen({
           </div>
 
           {/* Field 2 — Salary Range */}
-          <div className="demo-field mt-4">
-            <label className="demo-label">{copy.salaryLabel}</label>
-            <p className="demo-helper">{copy.salaryHelper}</p>
-            <div className="demo-salary-group" role="radiogroup" aria-label={copy.salaryLabel}>
+          <div className={`${styles.field} mt-4`}>
+            <label className={styles.label}>{copy.salaryLabel}</label>
+            <p className={styles.helper}>{copy.salaryHelper}</p>
+            <div className={styles.salaryGroup} role="radiogroup" aria-label={copy.salaryLabel}>
               {SALARY_RANGES.map((r) => (
                 <button
                   key={r.id}
@@ -109,7 +114,11 @@ export default function DemographicsScreen({
                     setSalary(r.id);
                     setErrors((p) => ({ ...p, salary: false }));
                   }}
-                  className={`demo-salary-btn ${salary === r.id ? 'demo-salary-selected' : ''} ${errors.salary ? 'demo-error' : ''}`}
+                  className={cn(
+                    styles.salaryBtn,
+                    salary === r.id && styles.salarySelected,
+                    errors.salary && styles.error,
+                  )}
                 >
                   {r.label[language]}
                 </button>
@@ -118,9 +127,9 @@ export default function DemographicsScreen({
           </div>
 
           {/* Field 3 — Company Type */}
-          <div className="demo-field mt-4">
-            <label className="demo-label">{copy.companyLabel}</label>
-            <div className="demo-company-grid" role="radiogroup" aria-label={copy.companyLabel}>
+          <div className={`${styles.field} mt-4`}>
+            <label className={styles.label}>{copy.companyLabel}</label>
+            <div className={styles.companyGrid} role="radiogroup" aria-label={copy.companyLabel}>
               {COMPANY_TYPES_V2.map((ct) => (
                 <button
                   key={ct.id}
@@ -131,27 +140,35 @@ export default function DemographicsScreen({
                     setCompanyType(ct.id);
                     setErrors((p) => ({ ...p, companyType: false }));
                   }}
-                  className={`demo-company-card ${companyType === ct.id ? 'demo-company-selected' : ''} ${errors.companyType ? 'demo-error' : ''}`}
+                  className={cn(
+                    styles.companyCard,
+                    companyType === ct.id && styles.companySelected,
+                    errors.companyType && styles.error,
+                  )}
                 >
-                  <span className="demo-company-icon">{ct.icon}</span>
-                  <span className="demo-company-title">{ct.title[language]}</span>
-                  <span className="demo-company-subtitle">{ct.subtitle[language]}</span>
-                  <span className="demo-company-desc">{ct.desc[language]}</span>
+                  <span className={styles.companyIcon}>{ct.icon}</span>
+                  <span className={styles.companyTitle}>{ct.title[language]}</span>
+                  <span className={styles.companySubtitle}>{ct.subtitle[language]}</span>
+                  <span className={styles.companyDesc}>{ct.desc[language]}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Field 4 — Industry */}
-          <div className="demo-field mt-4">
-            <label className="demo-label">{copy.industryLabel}</label>
+          <div className={`${styles.field} mt-4`}>
+            <label className={styles.label}>{copy.industryLabel}</label>
             <select
               value={industry}
               onChange={(e) => {
                 setIndustry(e.target.value);
                 setErrors((p) => ({ ...p, industry: false }));
               }}
-              className={`demo-select ${!industry ? 'placeholder' : ''} ${errors.industry ? 'demo-error' : ''}`}
+              className={cn(
+                styles.select,
+                !industry && styles.selectPlaceholder,
+                errors.industry && styles.error,
+              )}
             >
               <option value="" disabled>
                 {copy.industryPlaceholder}
