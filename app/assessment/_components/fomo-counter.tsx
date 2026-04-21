@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/cn';
+import styles from './fomo-counter.module.css';
 
 const COPY = {
   es: {
@@ -27,19 +29,19 @@ export default function FomoCounter({ language = 'en' }: { language?: 'es' | 'en
   const value = (1 + ticks * 0.00001).toFixed(5);
 
   return (
-    <section className="fomo-counter" aria-label="AI expert adoption counter">
-      <div className="fomo-inner">
-        <div className="fomo-left">
-          <p className="fomo-live-label">
-            <span className="fomo-live-dot" />
+    <section className={cn('fomo-counter', styles.root)} aria-label="AI expert adoption counter">
+      <div className={styles.inner}>
+        <div className={styles.left}>
+          <p className={styles.liveLabel}>
+            <span className={styles.liveDot} />
             {copy.live}
           </p>
-          <p className="fomo-number" role="timer">
+          <p className={styles.number} role="timer">
             {value}
-            <span className="fomo-percent">%</span>
+            <span className={styles.percent}>%</span>
           </p>
         </div>
-        <p className="fomo-subtitle">
+        <p className={styles.subtitle}>
           {copy.sub1}
           <br />
           <em>{copy.sub2}</em>
