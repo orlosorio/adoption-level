@@ -47,7 +47,7 @@ Working notes for the multi-PR rollout. Update as features land.
 - **Versioning** — `quiz_attempts.quiz_version` + `quiz_responses.weight` snapshot on submit. No history table.
 - **Email persists on `quiz_attempts`** (`email`, `email_consent`) in addition to Beehiiv push.
 - **Per-dimension breakdown for company quiz** is NOT preserved. If wanted later, add at results-screen-rework time.
-- **Seed source** — `scripts/generate-seed.ts` is one-off. After committing seed.sql we can delete the script (kept for now in case we tweak content before all features ship).
+- **Seed source** — DB is now the canonical content store. The one-off generator `scripts/generate-seed.ts` and its `lib/*` data sources (`lib/companyAssessment.ts`, `lib/companyResults.ts`, `lib/roleResults.ts`, `ROLE_ASSESSMENTS` in `lib/roles.ts`, `QUESTIONS`/`LEVEL_LABELS`/`RESULT_COPY` in `lib/content.ts`) have been deleted. Future content edits go via Supabase Studio or a `update_quiz_content.sql` migration.
 
 ## Anon-friendly contract
 
@@ -60,7 +60,6 @@ Working notes for the multi-PR rollout. Update as features land.
 
 - `pnpm db:reset` — wipe + apply migration + seed.
 - `pnpm db:types` — regenerate `lib/supabase/database.types.ts` (needs local Supabase running).
-- `node --experimental-strip-types scripts/generate-seed.ts` — regenerate `supabase/seed.sql` from `lib/*`.
 - `pnpm typecheck` — must be clean before commit.
 - `pnpm lint` — 2 pre-existing errors in `app/about/*` are not ours.
 
