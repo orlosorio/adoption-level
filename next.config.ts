@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: '/assessment/role/:roleId',
+        destination: '/assessment/role-:roleId',
+        permanent: false,
+      },
+      {
         source: '/assessment/results',
         destination: '/assessment',
         permanent: false,

@@ -2,59 +2,62 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { type Language, LEVEL_LABELS, QUESTIONS, RESULT_COPY, UI } from '@/lib/content';
-import { getResultLevel } from '@/lib/scoring';
+import type { Language } from '@/lib/content';
+import { UI } from '@/lib/content';
 import { BEEHIIV_ENDPOINT } from '@/lib/config';
+import { getBandOrdinal } from '@/lib/scoring';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
+import type { QuizDef } from '@/lib/supabase/queries/getQuizBySlug';
 import ScaleButtons from '@/app/assessment/_components/scale-buttons';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
 import glass from '@/app/assessment/_components/glass.module.css';
 
 type Screen = 'quiz' | 'post-quiz';
 
-function splitLevelLabel(label: string): { number: string; name: string } {
+function splitTierLabel(label: string): { number: string; name: string } {
   const parts = label.split(' — ');
-  if (parts.length >= 2) {
-    return { number: parts[0]!, name: parts.slice(1).join(' — ') };
-  }
+  if (parts.length >= 2) return { number: parts[0]!, name: parts.slice(1).join(' — ') };
   return { number: label, name: '' };
 }
 
-export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Language }) {
+interface QuizRunnerProps {
+  quiz: QuizDef;
+  language: Language;
+}
+
+export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
   const router = useRouter();
-  const [language] = useState<Language>(initialLanguage);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [screen, setScreen] = useState<Screen>('quiz');
   const [hydrated, setHydrated] = useState(false);
 
+  const totalQuestions = quiz.questions.length;
+
   useEffect(() => {
     const persisted = loadPersistedState();
     if (
       persisted &&
-      persisted.assessmentType === 'general' &&
+      persisted.quizSlug === quiz.slug &&
       persisted.answers.length > 0 &&
-      persisted.answers.length < QUESTIONS.length
+      persisted.answers.length < totalQuestions
     ) {
       setCurrentQuestion(persisted.currentQuestion);
       setAnswers(persisted.answers);
     }
     setHydrated(true);
-  }, []);
-
-  const totalQuestions = QUESTIONS.length;
+  }, [quiz.slug, totalQuestions]);
 
   const persist = useCallback(
     (q: number, a: number[]) => {
       savePersistedState({
-        assessmentType: 'general',
-        roleId: null,
+        quizSlug: quiz.slug,
         language,
         currentQuestion: q,
         answers: a,
       });
     },
-    [language],
+    [quiz.slug, language],
   );
 
   const answerQuestion = useCallback(
@@ -84,15 +87,14 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
     persist(prevQ, prevAnswers);
   }, [currentQuestion, answers, persist]);
 
-  const score = answers.reduce((sum, v) => sum + v, 0);
-  const maxScore = totalQuestions * 4;
-  const resultLevel = answers.length > 0 ? getResultLevel(score, maxScore) : 0;
-  const resultLabel = LEVEL_LABELS[resultLevel]![language];
-  const { number: resultLevelNumber, name: resultLevelName } = splitLevelLabel(resultLabel);
+  const score = answers.reduce((sum, v, i) => sum + v * (quiz.questions[i]?.weight ?? 1), 0);
+  const maxScore = quiz.questions.reduce((sum, q) => sum + 4 * q.weight, 0);
+  const resultLevel = answers.length > 0 ? getBandOrdinal(score, maxScore) : 0;
+  const band = quiz.resultBands.find((b) => b.ordinal === resultLevel) ?? null;
 
   const quizProgressPct = totalQuestions > 0 ? ((currentQuestion + 1) / totalQuestions) * 100 : 0;
 
-  const currentQ = QUESTIONS[currentQuestion];
+  const currentQ = quiz.questions[currentQuestion];
 
   const restart = () => {
     clearPersistedState();
@@ -104,12 +106,16 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
       await fetch(BEEHIIV_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, quizSlug: quiz.slug }),
       });
     }
   };
 
   if (!hydrated) return null;
+
+  const tierLabelForResult =
+    band?.shortLabel ?? quiz.tiers.find((t) => t.ordinal === resultLevel)?.shortLabel ?? '';
+  const { number: resultLevelNumber, name: resultLevelName } = splitTierLabel(tierLabelForResult);
 
   const resultsContent = (
     <div className="rounded-2xl bg-white px-5 py-6 text-left sm:px-10 sm:py-11">
@@ -128,64 +134,53 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
             {language === 'es' ? 'Puntuación total' : 'Total score'}
           </span>
           <span className="font-bold text-[#111]">
-            {score} / {maxScore}
+            {Math.round(score)} / {Math.round(maxScore)}
           </span>
         </div>
         <div className="h-[5px] w-full rounded-full bg-[#d7ddfb]">
           <div
             className="h-[5px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
-            style={{
-              width: maxScore > 0 ? `${(score / maxScore) * 100}%` : '0%',
-            }}
+            style={{ width: maxScore > 0 ? `${(score / maxScore) * 100}%` : '0%' }}
           />
         </div>
       </div>
 
-      <div className="mt-4 rounded-[10px] bg-[#eef1ff] px-5 py-4">
-        <div className="mb-2 flex items-center justify-between text-[14px]">
-          <span className="text-[#555]">
-            {language === 'es' ? 'Promedio por pregunta' : 'Average score per question'}
-          </span>
-          <span className="font-bold text-[#111]">{(score / totalQuestions).toFixed(1)} / 4.0</span>
-        </div>
-        <div className="h-[4px] w-full rounded-full bg-[#d7ddfb]">
-          <div
-            className="h-[4px] rounded-full bg-[#365cff] transition-[width] duration-[350ms] ease-out"
-            style={{ width: `${(score / maxScore) * 100}%` }}
-          />
-        </div>
-        <p className="mt-1 text-right text-xs text-[#999]">
-          {Math.round((score / maxScore) * 100)}%
-        </p>
-      </div>
-
-      <p className="mt-8 font-sans text-[15px] leading-relaxed text-[#333]">
-        {RESULT_COPY[resultLevel]!.description[language]}
-      </p>
-
-      <div className="mt-8">
-        <p className="font-sans text-sm font-bold text-[#111]">
-          {UI.results[language].nextStepHeading}
-        </p>
-        <p className="mt-2 font-sans text-[15px] leading-relaxed text-[#333]">
-          {RESULT_COPY[resultLevel]!.nextStep[language]}
-        </p>
-      </div>
+      {band && (
+        <>
+          <p className="mt-8 font-sans text-[15px] leading-relaxed text-[#333]">
+            {band.description}
+          </p>
+          <div className="mt-8">
+            <p className="font-sans text-sm font-bold text-[#111]">
+              {UI.results[language].nextStepHeading}
+            </p>
+            <p className="mt-2 font-sans text-[15px] leading-relaxed text-[#333]">
+              {band.nextStep}
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 
+  if (!currentQ) return null;
+
+  const tierShort = currentQ.tier?.shortLabel ?? '';
+  const { number: tierNumber, name: tierName } = splitTierLabel(tierShort);
+  const tierDisplayOrdinal = (currentQ.tier?.ordinal ?? 0) + 1;
+
+  const assessmentTypeForFlow: 'general' | 'company' | 'role' =
+    quiz.slug === 'general' ? 'general' : quiz.slug === 'company' ? 'company' : 'role';
+  const roleIdForFlow = quiz.slug.startsWith('role-') ? quiz.slug.slice('role-'.length) : null;
+
   return (
     <div className="quiz-in-progress contents">
-      {screen === 'quiz' && currentQ && (
+      {screen === 'quiz' && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px]">
             <header className="mb-3 w-full shrink-0 sm:mb-5">
               <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#365cff] sm:mb-2 sm:text-[14px]">
-                <span>
-                  {UI.quiz[language].levelOf(
-                    (QUESTIONS[currentQuestion] as { level: number }).level + 1,
-                  )}
-                </span>
+                <span>{UI.quiz[language].levelOf(tierDisplayOrdinal)}</span>
                 <span>{UI.quiz[language].questionOf(currentQuestion + 1, totalQuestions)}</span>
               </div>
               <div
@@ -204,37 +199,27 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
 
             <div className="mx-auto w-full max-w-[600px]">
               <div className={`${glass.quizCard} px-5 py-6 sm:px-8 sm:py-8`}>
-                {(() => {
-                  const q = QUESTIONS[currentQuestion]!;
-                  const full = LEVEL_LABELS[q.level]![language];
-                  const { number, name } = splitLevelLabel(full);
-                  const text = language === 'es' ? q.es : q.en;
-                  return (
-                    <>
-                      <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
-                        <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
-                          {number}
-                        </p>
-                        <p className="font-sans text-[13px] font-semibold text-[#4e6bff]/50 italic sm:mt-1 sm:text-[15px]">
-                          {name}
-                        </p>
-                      </div>
-                      <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
-                        {text}
-                      </p>
-                      <ScaleButtons onChange={answerQuestion} language={language} />
-                      {currentQuestion > 0 && (
-                        <button
-                          type="button"
-                          onClick={goBack}
-                          className="mt-3 block w-full cursor-pointer border-none bg-transparent py-0.5 text-center font-sans text-[13px] font-medium text-[rgba(23,23,23,0.3)] transition-colors duration-200 hover:text-[#1f36a9]/60 sm:mt-6"
-                        >
-                          {UI.quiz[language].back}
-                        </button>
-                      )}
-                    </>
-                  );
-                })()}
+                <div className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
+                  <p className="font-serif text-[20px] leading-tight font-bold text-[#1f36a9] sm:text-[28px]">
+                    {tierNumber}
+                  </p>
+                  <p className="font-sans text-[13px] font-semibold text-[#4e6bff]/50 italic sm:mt-1 sm:text-[15px]">
+                    {tierName}
+                  </p>
+                </div>
+                <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
+                  {currentQ.statement}
+                </p>
+                <ScaleButtons onChange={answerQuestion} language={language} />
+                {currentQuestion > 0 && (
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="mt-3 block w-full cursor-pointer border-none bg-transparent py-0.5 text-center font-sans text-[13px] font-medium text-[rgba(23,23,23,0.3)] transition-colors duration-200 hover:text-[#1f36a9]/60 sm:mt-6"
+                  >
+                    {UI.quiz[language].back}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -244,9 +229,10 @@ export default function GeneralQuiz({ initialLanguage }: { initialLanguage: Lang
       {screen === 'post-quiz' && (
         <PostQuizFlow
           language={language}
-          assessmentType="general"
-          score={score}
-          maxScore={maxScore}
+          assessmentType={assessmentTypeForFlow}
+          roleId={roleIdForFlow}
+          score={Math.round(score)}
+          maxScore={Math.round(maxScore)}
           totalQuestions={totalQuestions}
           resultLevel={resultLevel}
           resultsContent={resultsContent}

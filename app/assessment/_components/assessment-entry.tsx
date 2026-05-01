@@ -36,7 +36,7 @@ export default function AssessmentEntry({ errorParam }: { errorParam?: string | 
 
   const selectRole = (roleId: RoleId) => {
     const lang = language ?? 'es';
-    router.push(`/assessment/role/${roleId}?lang=${lang}`);
+    router.push(`/assessment/role-${roleId}?lang=${lang}`);
   };
 
   return (

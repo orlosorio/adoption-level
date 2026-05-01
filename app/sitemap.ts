@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const roleEntries: MetadataRoute.Sitemap = VALID_ROLE_IDS.map((id) => ({
-    url: `${BASE_URL}/assessment/role/${id}`,
+    url: `${BASE_URL}/assessment/role-${id}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
