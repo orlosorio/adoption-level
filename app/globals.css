@@ -1,15 +1,6 @@
 @import 'tailwindcss';
 
-@theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-playfair), ui-serif, Georgia, 'Times New Roman', serif;
-  --font-mono: var(--font-mono), ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
-  --color-brand-700: #1f36a9;
-  --color-brand-600: #365cff;
-  --color-brand-500: #4e6bff;
-  --color-brand-300: #8a9ff0;
-  --color-bg-soft: #f3f4f7;
-}
+/* === Tokens (CSS vars + Tailwind theme) === */
 
 :root {
   --bg-soft: #f3f4f7;
@@ -18,6 +9,26 @@
   --brand-500: #4e6bff;
   --brand-300: #8a9ff0;
 }
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: var(--font-mono), ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+  --color-brand-700: var(--brand-700);
+  --color-brand-600: var(--brand-600);
+  --color-brand-500: var(--brand-500);
+  --color-brand-300: var(--brand-300);
+  --color-bg-soft: var(--bg-soft);
+}
+
+/* === Base === */
+
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+/* === Quiz background: grid + aurora + grain === */
 
 .quiz-grid-bg {
   position: relative;
@@ -93,6 +104,8 @@
   background-size: 3px 3px;
   mix-blend-mode: multiply;
 }
+
+/* === Quiz background: cubes + pyramid === */
 
 .quiz-cube {
   position: absolute;
@@ -215,6 +228,8 @@
   background: rgba(105, 132, 246, 0.72);
   transform: rotateY(-90deg) translateZ(18px) rotateX(30deg);
 }
+
+/* === Animations === */
 
 @keyframes blobTL {
   0% {
@@ -357,18 +372,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .quiz-aurora-blob {
-    animation: none;
-  }
-}
-
-body {
-  margin: 0;
-  min-height: 100%;
-}
-
-/* ── Quiz-active fade: dim everything except the quiz card ── */
+/* === Quiz-active fade: dim everything except the quiz card === */
 
 .assessment-shell.quiz-grid-bg:has(.quiz-in-progress) {
   background-image:
@@ -379,24 +383,18 @@ body {
 
 .assessment-shell:has(.quiz-in-progress) .quiz-cube {
   animation-duration: 500s !important;
+  opacity: 0.12;
+  transition: opacity 0.8s ease;
 }
 
 .assessment-shell:has(.quiz-in-progress) .quiz-aurora-blob {
   animation-duration: 300s !important;
-}
-
-.assessment-shell:has(.quiz-in-progress) .quiz-aurora-blob {
   opacity: 0.18;
   transition: opacity 0.8s ease;
 }
 
 .assessment-shell:has(.quiz-in-progress) .quiz-grain-layer {
   opacity: 0.04;
-  transition: opacity 0.8s ease;
-}
-
-.assessment-shell:has(.quiz-in-progress) .quiz-cube {
-  opacity: 0.12;
   transition: opacity 0.8s ease;
 }
 
@@ -418,7 +416,15 @@ body {
   opacity: 1;
 }
 
-/* ── Viewport-height responsive: laptops (≤ 960px tall) ── */
+/* === Reduced motion === */
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-aurora-blob {
+    animation: none;
+  }
+}
+
+/* === Viewport: short laptops (≤ 960px tall) === */
 
 @media (max-height: 960px) {
   .assessment-shell {
