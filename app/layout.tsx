@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Space_Mono } from 'next/font/google';
+import { Suspense } from 'react';
 import './globals.css';
 import { OG_IMAGE_URL } from '@/lib/config';
+import AuthModal from './_components/auth/auth-modal';
+import Header from './_components/header';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
 
@@ -44,8 +47,15 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full font-sans text-neutral-900">{children}</body>
+      <body className="min-h-full font-sans text-neutral-900" suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
+        {children}
+        <AuthModal />
+      </body>
     </html>
   );
 }
