@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import BackgroundScene from '@/components/BackgroundScene';
+import BackgroundScene from '@/components/layout/background-scene';
+import styles from './about.module.css';
 
 export const metadata: Metadata = {
   title: 'About this Survey | Accionables AI Adoption Assessment',
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="assessment-shell about-grid-bg flex min-h-dvh flex-col px-4 py-[clamp(0.5rem,1.5vh,2rem)] sm:px-6">
+    <div
+      className={`assessment-shell ${styles.gridBg} flex min-h-dvh flex-col px-4 py-[clamp(0.5rem,1.5vh,2rem)] sm:px-6`}
+    >
       <BackgroundScene />
       <div className="relative z-10 mx-auto flex w-full max-w-[700px] flex-1 flex-col lg:max-w-[1020px]">
         {children}

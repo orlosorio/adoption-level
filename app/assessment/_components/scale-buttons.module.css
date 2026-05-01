@@ -1,0 +1,56 @@
+.option {
+  width: 100%;
+  padding: 14px 20px;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(64, 64, 64);
+  line-height: 1.4;
+  border-radius: 12px;
+  border: 1.2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow:
+    0 2px 8px rgba(31, 54, 169, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.58);
+  border-color: rgba(54, 92, 255, 0.2);
+  box-shadow:
+    0 4px 16px rgba(31, 54, 169, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.option:active {
+  background: rgba(54, 92, 255, 0.1);
+  border-color: var(--brand-600);
+  box-shadow:
+    0 0 0 2px rgba(54, 92, 255, 0.1),
+    0 2px 8px rgba(54, 92, 255, 0.06);
+  transform: translateY(0);
+}
+
+@media (max-width: 639px) {
+  .option {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-height: 960px) {
+  .option {
+    padding: clamp(8px, 1.2vh, 11px) 16px;
+  }
+}

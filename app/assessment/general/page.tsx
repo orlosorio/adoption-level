@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { Language } from '@/lib/content';
-import GeneralQuiz from '@/components/GeneralQuiz';
+import GeneralQuiz from './_components/general-quiz';
 
 export const metadata: Metadata = {
   title: 'General AI Assessment | Accionables',

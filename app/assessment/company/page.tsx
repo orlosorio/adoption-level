@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { Language } from '@/lib/content';
-import CompanyQuiz from '@/components/CompanyQuiz';
+import CompanyQuiz from './_components/company-quiz';
 
 export const metadata: Metadata = {
   title: 'Company AI Readiness Assessment | Accionables',

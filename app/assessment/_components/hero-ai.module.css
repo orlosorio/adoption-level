@@ -1,0 +1,174 @@
+.adoption {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, min(3.5vw, 3.8vh), 36px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.1;
+  color: var(--brand-700);
+  margin-top: 0;
+}
+
+.rule {
+  width: clamp(32px, 5vw, 52px);
+  height: 1.5px;
+  margin-top: clamp(4px, 1.2vh, 12px);
+  border: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(54, 92, 255, 0.4) 50%, transparent 100%);
+}
+
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: clamp(14px, min(2.2vw, 2.8vh), 26px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgba(31, 54, 169, 0.72);
+  margin-top: clamp(4px, 1vh, 10px);
+  padding-left: 0.25em;
+}
+
+@media (max-width: 640px) {
+  .rule {
+    margin-top: 14px;
+  }
+  .subtitle {
+    margin-top: 10px;
+  }
+}
+
+.svg {
+  display: block;
+  height: clamp(36px, min(7vw, 7vh), 76px);
+  width: auto;
+  user-select: none;
+  animation: aiSvgGlow 10s ease-in-out infinite;
+}
+
+.fill {
+  fill: rgba(140, 168, 255, 0.28);
+  stroke: none;
+  opacity: 0.3;
+  animation: aiFillCycle 16s ease-in-out infinite;
+}
+
+.fillI {
+  animation-delay: 1.8s;
+}
+
+.stroke {
+  fill: none;
+  stroke: rgba(43, 76, 240, 0.85);
+  stroke-width: 3;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: aiDraw 16s ease-in-out infinite;
+}
+
+.strokeI {
+  animation-delay: 1.8s;
+}
+
+.anchor {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: rgba(43, 76, 240, 0.7);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: aiAnchorCycle 16s ease-in-out infinite;
+  animation-delay: calc(0.6s + var(--ai-i) * 0.12s);
+}
+
+@keyframes aiDraw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  35% {
+    stroke-dashoffset: 0;
+  }
+  65% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+@keyframes aiFillCycle {
+  0% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes aiSvgGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(54, 92, 255, 0.06));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(54, 92, 255, 0.22));
+  }
+}
+
+@keyframes aiAnchorCycle {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg,
+  .fill,
+  .stroke,
+  .anchor {
+    animation: none;
+  }
+  .stroke {
+    stroke-dashoffset: 0;
+  }
+  .anchor {
+    opacity: 1;
+  }
+  .fill {
+    opacity: 1;
+  }
+}

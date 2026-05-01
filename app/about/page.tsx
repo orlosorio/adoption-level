@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ABOUT_CONTENT } from '@/lib/about-content';
-import ArticleHeader from '@/components/About/ArticleHeader';
-import ArticleSection from '@/components/About/ArticleSection';
-import CitationCard from '@/components/About/CitationCard';
-import AuthorSignoff from '@/components/About/AuthorSignoff';
-import StickyAssessmentBar from '@/components/About/StickyAssessmentBar';
+import ArticleHeader from './_components/article-header';
+import ArticleSection from './_components/article-section';
+import CitationCard from './_components/citation-card';
+import AuthorSignoff from './_components/author-signoff';
+import StickyAssessmentBar from './_components/sticky-assessment-bar';
+import ReadingProgress from './_components/reading-progress';
+import styles from './about.module.css';
 
 type Lang = 'en' | 'es';
 
@@ -71,37 +73,47 @@ export default function AboutPage() {
   return (
     <>
       <ReadingProgress />
-      <div className="about-page-layout">
-        <div className="about-container">
+      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+        <div className="pt-10 pb-[120px]">
           <ArticleHeader meta={content.meta} lang={lang} onLangChange={setLang} />
 
           {content.sections.map((section, i) => (
             <div key={section.id}>
               <ArticleSection heading={section.heading} body={section.body} />
               {i === citationAfterIndex && <CitationCard citation={content.citation} />}
-              {i < content.sections.length - 1 && <hr className="about-divider" />}
+              {i < content.sections.length - 1 && (
+                <hr className="my-10 border-t border-none border-t-[#d8defa]" />
+              )}
             </div>
           ))}
 
           <AuthorSignoff />
 
-          <div className="about-bottom-cta">
-            <h2 className="about-bottom-cta-heading">{cta.heading}</h2>
-            <p className="about-bottom-cta-text">{cta.text}</p>
-            <a href="/assessment" className="about-bottom-cta-btn">
+          <div className="mt-14 mb-12 border-t border-t-[rgba(31,54,169,0.08)] py-10 text-center">
+            <h2 className="text-brand-700 m-0 mb-2 font-sans text-[22px] font-bold">
+              {cta.heading}
+            </h2>
+            <p className="text-brand-700 m-0 mb-6 font-sans text-[15px] font-normal opacity-55">
+              {cta.text}
+            </p>
+            <a href="/assessment" className={styles.bottomCtaBtn}>
               {cta.button}
             </a>
           </div>
         </div>
 
-        <aside className="about-sidebar-col">
-          <div className="about-sidebar-card">
-            <p className="about-sidebar-heading">{sidebar.heading}</p>
-            <p className="about-sidebar-text">{sidebar.text}</p>
+        <aside className="hidden lg:block">
+          <div className={styles.sidebarCard}>
+            <p className="text-brand-700 font-sans text-[15px] leading-[1.35] font-semibold">
+              {sidebar.heading}
+            </p>
+            <p className="text-brand-700 font-sans text-[13px] leading-[1.55] font-normal opacity-65">
+              {sidebar.text}
+            </p>
             <button
               type="button"
               onClick={() => router.push('/assessment')}
-              className="about-sidebar-btn"
+              className={styles.sidebarBtn}
             >
               {sidebar.button}
             </button>
@@ -110,23 +122,5 @@ export default function AboutPage() {
       </div>
       <StickyAssessmentBar lang={lang} />
     </>
-  );
-}
-
-function ReadingProgress() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      const pct = (scrollTop / (scrollHeight - clientHeight)) * 100;
-      setProgress(Math.min(100, Math.round(pct)));
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  return (
-    <div className="about-progress-bar" style={{ width: `${progress}%` }} aria-hidden="true" />
   );
 }

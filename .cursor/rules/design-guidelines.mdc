@@ -1,0 +1,11 @@
+---
+description: Trigger when you need context about the project's UI style, visual language, component patterns, or design principles. Applies to any UI, styling, or markup change.
+globs:
+  - "app/**/*.{ts,tsx,js,jsx}"
+  - "components/**/*.{ts,tsx,js,jsx}"
+  - "**/*.{css,scss,sass,less}"
+  - "**/*.{md,mdx}"
+alwaysApply: false
+---
+
+@.claude/resources/design-guidelines.md

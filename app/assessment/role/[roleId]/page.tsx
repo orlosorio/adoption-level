@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import type { Language } from '@/lib/content';
 import type { RoleId } from '@/lib/roles';
 import { isValidRoleId, ROLE_META, VALID_ROLE_IDS } from '@/lib/routing';
-import RoleQuiz from '@/components/RoleQuiz';
+import RoleQuiz from './_components/role-quiz';
 
 export function generateStaticParams() {
   return VALID_ROLE_IDS.map((id) => ({ roleId: id }));

@@ -1,0 +1,7 @@
+---
+description: Git workflow best practices for commits, branches, PRs, and merges. Triggers on git operations, commits, branches, PRs, and merges.
+globs:
+alwaysApply: false
+---
+
+@.claude/skills/git-workflow/SKILL.md
