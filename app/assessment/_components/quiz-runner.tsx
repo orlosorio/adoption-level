@@ -119,12 +119,14 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
   const resultsContent = (
     <div className="rounded-2xl bg-white px-5 py-6 text-left sm:px-10 sm:py-11">
       <div className="border-b border-[#eee] pb-8 text-center">
-        <p className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
-          {resultLevelNumber}
-        </p>
-        <p className="mt-2 font-sans text-[15px] font-semibold text-[#4e6bff] italic">
-          {resultLevelName}
-        </p>
+        <h1 className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
+          {UI.results[language].heading}
+        </h1>
+        {(resultLevelNumber || resultLevelName) && (
+          <p className="mt-3 font-sans text-[14px] font-semibold text-[#4e6bff] italic sm:text-[15px]">
+            {[resultLevelNumber, resultLevelName].filter(Boolean).join(' — ')}
+          </p>
+        )}
       </div>
 
       <div className="mt-8 rounded-[10px] bg-[#eef1ff] px-5 py-4">

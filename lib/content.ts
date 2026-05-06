@@ -28,6 +28,7 @@ export const UI = {
   },
   results: {
     es: {
+      heading: 'Tus resultados',
       affirmativeLabel: 'Respuestas afirmativas',
       scoreOf: (s: number, t: number) => `${s} de ${t}`,
       nextStepHeading: 'Tu siguiente paso',
@@ -43,6 +44,7 @@ export const UI = {
       emailMeError: 'No pudimos enviarlo. Intenta de nuevo.',
     },
     en: {
+      heading: 'Your results',
       affirmativeLabel: 'Affirmative answers',
       scoreOf: (s: number, t: number) => `${s} of ${t}`,
       nextStepHeading: 'Your next step',
