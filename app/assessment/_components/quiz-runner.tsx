@@ -4,9 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
-import { BEEHIIV_ENDPOINT } from '@/lib/config';
 import { getBandOrdinal } from '@/lib/scoring';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
+import { useUser } from '@/lib/auth/use-user';
 import type { QuizDef } from '@/lib/supabase/queries/getQuizBySlug';
 import ScaleButtons from '@/app/assessment/_components/scale-buttons';
 import PostQuizFlow from '@/app/assessment/_components/post-quiz/post-quiz-flow';
@@ -27,6 +27,7 @@ interface QuizRunnerProps {
 
 export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
   const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [screen, setScreen] = useState<Screen>('quiz');
@@ -35,18 +36,23 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
   const totalQuestions = quiz.questions.length;
 
   useEffect(() => {
+    if (userLoading) return;
     const persisted = loadPersistedState();
-    if (
-      persisted &&
-      persisted.quizSlug === quiz.slug &&
-      persisted.answers.length > 0 &&
-      persisted.answers.length < totalQuestions
-    ) {
-      setCurrentQuestion(persisted.currentQuestion);
-      setAnswers(persisted.answers);
+    if (persisted && persisted.quizSlug === quiz.slug && persisted.answers?.length) {
+      if (persisted.answers.length >= totalQuestions && user) {
+        // Quiz already completed in a previous session and the user is now
+        // authenticated (e.g. they came back from the email-confirm tab).
+        // Jump straight to results so the slot can auto-submit.
+        setAnswers(persisted.answers.slice(0, totalQuestions));
+        setCurrentQuestion(totalQuestions);
+        setScreen('post-quiz');
+      } else if (persisted.answers.length < totalQuestions) {
+        setCurrentQuestion(persisted.currentQuestion);
+        setAnswers(persisted.answers);
+      }
     }
     setHydrated(true);
-  }, [quiz.slug, totalQuestions]);
+  }, [quiz.slug, totalQuestions, user, userLoading]);
 
   const persist = useCallback(
     (q: number, a: number[]) => {
@@ -66,8 +72,11 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
       const nextQ = currentQuestion + 1;
       setAnswers(nextAnswers);
       if (nextQ >= totalQuestions) {
+        // Keep persisted answers around: if the user is logged-out they may
+        // sign up and come back via the email-confirm tab; localStorage is
+        // the bridge. results-benchmark-slot stamps savedAttemptId on submit
+        // to prevent double-submits.
         persist(nextQ, nextAnswers);
-        clearPersistedState();
         setScreen('post-quiz');
       } else {
         setCurrentQuestion(nextQ);
@@ -99,16 +108,6 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
   const restart = () => {
     clearPersistedState();
     router.push('/assessment');
-  };
-
-  const handleEmailSubmit = async (payload: Record<string, unknown>) => {
-    if (BEEHIIV_ENDPOINT && BEEHIIV_ENDPOINT !== 'YOUR_BEEHIIV_ENDPOINT') {
-      await fetch(BEEHIIV_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, quizSlug: quiz.slug }),
-      });
-    }
   };
 
   if (!hydrated) return null;
@@ -163,19 +162,13 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
     </div>
   );
 
-  if (!currentQ) return null;
-
-  const tierShort = currentQ.tier?.shortLabel ?? '';
+  const tierShort = currentQ?.tier?.shortLabel ?? '';
   const { number: tierNumber, name: tierName } = splitTierLabel(tierShort);
-  const tierDisplayOrdinal = (currentQ.tier?.ordinal ?? 0) + 1;
-
-  const assessmentTypeForFlow: 'general' | 'company' | 'role' =
-    quiz.slug === 'general' ? 'general' : quiz.slug === 'company' ? 'company' : 'role';
-  const roleIdForFlow = quiz.slug.startsWith('role-') ? quiz.slug.slice('role-'.length) : null;
+  const tierDisplayOrdinal = (currentQ?.tier?.ordinal ?? 0) + 1;
 
   return (
     <div className="quiz-in-progress contents">
-      {screen === 'quiz' && (
+      {screen === 'quiz' && currentQ && (
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-[600px]">
             <header className="mb-3 w-full shrink-0 sm:mb-5">
@@ -229,15 +222,16 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
       {screen === 'post-quiz' && (
         <PostQuizFlow
           language={language}
-          assessmentType={assessmentTypeForFlow}
-          roleId={roleIdForFlow}
           score={Math.round(score)}
           maxScore={Math.round(maxScore)}
-          totalQuestions={totalQuestions}
-          resultLevel={resultLevel}
           resultsContent={resultsContent}
           onRestart={restart}
-          onEmailSubmit={handleEmailSubmit}
+          quizId={quiz.id}
+          responses={quiz.questions.map((q, i) => ({
+            question_id: q.id,
+            value: answers[i] ?? 0,
+          }))}
+          locale={language}
         />
       )}
     </div>

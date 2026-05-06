@@ -52,12 +52,20 @@ export default function SignupForm({
 
     setSubmitting(true);
     const supabase = createClient();
+    // Pass the current path through `next` so the email-confirm callback
+    // returns the user to the same /assessment/<slug> page, where
+    // quiz-runner picks up persisted answers and auto-submits.
+    const nextPath =
+      typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '/';
+    const callbackUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(
+      nextPath,
+    )}`;
     const { error: signUpError } = await supabase.auth.signUp({
       email: trimmedEmail,
       password,
       options: {
         data: { display_name: trimmedName },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: callbackUrl,
       },
     });
     setSubmitting(false);
@@ -67,7 +75,7 @@ export default function SignupForm({
       return;
     }
     onPendingEmail(trimmedEmail);
-    setMode('check-email');
+    setMode('signup-demographics');
   }
 
   return (

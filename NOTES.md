@@ -1,84 +1,150 @@
-# Quiz DB migration — handoff notes
+# Testing plan — auth-only quiz + user demographics + precomputed benchmarks
 
-Working notes for the multi-PR rollout. Update as features land.
+Concrete steps to verify the changes on `feat/quiz-db-schema`. Run them in order; each later flow assumes the earlier ones work.
 
-## State of play (as of 2026-04-30)
+## 1. Reset the DB and confirm migrations land
 
-### Shipped this PR
+```powershell
+pnpm db:stop
+pnpm db:start
+pnpm db:reset      # runs all migrations + seed
+pnpm db:types      # regenerates types from the live DB (overwrites hand-edits — should diff back to the same shape)
+pnpm typecheck
+```
 
-- **Migration** `supabase/migrations/20260501043939_create_quiz_schema.sql`:
-  - Content: `quizzes`, `question_tiers` (+ `_translations`), `questions` (+ `_translations`), `result_band_copies` (flat, keyed by `(quiz_id, ordinal, locale)`).
-  - Demographics (EAV): `demographic_fields` (+ `_translations`), `demographic_options` (+ `_translations`), `quiz_attempt_demographics`.
-  - Responses: `quiz_attempts`, `quiz_responses`. Anon-friendly via `anon_token`. Score is summed at submit; `score_pct` is a stored generated column.
-  - Insights: `quiz_insights` (populated by future scheduled job, not triggers).
-  - RLS: public-read on content + insights; owner-read on attempts/responses; **no insert policies** — anon writes go through RPC only.
-  - RPCs: `submit_attempt(p_quiz_id, p_locale, p_anon_token, p_responses jsonb, p_demographics jsonb null, p_email null, p_email_consent false, p_session_id null)` returns `(attempt_id, score, max_score, score_pct)`. Validates response count + foreign question_id. `claim_attempt(p_token)` for future signup.
+If `db:types` produces a non-trivial diff, the hand-edited `database.types.ts` is wrong somewhere. Inspect and reconcile.
 
-- **Seed** `supabase/seed.sql` (auto-generated). Generator at `scripts/generate-seed.ts` (run with `node --experimental-strip-types scripts/generate-seed.ts`). Counts: 19 quizzes, 612 questions (general 15 + company 35 + roles 17 × 33, except `finance-accounting` which has 34 → 562), 5 tiers/quiz × 2 locales, 10 band-copy rows per quiz.
+## 2. Smoke-test the schema in SQL
 
-- **Front (read path only)**:
-  - `app/assessment/[slug]/page.tsx` — server component, `generateStaticParams` from active quizzes.
-  - `lib/supabase/queries/getQuizBySlug.ts` — uses a plain `@supabase/supabase-js` client (NOT the cookie-aware `createClient`), because `generateStaticParams` runs without an HTTP request. ISR `revalidate: 3600`.
-  - `app/assessment/_components/quiz-runner.tsx` — generic client component. Replaces `general-quiz.tsx` / `company-quiz.tsx` / `role-quiz.tsx` (deleted).
-  - `lib/quizCopy.ts` — quiz-level copy (title, subtitle, intro) keyed by slug. Lives in `lib/`, NOT in DB.
-  - `lib/scoring.ts` — `BAND_THRESHOLDS_PCT = [0,20,40,60,80,100]`, `getBandOrdinal(score, max)`.
-  - `lib/sessionState.ts` — keyed by `quizSlug` (was `assessmentType + roleId`).
-  - Routes: `/assessment/role/:roleId` redirects to `/assessment/role-:roleId` (next.config.ts).
+Open `pnpm db:status` → Studio URL. In the SQL editor:
 
-### Not yet wired (deliberately)
+```sql
+-- 5 fields seeded
+select slug, field_kind from public.demographic_fields order by sort_order;
 
-| Capability                 | What's missing                                                                                                                                                                                                               |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Persisting attempts        | Front never calls `submit_attempt`. Test row in DB came from a manual `curl` during verification.                                                                                                                            |
-| Anon cookie middleware     | `aq_anon` cookie issuance on first `/assessment/*` hit. Plan calls for it now; not done.                                                                                                                                     |
-| Results screen from DB     | `QuizRunner` builds `resultsContent` inline from `band.description` / `band.nextStep`. Per-dimension breakdown for company quiz dropped (UX unified). Migrate when results screen moves off `lib/*`.                         |
-| Email capture wiring to DB | Currently posts to BEEHIIV_ENDPOINT only. Should also pass `email` + `email_consent` to `submit_attempt`.                                                                                                                    |
-| Demographics UI → DB       | `DemographicsScreen` still uses static `lib/demographics.ts` / `industries.ts` / `companyTypesV2.ts`. Should fetch from `demographic_fields` + `demographic_options` and submit through `submit_attempt`'s `p_demographics`. |
-| `claim_attempt` on signup  | Auth flow doesn't exist yet. When it does, call `claim_attempt(token)` after sign-in.                                                                                                                                        |
-| Insights job               | No scheduler / function. Manual queries only for now.                                                                                                                                                                        |
+-- options exist + translations cover both locales
+select f.slug, count(distinct o.id) as opts, count(t.label) as translations
+from public.demographic_fields f
+join public.demographic_options o on o.field_id = f.id
+join public.demographic_option_translations t on t.option_id = o.id
+group by f.slug;
 
-## Locked decisions (don't relitigate)
+-- old table is gone
+select to_regclass('public.quiz_attempt_demographics');  -- should be null
 
-- **`quizzes` is minimal**: `id, slug, is_active, created_at, updated_at`. No `kind`, no quiz translations table. Quiz-level copy lives in `lib/quizCopy.ts`.
-- **Universal 5-pt scale** — `lib/scaleLabels.ts` consumed directly by `<ScaleButtons>`. No `option_sets` / `options` tables.
-- **Universal thresholds** — 0/20/40/60/80/100. Band derived from `score_pct`, not stored.
-- **EAV demographics** — adding a dimension is data INSERT, not a migration.
-- **Slug format** — `general`, `company`, `role-${roleId}` (hyphenated, URL-safe).
-- **Versioning** — `quiz_attempts.quiz_version` + `quiz_responses.weight` snapshot on submit. No history table.
-- **Email persists on `quiz_attempts`** (`email`, `email_consent`) in addition to Beehiiv push.
-- **Per-dimension breakdown for company quiz** is NOT preserved. If wanted later, add at results-screen-rework time.
-- **Seed source** — DB is now the canonical content store. The one-off generator `scripts/generate-seed.ts` and its `lib/*` data sources (`lib/companyAssessment.ts`, `lib/companyResults.ts`, `lib/roleResults.ts`, `ROLE_ASSESSMENTS` in `lib/roles.ts`, `QUESTIONS`/`LEVEL_LABELS`/`RESULT_COPY` in `lib/content.ts`) have been deleted. Future content edits go via Supabase Studio or a `update_quiz_content.sql` migration.
+-- snapshot column exists
+\d public.quiz_attempts
+```
 
-## Anon-friendly contract
+## 3. Anon must be locked out
 
-- `submit_attempt` is `security definer`, granted to `anon` + `authenticated`. Validates the response set covers exactly the active questions of the quiz (count match + foreign-key check), then inserts attempt + responses atomically.
-- `quiz_attempts.anon_token uuid` is currently passed by the caller. Plan calls for issuing it as `aq_anon` HttpOnly cookie via Next middleware on first `/assessment/*` hit. NOT YET WIRED. When wiring:
-  - Add to `lib/supabase/middleware.ts` (or a separate file under `proxy.ts` matcher): set cookie if missing, name `aq_anon`, value `crypto.randomUUID()`, `Max-Age` 90d, `HttpOnly`, `SameSite=Lax`, `Secure` in prod.
-  - Front reads cookie on the page and passes to `submit_attempt`.
+In Studio's SQL editor, switch the role selector to `anon`:
 
-## Useful commands
+```sql
+select public.submit_attempt(
+  (select id from public.quizzes where slug='general'),
+  'es',
+  '[]'::jsonb
+);  -- should fail: "authentication required"
 
-- `pnpm db:reset` — wipe + apply migration + seed.
-- `pnpm db:types` — regenerate `lib/supabase/database.types.ts` (needs local Supabase running).
-- `pnpm typecheck` — must be clean before commit.
-- `pnpm lint` — 2 pre-existing errors in `app/about/*` are not ours.
+select * from public.user_demographics;  -- should return 0 rows / RLS denies
+```
 
-## Key files to know
+## 4. Logged-in happy path
 
-| File                                                        | Why                                                  |
-| ----------------------------------------------------------- | ---------------------------------------------------- |
-| `supabase/migrations/20260501043939_create_quiz_schema.sql` | Authoritative schema + RPC source.                   |
-| `lib/supabase/queries/getQuizBySlug.ts`                     | Read path. Note the build-time public client.        |
-| `app/assessment/_components/quiz-runner.tsx`                | Single quiz UI. Where submit_attempt will be called. |
-| `lib/quizCopy.ts`                                           | Add new quiz titles here, not in DB.                 |
-| `lib/scoring.ts`                                            | Universal band logic.                                |
-| `lib/sessionState.ts`                                       | `sessionStorage` shape — keyed by `quizSlug`.        |
+```powershell
+pnpm dev
+```
 
-## Next-PR checklist (suggested order)
+1. `localhost:3000` → click **Sign in** → switch to **Sign up**.
+2. Fill name/email/password. Use a real email — Resend SMTP delivers the confirm link.
+3. The new **Tell us a bit more** step appears. Pick options and **Save**.
+4. Open the email, click the confirm link. The callback redirects to `/` (no `next` because signup happened from the homepage).
+5. SQL check:
 
-1. **Anon cookie** + middleware. Small, isolates one concern.
-2. **Wire `submit_attempt` in `QuizRunner`** when last question is answered. Pass `anon_token` from cookie, optionally `email`/`email_consent` later. Hand the returned `attempt_id` + `score_pct` to `PostQuizFlow`.
-3. **Results screen from DB** — drop `lib/content.ts:RESULT_COPY`, `lib/companyResults.ts`, `lib/roleResults.ts` references; consume from `quiz.resultBands`. Decide whether to bring back per-dimension breakdown for company.
-4. **Demographics UI → DB**: load fields/options from DB, submit through `p_demographics`.
-5. **`claim_attempt` on signup** when auth lands.
-6. **Insights job** — scheduled function (Supabase cron / edge / external) to populate `quiz_insights`. Read RPC enforces `sample_size >= 30`.
+```sql
+select user_id, count(*) from public.user_demographics group by user_id;  -- should be 5 if you didn't skip
+```
+
+6. Navigate to `/assessment/general`, take the quiz to the end. Results appear immediately, no email/demographics screens.
+7. SQL check:
+
+```sql
+select id, user_id, score, score_pct, jsonb_array_length(demographics_snapshot)
+from public.quiz_attempts order by created_at desc limit 1;
+
+select * from public.quiz_insights
+where quiz_id = (select id from public.quizzes where slug='general');
+-- you'll see at least the overall row + one row per (field, option) you saved
+```
+
+8. Click **Email this to me**. Check your inbox for the Resend message.
+
+## 5. Logged-out → login mid-quiz
+
+1. Open an incognito window, take `/assessment/general` to the end without signing in.
+2. You'll see the "Sign in to unlock" CTA inside the slot.
+3. Click → log in with the existing user.
+4. The slot should auto-submit (saving spinner → benchmark). Verify a fresh row in `quiz_attempts`.
+
+## 6. Logged-out → sign up → confirm in a different tab (the localStorage path)
+
+1. Fresh incognito profile. Take the quiz to the end.
+2. Click **Sign in** → **Sign up** with a new email.
+3. **Save** demographics in the modal step (or **Skip**).
+4. Open the confirmation email **in the same browser** (different tab is fine — `localStorage` is shared per origin within a browser profile, but is **not** shared across browsers).
+5. After clicking the link, the callback returns you to `/assessment/general?...` because signup put `next=` on `emailRedirectTo`.
+6. quiz-runner sees `localStorage` complete + user logged-in → jumps to the results screen → slot auto-submits.
+7. Verify in DB: new attempt + `user_demographics` flushed (if you didn't skip).
+
+```sql
+select user_id, field_id, option_id from public.user_demographics
+where user_id = (select id from auth.users order by created_at desc limit 1);
+```
+
+## 7. Trigger correctness under load
+
+```sql
+-- count attempts per quiz
+select quiz_id, count(*) from public.quiz_attempts where is_complete group by quiz_id;
+
+-- counts in insights match overall row's sample_size
+select qi.sample_size, c.cnt
+from public.quiz_insights qi
+join (select quiz_id, count(*) cnt from public.quiz_attempts where is_complete group by quiz_id) c
+  on c.quiz_id = qi.quiz_id
+where qi.segment_field_id is null;
+
+-- per-(field, option) sample sizes never exceed the overall
+select max(sample_size) over (partition by quiz_id) as overall_max,
+       sample_size, segment_field_id
+from public.quiz_insights;
+```
+
+Then submit one more attempt and verify the overall `sample_size` increments.
+
+## 8. Edge function locally
+
+The function calls Resend. Locally, with `[edge_runtime] enabled = true`:
+
+```powershell
+supabase functions serve send-result-email --env-file supabase/.env
+```
+
+Then in the running app, hit **Email this to me**. To test via curl:
+
+```powershell
+curl -X POST http://127.0.0.1:54321/functions/v1/send-result-email `
+  -H "Authorization: Bearer <user-access-token>" `
+  -H "Content-Type: application/json" `
+  -d '{"attempt_id":"<uuid>"}'
+```
+
+Grab the access token from devtools → Application → Cookies → `sb-...-auth-token`.
+
+## What to watch out for
+
+- If `pnpm db:types` produces a real diff, the hand-edited types are out of sync — re-run and commit the regenerated file.
+- Salary buckets (`<20k / 20-40k / 40-70k / 70-120k / 120-200k / 200k+ / prefer-not-to-say`) come from the plan's defaults; confirm before launch.
+- Cross-browser handoff (e.g. desktop signup, mobile email) is **not** supported — `localStorage` is per-profile.
+- The slot's percentile is **interpolated** from `p25/p50/p75`, not exact. With <50 respondents per slice the BenchmarkPanel hides numbers behind "not enough data" copy.

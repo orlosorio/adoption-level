@@ -32,12 +32,17 @@ export default function CheckEmailScreen({
     setError(null);
     setResending(true);
     const supabase = createClient();
+    const nextPath =
+      typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '/';
+    const signupCallback = `${window.location.origin}/auth/callback?next=${encodeURIComponent(
+      nextPath,
+    )}`;
     const { error: resendError } =
       origin === 'signup'
         ? await supabase.auth.resend({
             type: 'signup',
             email: pendingEmail,
-            options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+            options: { emailRedirectTo: signupCallback },
           })
         : await supabase.auth.resetPasswordForEmail(pendingEmail, {
             redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset-password`,

@@ -26,27 +26,6 @@ export const UI = {
       back: '← Previous question',
     },
   },
-  email: {
-    es: {
-      title: '¡Ya casi!',
-      body: 'Ingresa tu email para recibir tus resultados personalizados y recomendaciones según tu nivel de adopción de IA.',
-      placeholder: 'tu@email.com',
-      submit: 'Ver resultados',
-      privacy:
-        'Solo usaremos tu email para enviarte tus resultados y tips semanales de IA. Sin spam, nunca.',
-      skip: 'Quizás después',
-      invalidEmail: 'Introduce un email válido.',
-    },
-    en: {
-      title: 'Almost done!',
-      body: 'Enter your email to receive your personalized AI adoption results and course recommendations.',
-      placeholder: 'you@email.com',
-      submit: 'Get results',
-      privacy: "We'll only use your email to send your results and weekly AI tips. No spam, ever.",
-      skip: 'Maybe later',
-      invalidEmail: 'Please enter a valid email address.',
-    },
-  },
   results: {
     es: {
       affirmativeLabel: 'Respuestas afirmativas',
@@ -58,6 +37,10 @@ export const UI = {
       again: 'Hacer el quiz de nuevo',
       ctaHeading: '¿Qué sigue?',
       ctaBody: 'Descubre cómo se compara tu nivel con el de otros profesionales de tu industria.',
+      emailMeButton: 'Enviarme por correo',
+      emailMeSending: 'Enviando…',
+      emailMeSent: '¡Enviado!',
+      emailMeError: 'No pudimos enviarlo. Intenta de nuevo.',
     },
     en: {
       affirmativeLabel: 'Affirmative answers',
@@ -70,34 +53,10 @@ export const UI = {
       again: 'Take the quiz again',
       ctaHeading: "What's next?",
       ctaBody: 'Find out how your level compares to other professionals in your industry.',
-    },
-  },
-  demographics: {
-    es: {
-      title: 'Ayúdanos a crear el mejor benchmark público',
-      subtitle:
-        'Queremos compartir los resultados de forma abierta para que toda la comunidad pueda aprender. Con tu información anónima podemos armar un panorama real de la adopción de IA en la región.',
-      countryLabel: 'País',
-      countryPlaceholder: 'Selecciona tu país',
-      companyLabel: 'Tipo de empresa',
-      companyPlaceholder: 'Selecciona el tipo',
-      ageLabel: 'Rango de edad',
-      agePlaceholder: 'Selecciona tu rango',
-      submit: 'Enviar y continuar →',
-      skip: 'Prefiero no compartir',
-    },
-    en: {
-      title: 'Help us build the best public benchmark',
-      subtitle:
-        'We want to share results openly so the whole community can learn. Your anonymous info helps us paint a real picture of AI adoption across industries.',
-      countryLabel: 'Country',
-      countryPlaceholder: 'Select your country',
-      companyLabel: 'Company type',
-      companyPlaceholder: 'Select company type',
-      ageLabel: 'Age range',
-      agePlaceholder: 'Select your range',
-      submit: 'Submit and continue →',
-      skip: "I'd rather not share",
+      emailMeButton: 'Email this to me',
+      emailMeSending: 'Sending…',
+      emailMeSent: 'Sent!',
+      emailMeError: "Couldn't send. Try again.",
     },
   },
   comingSoon: {
@@ -147,60 +106,6 @@ export const UI = {
         `Join ${n.toLocaleString()} professionals who've already benchmarked their AI level.`,
     },
   },
-  postQuizEmail: {
-    es: {
-      heading: '¿A dónde enviamos tus resultados?',
-      placeholder: 'tucorreo@empresa.com',
-      submit: 'Enviar →',
-      privacy:
-        'Solo usaremos tu email para enviarte tus resultados, tips de IA y tu reporte de benchmark. Sin spam. Cancela cuando quieras.',
-      invalidEmail: 'Ingresa un email válido.',
-      step: (current: number, total: number) => `Paso ${current} de ${total}`,
-    },
-    en: {
-      heading: 'Where should we send your results?',
-      placeholder: 'your@email.com',
-      submit: 'Send results →',
-      privacy:
-        "We'll only use your email to send your results, occasional AI tips, and your benchmark report. No spam. Unsubscribe anytime.",
-      invalidEmail: 'Please enter a valid email.',
-      step: (current: number, total: number) => `Step ${current} of ${total}`,
-    },
-  },
-  postQuizDemographics: {
-    es: {
-      heading: 'Un paso más — ayúdanos a construir el benchmark.',
-      subtitle:
-        'Tus respuestas son 100% anónimas. Solo las usamos para mostrarte cómo te comparas con otros en tu país, rango salarial e industria.',
-      countryLabel: 'País',
-      countryPlaceholder: 'Selecciona tu país',
-      salaryLabel: 'Rango salarial anual (equivalente en USD)',
-      salaryHelper: 'Usa el equivalente en tu moneda local. Esto es completamente anónimo.',
-      companyLabel: '¿En qué tipo de empresa trabajas?',
-      industryLabel: '¿En qué industria trabajas?',
-      industryPlaceholder: 'Selecciona tu industria',
-      submit: 'Ver mis resultados + benchmark →',
-      skip: 'Saltar — solo ver mis resultados (sin benchmark)',
-      step: (current: number, total: number) => `Paso ${current} de ${total}`,
-      fieldRequired: 'Este campo es requerido',
-    },
-    en: {
-      heading: 'One last step — help us build the benchmark.',
-      subtitle:
-        "Your answers are 100% anonymous. They're only used to show you how you compare to others in your country, salary range, and industry.",
-      countryLabel: 'Country',
-      countryPlaceholder: 'Select your country',
-      salaryLabel: 'Annual salary range (USD equivalent)',
-      salaryHelper: 'Use your local currency equivalent. This stays completely anonymous.',
-      companyLabel: 'What type of company do you work at?',
-      industryLabel: 'What industry are you in?',
-      industryPlaceholder: 'Select your industry',
-      submit: 'See my results + benchmark →',
-      skip: 'Skip demographics — just show my results (no benchmark)',
-      step: (current: number, total: number) => `Step ${current} of ${total}`,
-      fieldRequired: 'This field is required',
-    },
-  },
   benchmark: {
     es: {
       panelHeading: 'Cómo te comparas',
@@ -241,6 +146,32 @@ export const UI = {
       teaserLockLabel: 'Your benchmark is waiting',
       teaserLockSub: 'Answer 3 quick questions to unlock it',
       calculating: 'Calculating your benchmark...',
+    },
+  },
+  saveAndBenchmark: {
+    es: {
+      signInCtaTitle: 'Mira cómo te comparas',
+      signInCtaBody:
+        'Inicia sesión para guardar tu resultado y desbloquear tu benchmark contra el resto de la comunidad.',
+      signInCtaButton: 'Inicia sesión para ver',
+      saving: 'Guardando…',
+      error: 'No pudimos guardar tu resultado.',
+      retry: 'Reintentar',
+      globalBenchmarkLine: (pct: number) => `Puntuaste más alto que el ${pct}% de los encuestados`,
+      globalBenchmarkRespondents: (n: number) =>
+        `Basado en ${n.toLocaleString()} profesionales que tomaron este quiz`,
+    },
+    en: {
+      signInCtaTitle: 'See how you compare',
+      signInCtaBody:
+        'Sign in to save your result and unlock your benchmark against the rest of the community.',
+      signInCtaButton: 'Sign in to unlock',
+      saving: 'Saving…',
+      error: "Couldn't save your result.",
+      retry: 'Retry',
+      globalBenchmarkLine: (pct: number) => `You scored higher than ${pct}% of respondents`,
+      globalBenchmarkRespondents: (n: number) =>
+        `Based on ${n.toLocaleString()} professionals who've taken this quiz`,
     },
   },
   auth: {
@@ -291,6 +222,16 @@ export const UI = {
         resetBody:
           'Si tienes una cuenta con {email}, te enviamos un enlace para restablecer tu contraseña.',
         close: 'Listo',
+      },
+      signupDemographics: {
+        title: 'Cuéntanos un poco más',
+        subtitle:
+          'Es opcional, pero nos ayuda a mostrarte cómo te comparas con personas en tu país, industria y rango salarial.',
+        save: 'Guardar y continuar',
+        saving: 'Guardando…',
+        skip: 'Saltar por ahora',
+        loading: 'Cargando opciones…',
+        emptyOption: '—',
       },
       reset: {
         title: 'Define tu nueva contraseña',
@@ -369,6 +310,16 @@ export const UI = {
         resetTitle: 'Check your inbox',
         resetBody: "If an account exists for {email}, we've sent a link to reset your password.",
         close: 'Done',
+      },
+      signupDemographics: {
+        title: 'Tell us a bit more',
+        subtitle:
+          'Optional, but it helps us show you how you compare to people in your country, industry, and salary range.',
+        save: 'Save and continue',
+        saving: 'Saving…',
+        skip: 'Skip for now',
+        loading: 'Loading options…',
+        emptyOption: '—',
       },
       reset: {
         title: 'Set your new password',

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
 import LoginForm from './login-form';
 import SignupForm from './signup-form';
+import SignupDemographicsForm from './signup-demographics-form';
 import ForgotForm from './forgot-form';
 import CheckEmailScreen from './check-email-screen';
 import styles from './auth-modal.module.css';
@@ -60,6 +61,7 @@ export default function AuthModal() {
         </button>
         {mode === 'login' && <LoginForm />}
         {mode === 'signup' && <SignupForm onPendingEmail={setPendingEmail} />}
+        {mode === 'signup-demographics' && <SignupDemographicsForm />}
         {mode === 'forgot' && <ForgotForm onPendingEmail={setPendingEmail} />}
         {mode === 'check-email' && (
           <CheckEmailScreen pendingEmail={pendingEmail} origin={checkEmailOrigin} />

@@ -316,57 +316,12 @@ export type Database = {
           },
         ];
       };
-      quiz_attempt_demographics: {
-        Row: {
-          attempt_id: string;
-          field_id: string;
-          numeric_value: number | null;
-          option_id: string | null;
-          text_value: string | null;
-        };
-        Insert: {
-          attempt_id: string;
-          field_id: string;
-          numeric_value?: number | null;
-          option_id?: string | null;
-          text_value?: string | null;
-        };
-        Update: {
-          attempt_id?: string;
-          field_id?: string;
-          numeric_value?: number | null;
-          option_id?: string | null;
-          text_value?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'quiz_attempt_demographics_attempt_id_fkey';
-            columns: ['attempt_id'];
-            isOneToOne: false;
-            referencedRelation: 'quiz_attempts';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'quiz_attempt_demographics_field_id_fkey';
-            columns: ['field_id'];
-            isOneToOne: false;
-            referencedRelation: 'demographic_fields';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'quiz_attempt_demographics_option_id_fkey';
-            columns: ['option_id'];
-            isOneToOne: false;
-            referencedRelation: 'demographic_options';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
       quiz_attempts: {
         Row: {
           anon_token: string | null;
           completed_at: string | null;
           created_at: string;
+          demographics_snapshot: Json | null;
           email: string | null;
           email_consent: boolean;
           id: string;
@@ -386,6 +341,7 @@ export type Database = {
           anon_token?: string | null;
           completed_at?: string | null;
           created_at?: string;
+          demographics_snapshot?: Json | null;
           email?: string | null;
           email_consent?: boolean;
           id?: string;
@@ -405,6 +361,7 @@ export type Database = {
           anon_token?: string | null;
           completed_at?: string | null;
           created_at?: string;
+          demographics_snapshot?: Json | null;
           email?: string | null;
           email_consent?: boolean;
           id?: string;
@@ -595,23 +552,59 @@ export type Database = {
           },
         ];
       };
+      user_demographics: {
+        Row: {
+          field_id: string;
+          numeric_value: number | null;
+          option_id: string | null;
+          text_value: string | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          field_id: string;
+          numeric_value?: number | null;
+          option_id?: string | null;
+          text_value?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          field_id?: string;
+          numeric_value?: number | null;
+          option_id?: string | null;
+          text_value?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'user_demographics_field_id_fkey';
+            columns: ['field_id'];
+            isOneToOne: false;
+            referencedRelation: 'demographic_fields';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'user_demographics_option_id_fkey';
+            columns: ['option_id'];
+            isOneToOne: false;
+            referencedRelation: 'demographic_options';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      claim_attempt: { Args: { p_token: string }; Returns: number };
+      recompute_quiz_insights: {
+        Args: { p_quiz_id: string };
+        Returns: undefined;
+      };
       submit_attempt: {
-        Args: {
-          p_anon_token: string;
-          p_demographics?: Json;
-          p_email?: string;
-          p_email_consent?: boolean;
-          p_locale: string;
-          p_quiz_id: string;
-          p_responses: Json;
-          p_session_id?: string;
-        };
+        Args: { p_locale: string; p_quiz_id: string; p_responses: Json };
         Returns: {
           attempt_id: string;
           max_score: number;

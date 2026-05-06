@@ -3,7 +3,7 @@
 
 begin;
 
-truncate table public.quiz_attempt_demographics restart identity cascade;
+-- quiz_attempt_demographics dropped in 20260506005907_user_demographics.sql.
 truncate table public.quiz_responses restart identity cascade;
 truncate table public.quiz_attempts restart identity cascade;
 truncate table public.quiz_insights restart identity cascade;
@@ -12,10 +12,7 @@ truncate table public.question_translations cascade;
 truncate table public.questions restart identity cascade;
 truncate table public.question_tier_translations cascade;
 truncate table public.question_tiers restart identity cascade;
-truncate table public.demographic_option_translations cascade;
-truncate table public.demographic_options restart identity cascade;
-truncate table public.demographic_field_translations cascade;
-truncate table public.demographic_fields restart identity cascade;
+-- demographic_fields/options/translations are seeded by migrations.
 truncate table public.quizzes restart identity cascade;
 
 -- ─── general ─────────────────────────────────────────────────────

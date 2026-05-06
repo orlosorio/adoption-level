@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Language } from '@/lib/content';
 
-export type AuthMode = 'login' | 'signup' | 'forgot' | 'check-email';
+export type AuthMode = 'login' | 'signup' | 'signup-demographics' | 'forgot' | 'check-email';
 
 type AuthModalState = {
   isOpen: boolean;

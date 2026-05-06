@@ -9,18 +9,21 @@ export interface PersistedQuizState {
   currentQuestion: number;
   answers: number[];
   savedAt: number;
+  savedAttemptId?: string;
 }
 
+// localStorage instead of sessionStorage so the email-confirm tab (which is
+// a fresh tab) can still read state the original tab wrote.
 export function loadPersistedState(): PersistedQuizState | null {
   try {
     if (typeof window === 'undefined') return null;
-    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
 
     const state = JSON.parse(raw) as PersistedQuizState;
 
     if (Date.now() - state.savedAt > TWO_HOURS) {
-      sessionStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY);
       return null;
     }
 
@@ -33,7 +36,7 @@ export function loadPersistedState(): PersistedQuizState | null {
 export function savePersistedState(state: Omit<PersistedQuizState, 'savedAt'>) {
   try {
     if (typeof window === 'undefined') return;
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, savedAt: Date.now() }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, savedAt: Date.now() }));
   } catch {
     /* silent fail (private browsing) */
   }
@@ -42,8 +45,28 @@ export function savePersistedState(state: Omit<PersistedQuizState, 'savedAt'>) {
 export function clearPersistedState() {
   try {
     if (typeof window === 'undefined') return;
-    sessionStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEY);
   } catch {
     /* silent */
   }
+}
+
+export function persistSavedAttemptId(attemptId: string) {
+  try {
+    if (typeof window === 'undefined') return;
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const base = raw
+      ? (JSON.parse(raw) as PersistedQuizState)
+      : ({ savedAt: Date.now() } as PersistedQuizState);
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ ...base, savedAttemptId: attemptId, savedAt: Date.now() }),
+    );
+  } catch {
+    /* silent */
+  }
+}
+
+export function loadSavedAttemptId(): string | null {
+  return loadPersistedState()?.savedAttemptId ?? null;
 }
