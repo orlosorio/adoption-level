@@ -159,13 +159,12 @@
   "valueProp": {
     "heading": "Terminaste. Esto es lo que pasa ahora.",
     "sub1": "Tu nivel de adopción de IA está listo.",
-    "sub2": "Pero antes de mostrártelo — hay algo más valioso que podemos ofrecerte.",
+    "sub2": "En la siguiente pantalla vas a obtener:",
     "card1Title": "Tus resultados, en tu correo",
     "card1Desc": "Análisis completo de tu nivel + próximos pasos",
     "card2Title": "Ve dónde estás vs. todos los demás",
     "card2Desc": "Compara tu puntaje con profesionales en tu país, industria y tipo de empresa",
-    "cta": "Ver mis resultados + benchmark",
-    "skip": "Saltar — solo muéstrame mi puntaje",
+    "cta": "Ver mis resultados",
     "liveCounter": "Únete a {n, number} profesionales que ya midieron su nivel de IA."
   },
   "profile": {

@@ -5,10 +5,9 @@ import styles from './value-prop-screen.module.css';
 
 interface ValuePropScreenProps {
   onContinue: () => void;
-  onSkip: () => void;
 }
 
-export default function ValuePropScreen({ onContinue, onSkip }: ValuePropScreenProps) {
+export default function ValuePropScreen({ onContinue }: ValuePropScreenProps) {
   const t = useTranslations('valueProp');
 
   return (
@@ -41,10 +40,6 @@ export default function ValuePropScreen({ onContinue, onSkip }: ValuePropScreenP
 
         <button type="button" onClick={onContinue} className={`${styles.cta} mt-6 sm:mt-8`}>
           {t('cta')}
-        </button>
-
-        <button type="button" onClick={onSkip} className={`${styles.skip} mt-4`}>
-          {t('skip')}
         </button>
 
         <p className={`${styles.liveCounter} mt-4`}>{t('liveCounter', { n: 1247 })}</p>

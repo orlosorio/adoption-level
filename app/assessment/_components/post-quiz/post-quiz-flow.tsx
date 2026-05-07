@@ -33,12 +33,7 @@ export default function PostQuizFlow({
   }, []);
 
   if (screen === 'value-prop') {
-    return (
-      <ValuePropScreen
-        onContinue={() => changeScreen('results')}
-        onSkip={() => changeScreen('results')}
-      />
-    );
+    return <ValuePropScreen onContinue={() => changeScreen('results')} />;
   }
 
   return (

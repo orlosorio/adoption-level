@@ -159,13 +159,12 @@
   "valueProp": {
     "heading": "You finished. Here's what happens next.",
     "sub1": "Your AI adoption level is ready.",
-    "sub2": "But before we show you — there's something more valuable we can offer you.",
+    "sub2": "On the next screen you'll get:",
     "card1Title": "Your results, sent to your inbox",
     "card1Desc": "Full breakdown of your level + next steps",
     "card2Title": "See where you stand vs. everyone else",
     "card2Desc": "Compare your score against professionals in your country, industry, and company type",
-    "cta": "Get my results + benchmark",
-    "skip": "Skip — just show me my score",
+    "cta": "See my results",
     "liveCounter": "Join {n, number} professionals who've already benchmarked their AI level."
   },
   "profile": {
