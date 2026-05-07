@@ -168,12 +168,21 @@
     "skip": "Saltar — solo muéstrame mi puntaje",
     "liveCounter": "Únete a {n, number} profesionales que ya midieron su nivel de IA."
   },
+  "profile": {
+    "title": "Tu perfil",
+    "subtitle": "Estos datos nos ayudan a mostrarte cómo te comparas con profesionales similares. Son privados.",
+    "loading": "Cargando…",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "saved": "Guardado",
+    "error": "No pudimos guardar. Intentá de nuevo.",
+    "emptyOption": "—"
+  },
   "benchmark": {
     "panelHeading": "Cómo te comparas",
     "respondentCount": "Basado en {n, number} profesionales que tomaron este quiz",
     "overallLabel": "Ranking general",
-    "percentileText": "Puntuaste más alto que el {pct}% de los encuestados {segment}",
-    "notEnoughData": "Aún no hay suficientes datos — ¡sé de los primeros!"
+    "percentileText": "Puntuaste más alto que el {pct}% de los encuestados {segment}"
   },
   "saveAndBenchmark": {
     "signInCtaTitle": "Mira cómo te comparas",
@@ -184,9 +193,6 @@
     "retry": "Reintentar"
   },
   "about": {
-    "nav": {
-      "home": "Inicio"
-    },
     "sidebar": {
       "heading": "Assessment de Adopción de IA",
       "text": "Descubre tu nivel real de adopción de IA en solo 2 minutos.",

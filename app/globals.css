@@ -407,15 +407,6 @@ body {
   opacity: 0.3;
 }
 
-.assessment-shell:has(.quiz-in-progress) [aria-label='Back to home'] {
-  opacity: 0.75;
-  transition: opacity 0.4s ease;
-}
-
-.assessment-shell:has(.quiz-in-progress) [aria-label='Back to home']:hover {
-  opacity: 1;
-}
-
 /* === Reduced motion === */
 
 @media (prefers-reduced-motion: reduce) {

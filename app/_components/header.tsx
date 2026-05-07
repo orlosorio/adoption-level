@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useUser } from '@/lib/auth/use-user';
@@ -12,12 +12,31 @@ import styles from './header.module.css';
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, isLoading } = useUser();
   const open = useAuthModal((s) => s.open);
   const t = useTranslations('header');
+  const tNav = useTranslations('assessment.nav');
   const [signingOut, setSigningOut] = useState(false);
 
   if (isLoading) return null;
+
+  const isHome = pathname === '/';
+
+  const backLink = !isHome ? (
+    <Link href="/" className={styles.backLink} aria-label={tNav('backToHome')}>
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
+        <path
+          d="M10 12L6 8L10 4"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <span className={styles.backLabel}>{tNav('home')}</span>
+    </Link>
+  ) : null;
 
   const aboutLink = (
     <Link href="/about" className={styles.aboutLink}>
@@ -28,11 +47,14 @@ export default function Header() {
   if (!user) {
     return (
       <div className={styles.bar}>
-        <LanguageSwitcher />
-        {aboutLink}
-        <button type="button" className={styles.btn} onClick={() => open('login')}>
-          {t('signIn')}
-        </button>
+        <div className={styles.left}>{backLink}</div>
+        <div className={styles.right}>
+          <LanguageSwitcher />
+          {aboutLink}
+          <button type="button" className={styles.btn} onClick={() => open('login')}>
+            {t('signIn')}
+          </button>
+        </div>
       </div>
     );
   }
@@ -54,14 +76,17 @@ export default function Header() {
 
   return (
     <div className={styles.bar}>
-      <LanguageSwitcher />
-      {aboutLink}
-      <span className={styles.user}>
-        <span className={styles.userName}>{displayName}</span>
-      </span>
-      <button type="button" className={styles.btn} onClick={handleLogout} disabled={signingOut}>
-        {t('signOut')}
-      </button>
+      <div className={styles.left}>{backLink}</div>
+      <div className={styles.right}>
+        <LanguageSwitcher />
+        {aboutLink}
+        <Link href="/profile" className={styles.user}>
+          <span className={styles.userName}>{displayName}</span>
+        </Link>
+        <button type="button" className={styles.btn} onClick={handleLogout} disabled={signingOut}>
+          {t('signOut')}
+        </button>
+      </div>
     </div>
   );
 }

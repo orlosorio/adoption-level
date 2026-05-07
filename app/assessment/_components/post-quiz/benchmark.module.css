@@ -69,13 +69,6 @@
   border-top: 1px solid #eee;
 }
 
-.notEnough {
-  font-family: var(--font-inter), sans-serif;
-  font-size: 13px;
-  color: #aaa;
-  margin-top: 8px;
-}
-
 /* ── Benchmark Teaser (blurred) ── */
 
 .teaserWrapper {

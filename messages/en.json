@@ -168,12 +168,21 @@
     "skip": "Skip — just show me my score",
     "liveCounter": "Join {n, number} professionals who've already benchmarked their AI level."
   },
+  "profile": {
+    "title": "Your profile",
+    "subtitle": "These details help us show you how you compare with similar professionals. They stay private.",
+    "loading": "Loading…",
+    "save": "Save changes",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "error": "Couldn't save. Please try again.",
+    "emptyOption": "—"
+  },
   "benchmark": {
     "panelHeading": "How you compare",
     "respondentCount": "Based on {n, number} professionals who've taken this quiz",
     "overallLabel": "Overall ranking",
-    "percentileText": "You scored higher than {pct}% of all respondents {segment}",
-    "notEnoughData": "Not enough data yet — be one of the first!"
+    "percentileText": "You scored higher than {pct}% of all respondents {segment}"
   },
   "saveAndBenchmark": {
     "signInCtaTitle": "See how you compare",
@@ -184,9 +193,6 @@
     "retry": "Retry"
   },
   "about": {
-    "nav": {
-      "home": "Home"
-    },
     "sidebar": {
       "heading": "AI Adoption Assessment",
       "text": "Discover your real AI adoption level in just 2 minutes.",

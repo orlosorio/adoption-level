@@ -38,27 +38,21 @@ function PercentileBar({
 
 export default function BenchmarkPanel({ totalRespondents, rows }: BenchmarkPanelProps) {
   const t = useTranslations('benchmark');
-  const hasEnoughTotal = totalRespondents >= 50;
+  const showRespondentCount = totalRespondents >= 50;
 
   return (
     <div className={styles.panel}>
       <p className={styles.heading}>📊 {t('panelHeading')}</p>
-      <p className={styles.respondents}>{t('respondentCount', { n: totalRespondents })}</p>
-
-      {!hasEnoughTotal ? (
-        <p className={`${styles.notEnough} italic`}>{t('notEnoughData')}</p>
-      ) : (
-        rows.map((row, i) => (
-          <div key={`${row.label}-${i}`}>
-            {i > 0 && <hr className={styles.divider} />}
-            <PercentileBar
-              label={row.label}
-              statement={row.statement}
-              percentile={row.percentile}
-            />
-          </div>
-        ))
+      {showRespondentCount && (
+        <p className={styles.respondents}>{t('respondentCount', { n: totalRespondents })}</p>
       )}
+
+      {rows.map((row, i) => (
+        <div key={`${row.label}-${i}`}>
+          {i > 0 && <hr className={styles.divider} />}
+          <PercentileBar label={row.label} statement={row.statement} percentile={row.percentile} />
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import type { AboutContent } from '@/lib/about-content';
 
 interface ArticleHeaderProps {
@@ -7,28 +5,8 @@ interface ArticleHeaderProps {
 }
 
 export default function ArticleHeader({ meta }: ArticleHeaderProps) {
-  const t = useTranslations('about.nav');
-
   return (
-    <header>
-      <nav className="flex items-center justify-between pt-3 pb-12">
-        <Link
-          href="/assessment"
-          className="flex items-center gap-1.5 rounded-lg border border-white/40 bg-white/25 px-3 py-1.5 text-[13px] font-medium text-[#1f36a9]/60 backdrop-blur-md transition-all hover:bg-white/40 hover:text-[#1f36a9]"
-        >
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="shrink-0">
-            <path
-              d="M10 12L6 8L10 4"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="hidden sm:inline">{t('home')}</span>
-        </Link>
-      </nav>
-
+    <header className="pt-12">
       <h1 className="text-brand-700 mb-4 font-serif text-[clamp(28px,5vw,42px)] leading-tight font-bold">
         {meta.title}
       </h1>
