@@ -2,18 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useUser } from '@/lib/auth/use-user';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
-import { UI, type Language } from '@/lib/content';
+import type { Language } from '@/lib/content';
+import { loadPreferredLanguage, savePreferredLanguage } from '@/lib/preferredLanguage';
 import styles from './header.module.css';
 
-function readLanguage(param: string | null): Language {
-  return param === 'en' ? 'en' : 'es';
+function readLanguage(param: string | null): Language | null {
+  if (param === 'en' || param === 'es') return param;
+  return null;
 }
 
 export default function Header() {
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { user, isLoading } = useUser();
@@ -21,8 +24,20 @@ export default function Header() {
   const setLanguage = useAuthModal((s) => s.setLanguage);
   const [signingOut, setSigningOut] = useState(false);
 
-  const language = readLanguage(searchParams.get('lang'));
-  const copy = UI.auth[language];
+  // URL `?lang=` wins; otherwise fall back to the user's last picked
+  // language (persisted in localStorage), and finally to Spanish.
+  const urlLanguage = readLanguage(searchParams.get('lang'));
+  const [storedLanguage, setStoredLanguage] = useState<Language | null>(null);
+  useEffect(() => {
+    setStoredLanguage(loadPreferredLanguage());
+  }, []);
+  const language: Language = urlLanguage ?? storedLanguage ?? 'es';
+
+  // Mirror the URL choice into localStorage so the auth modal stays in the
+  // right language even when the user lands on a page without `?lang=`.
+  useEffect(() => {
+    if (urlLanguage) savePreferredLanguage(urlLanguage);
+  }, [urlLanguage]);
 
   useEffect(() => {
     setLanguage(language);
@@ -42,7 +57,7 @@ export default function Header() {
       <div className={styles.bar}>
         {aboutLink}
         <button type="button" className={styles.btn} onClick={() => open('login', language)}>
-          {copy.loginCta}
+          Sign in
         </button>
       </div>
     );
@@ -59,6 +74,10 @@ export default function Header() {
     const supabase = createClient();
     await supabase.auth.signOut();
     setSigningOut(false);
+    // Always land on the homepage after signing out so the user isn't stuck
+    // mid-flow on a page they may not be authorized to see.
+    router.push('/');
+    router.refresh();
   }
 
   return (
@@ -68,7 +87,7 @@ export default function Header() {
         <span className={styles.userName}>{displayName}</span>
       </span>
       <button type="button" className={styles.btn} onClick={handleLogout} disabled={signingOut}>
-        {copy.logout}
+        Sign out
       </button>
     </div>
   );

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Language } from '@/lib/content';
 import { UI } from '@/lib/content';
+import { savePreferredLanguage } from '@/lib/preferredLanguage';
 import type { RoleId } from '@/lib/roles';
 import TypeSelector, { type AssessmentType } from './type-selector';
 import RoleSelector from './role-selector';
@@ -20,6 +21,7 @@ export default function AssessmentEntry({ errorParam }: { errorParam?: string | 
 
   const pickLanguage = (lang: Language) => {
     setLanguage(lang);
+    savePreferredLanguage(lang);
     setScreen('type-selector');
   };
 
@@ -51,7 +53,10 @@ export default function AssessmentEntry({ errorParam }: { errorParam?: string | 
         <TypeSelector
           language={language ?? 'es'}
           onSelect={selectAssessmentType}
-          onLanguageChange={setLanguage}
+          onLanguageChange={(lang) => {
+            setLanguage(lang);
+            savePreferredLanguage(lang);
+          }}
         />
       )}
 
