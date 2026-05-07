@@ -42,7 +42,7 @@ export default function ValuePropScreen({ onContinue }: ValuePropScreenProps) {
           {t('cta')}
         </button>
 
-        <p className={`${styles.liveCounter} mt-4`}>{t('liveCounter', { n: 1247 })}</p>
+        <p className={`${styles.liveCounter} mt-4`}>{t('liveCounter')}</p>
       </div>
     </div>
   );
