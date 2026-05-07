@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Confirm your email</title>
+  </head>
+  <body
+    style="margin:0;padding:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1a1a2e;"
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background:#f4f6fb;"
+    >
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table
+            role="presentation"
+            width="560"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="max-width:560px;width:100%;"
+          >
+            <tr>
+              <td
+                style="background:#eef1ff;border:1px solid #d8defa;border-bottom:0;border-radius:16px 16px 0 0;padding:0;line-height:0;font-size:0;"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 560 200"
+                  role="img"
+                  aria-label="AI"
+                  style="display:block;width:100%;height:auto;border-radius:16px 16px 0 0;"
+                >
+                  <defs>
+                    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+                      <path
+                        d="M 28 0 L 0 0 0 28"
+                        fill="none"
+                        stroke="rgba(54,92,255,0.10)"
+                        stroke-width="1"
+                      />
+                    </pattern>
+                  </defs>
+                  <rect width="560" height="200" fill="#eef1ff" />
+                  <rect width="560" height="200" fill="url(#grid)" />
+                  <rect
+                    x="56"
+                    y="38"
+                    width="36"
+                    height="36"
+                    rx="3"
+                    fill="none"
+                    stroke="rgba(54,92,255,0.42)"
+                    stroke-width="1.4"
+                    transform="rotate(-12 74 56)"
+                  />
+                  <rect
+                    x="450"
+                    y="120"
+                    width="40"
+                    height="40"
+                    rx="3"
+                    fill="none"
+                    stroke="rgba(54,92,255,0.42)"
+                    stroke-width="1.4"
+                    transform="rotate(14 470 140)"
+                  />
+                  <polygon
+                    points="496,38 520,72 472,72"
+                    fill="none"
+                    stroke="rgba(54,92,255,0.42)"
+                    stroke-width="1.4"
+                  />
+                  <g transform="translate(175,25)">
+                    <path
+                      d="M 0 150 L 50 0 L 80 0 L 130 150 L 104 150 L 86 92 L 44 92 L 26 150 Z M 50 78 L 65 24 L 80 78 Z"
+                      fill-rule="evenodd"
+                      fill="rgba(140,168,255,0.55)"
+                    />
+                    <path
+                      d="M 0 150 L 50 0 L 80 0 L 130 150 L 104 150 L 86 92 L 44 92 L 26 150 Z M 50 78 L 65 24 L 80 78 Z"
+                      fill-rule="evenodd"
+                      fill="none"
+                      stroke="rgba(43,76,240,0.9)"
+                      stroke-width="3"
+                      stroke-linejoin="miter"
+                    />
+                    <path
+                      d="M 145 0 L 210 0 L 210 18 L 188 18 L 188 132 L 210 132 L 210 150 L 145 150 L 145 132 L 167 132 L 167 18 L 145 18 Z"
+                      fill="rgba(140,168,255,0.55)"
+                    />
+                    <path
+                      d="M 145 0 L 210 0 L 210 18 L 188 18 L 188 132 L 210 132 L 210 150 L 145 150 L 145 132 L 167 132 L 167 18 L 145 18 Z"
+                      fill="none"
+                      stroke="rgba(43,76,240,0.9)"
+                      stroke-width="3"
+                      stroke-linejoin="miter"
+                    />
+                  </g>
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td
+                align="center"
+                style="background:#ffffff;border:1px solid #d8defa;border-top:0;border-radius:0 0 16px 16px;padding:32px 28px;text-align:center;"
+              >
+                <h1 style="margin:0 0 14px;font-size:22px;font-weight:700;color:#1a1a2e;">
+                  One click away from your results
+                </h1>
+                <p style="margin:0 0 22px;font-size:15px;line-height:1.55;color:#4d5b9a;">
+                  Confirm your email to save your AI adoption level and see how you compare to
+                  professionals in your country, industry, and salary range.
+                </p>
+                <a
+                  href="{{ .ConfirmationURL }}"
+                  style="display:inline-block;padding:13px 22px;border-radius:10px;background:#365cff;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;"
+                >
+                  See my results
+                </a>
+                <p style="margin:24px 0 0;font-size:13px;line-height:1.55;color:#8893b8;">
+                  Or paste this link into your browser:<br />
+                  <a href="{{ .ConfirmationURL }}" style="color:#365cff;word-break:break-all;">
+                    {{ .ConfirmationURL }}
+                  </a>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p
+            style="margin:20px 4px 0;max-width:560px;font-size:12px;line-height:1.55;color:#8893b8;"
+          >
+            If you didn't sign up for adoptionlevel.ai, ignore this email — no account will be
+            created.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

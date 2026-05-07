@@ -69,6 +69,14 @@ pass = "env(RESEND_API_KEY)"
 admin_email = "noreply@mail.adoptionlevel.ai"
 sender_name = "adoptionlevel.ai"
 
+[auth.email.template.confirmation]
+subject = "Your AI adoption results are one click away"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Reset your password · adoptionlevel.ai"
+content_path = "./supabase/templates/recovery.html"
+
 [realtime]
 enabled = false
 
