@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
-import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
 import { clearPendingDemographics, savePendingDemographics } from '@/lib/auth/pendingDemographics';
@@ -22,9 +22,9 @@ interface FieldDef {
 }
 
 export default function SignupDemographicsForm() {
-  const language = useAuthModal((s) => s.language);
   const setMode = useAuthModal((s) => s.setMode);
-  const copy = UI.auth[language].signupDemographics;
+  const locale = useLocale();
+  const t = useTranslations('auth.signupDemographics');
 
   const [fields, setFields] = useState<FieldDef[] | null>(null);
   const [values, setValues] = useState<Record<string, string>>({});
@@ -41,7 +41,7 @@ export default function SignupDemographicsForm() {
            demographic_field_translations!inner(label, placeholder, locale)`,
         )
         .eq('is_active', true)
-        .eq('demographic_field_translations.locale', language)
+        .eq('demographic_field_translations.locale', locale)
         .order('sort_order', { ascending: true });
 
       if (!rawFields?.length) {
@@ -57,7 +57,7 @@ export default function SignupDemographicsForm() {
            demographic_option_translations!inner(label, locale)`,
         )
         .in('field_id', fieldIds)
-        .eq('demographic_option_translations.locale', language)
+        .eq('demographic_option_translations.locale', locale)
         .order('sort_order', { ascending: true });
 
       const optionsByField = new Map<string, FieldOption[]>();
@@ -89,7 +89,7 @@ export default function SignupDemographicsForm() {
     return () => {
       cancelled = true;
     };
-  }, [language]);
+  }, [locale]);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -116,10 +116,10 @@ export default function SignupDemographicsForm() {
 
   return (
     <>
-      <h2 className={styles.title}>{copy.title}</h2>
-      <p className={styles.subtitle}>{copy.subtitle}</p>
+      <h2 className={styles.title}>{t('title')}</h2>
+      <p className={styles.subtitle}>{t('subtitle')}</p>
       {fields === null ? (
-        <p className={styles.subtitle}>{copy.loading}</p>
+        <p className={styles.subtitle}>{t('loading')}</p>
       ) : (
         <form className={styles.form} onSubmit={handleSave} noValidate>
           {fields.map((f) => (
@@ -134,7 +134,7 @@ export default function SignupDemographicsForm() {
                 onChange={(e) => setValues((v) => ({ ...v, [f.id]: e.target.value }))}
                 disabled={submitting}
               >
-                <option value="">{f.placeholder ?? copy.emptyOption}</option>
+                <option value="">{f.placeholder ?? t('emptyOption')}</option>
                 {f.options.map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.label}
@@ -144,7 +144,7 @@ export default function SignupDemographicsForm() {
             </div>
           ))}
           <button type="submit" className={glass.cta} disabled={submitting}>
-            <span className={glass.ctaLabel}>{submitting ? copy.saving : copy.save}</span>
+            <span className={glass.ctaLabel}>{submitting ? t('saving') : t('save')}</span>
           </button>
           <button
             type="button"
@@ -153,7 +153,7 @@ export default function SignupDemographicsForm() {
             disabled={submitting}
             style={{ marginTop: 8, textAlign: 'center' }}
           >
-            {copy.skip}
+            {t('skip')}
           </button>
         </form>
       )}

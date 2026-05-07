@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
 import LoginForm from './login-form';
 import SignupForm from './signup-form';
@@ -14,6 +15,7 @@ export default function AuthModal() {
   const mode = useAuthModal((s) => s.mode);
   const prevMode = useAuthModal((s) => s.prevMode);
   const close = useAuthModal((s) => s.close);
+  const t = useTranslations('auth.modal');
 
   const [pendingEmail, setPendingEmail] = useState('');
 
@@ -44,7 +46,7 @@ export default function AuthModal() {
       aria-modal="true"
     >
       <div className={styles.panel}>
-        <button type="button" className={styles.closeBtn} onClick={close} aria-label="Close">
+        <button type="button" className={styles.closeBtn} onClick={close} aria-label={t('close')}>
           <svg
             width="18"
             height="18"

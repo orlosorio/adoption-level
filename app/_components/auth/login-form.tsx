@@ -1,21 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
-import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
-import { mapAuthError } from './auth-errors';
+import { mapAuthErrorKey } from './auth-errors';
 import styles from './auth-modal.module.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginForm() {
-  const language = useAuthModal((s) => s.language);
   const setMode = useAuthModal((s) => s.setMode);
   const close = useAuthModal((s) => s.close);
-  const copy = UI.auth[language].login;
-  const errorsCopy = UI.auth[language].errors;
+  const t = useTranslations('auth.login');
+  const tErrors = useTranslations('auth.errors');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,11 +27,11 @@ export default function LoginForm() {
 
     const trimmed = email.trim();
     if (!EMAIL_RE.test(trimmed)) {
-      setError(errorsCopy.invalidEmail);
+      setError(tErrors('invalidEmail'));
       return;
     }
     if (password.length < 8) {
-      setError(errorsCopy.passwordTooShort);
+      setError(tErrors('passwordTooShort'));
       return;
     }
 
@@ -45,7 +44,7 @@ export default function LoginForm() {
     setSubmitting(false);
 
     if (signInError) {
-      setError(mapAuthError(signInError, language));
+      setError(tErrors(mapAuthErrorKey(signInError)));
       return;
     }
     close();
@@ -53,19 +52,19 @@ export default function LoginForm() {
 
   return (
     <>
-      <h2 className={styles.title}>{copy.title}</h2>
-      <p className={styles.subtitle}>{copy.subtitle}</p>
+      <h2 className={styles.title}>{t('title')}</h2>
+      <p className={styles.subtitle}>{t('subtitle')}</p>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-login-email">
-            {copy.emailLabel}
+            {t('emailLabel')}
           </label>
           <input
             id="auth-login-email"
             type="email"
             autoComplete="email"
             className={glass.input}
-            placeholder={copy.emailPlaceholder}
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={submitting}
@@ -74,14 +73,14 @@ export default function LoginForm() {
         </div>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-login-password">
-            {copy.passwordLabel}
+            {t('passwordLabel')}
           </label>
           <input
             id="auth-login-password"
             type="password"
             autoComplete="current-password"
             className={glass.input}
-            placeholder={copy.passwordPlaceholder}
+            placeholder={t('passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={submitting}
@@ -91,7 +90,7 @@ export default function LoginForm() {
         </div>
         {error ? <div className={styles.error}>{error}</div> : null}
         <button type="submit" className={glass.cta} disabled={submitting}>
-          <span className={glass.ctaLabel}>{submitting ? copy.submitting : copy.submit}</span>
+          <span className={glass.ctaLabel}>{submitting ? t('submitting') : t('submit')}</span>
         </button>
         <div className={styles.linkRow}>
           <button
@@ -100,19 +99,19 @@ export default function LoginForm() {
             onClick={() => setMode('forgot')}
             disabled={submitting}
           >
-            {copy.forgot}
+            {t('forgot')}
           </button>
         </div>
       </form>
       <p className={styles.switch}>
-        {copy.switchPrompt}{' '}
+        {t('switchPrompt')}{' '}
         <button
           type="button"
           className={styles.link}
           onClick={() => setMode('signup')}
           disabled={submitting}
         >
-          {copy.switchCta}
+          {t('switchCta')}
         </button>
       </p>
     </>

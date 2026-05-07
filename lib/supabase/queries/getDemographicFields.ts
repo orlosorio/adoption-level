@@ -2,7 +2,7 @@ import 'server-only';
 import { unstable_cache as nextCache } from 'next/cache';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/lib/supabase/database.types';
-import type { Language } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 
 function createPublicClient() {
   return createSupabaseClient<Database>(
@@ -29,7 +29,7 @@ export interface DemographicFieldDef {
   options: DemographicOptionDef[];
 }
 
-async function fetchFields(locale: Language): Promise<DemographicFieldDef[]> {
+async function fetchFields(locale: Locale): Promise<DemographicFieldDef[]> {
   const supabase = createPublicClient();
 
   const { data: fields } = await supabase
@@ -88,7 +88,7 @@ async function fetchFields(locale: Language): Promise<DemographicFieldDef[]> {
 }
 
 export const getDemographicFields = nextCache(
-  async (locale: Language) => fetchFields(locale),
+  async (locale: Locale) => fetchFields(locale),
   ['demographic-fields'],
   { revalidate: 3600, tags: ['demographic-fields'] },
 );

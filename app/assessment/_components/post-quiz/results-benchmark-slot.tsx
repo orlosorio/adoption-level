@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Language } from '@/lib/content';
-import { UI } from '@/lib/content';
+import { useLocale, useTranslations } from 'next-intl';
+import type { Locale } from '@/i18n/routing';
 import { useUser } from '@/lib/auth/use-user';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
 import { createClient } from '@/lib/supabase/client';
@@ -12,10 +12,8 @@ import BenchmarkPanel, { benchmarkStyles, type BenchmarkRow } from './benchmark-
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 
 interface ResultsBenchmarkSlotProps {
-  language: Language;
   quizId: string;
   responses: { question_id: string; value: number }[];
-  locale: Language;
   score: number;
   maxScore: number;
 }
@@ -39,7 +37,9 @@ async function loadBenchmark(
   quizId: string,
   userId: string,
   userPct: number,
-  language: Language,
+  locale: Locale,
+  formatBenchmarkRow: (pct: number, segment: string) => string,
+  overallLabel: string,
 ): Promise<RealBenchmark | null> {
   // Pull the user's per-field demographics so we know which insight slices
   // apply. Anonymous users (no userId) only get the overall slice.
@@ -63,14 +63,13 @@ async function loadBenchmark(
          demographic_option_translations!inner(label, locale))`,
     )
     .eq('quiz_id', quizId)
-    .eq('field.demographic_field_translations.locale', language)
-    .eq('option.demographic_option_translations.locale', language);
+    .eq('field.demographic_field_translations.locale', locale)
+    .eq('option.demographic_option_translations.locale', locale);
 
   if (!insights) return null;
 
   let totalRespondents = 0;
   const rows: BenchmarkRow[] = [];
-  const benchCopy = UI.benchmark[language];
 
   for (const row of insights) {
     if (row.segment_field_id == null && row.segment_option_id == null) {
@@ -83,8 +82,8 @@ async function loadBenchmark(
         Number(row.p75 ?? 0),
       );
       rows.unshift({
-        label: benchCopy.overallLabel,
-        statement: benchCopy.percentileText(pct, ''),
+        label: overallLabel,
+        statement: formatBenchmarkRow(pct, ''),
         percentile: pct,
       });
       continue;
@@ -117,7 +116,7 @@ async function loadBenchmark(
 
     rows.push({
       label: `${fieldLabel} · ${optionLabel}`,
-      statement: benchCopy.percentileText(pct, optionLabel),
+      statement: formatBenchmarkRow(pct, optionLabel),
       percentile: pct,
     });
   }
@@ -126,13 +125,15 @@ async function loadBenchmark(
 }
 
 export default function ResultsBenchmarkSlot({
-  language,
   quizId,
   responses,
-  locale,
   score,
   maxScore,
 }: ResultsBenchmarkSlotProps) {
+  const locale = useLocale() as Locale;
+  const tBenchmark = useTranslations('benchmark');
+  const tSave = useTranslations('saveAndBenchmark');
+  const tResults = useTranslations('results');
   const { user, isLoading } = useUser();
   const openAuthModal = useAuthModal((s) => s.open);
 
@@ -180,8 +181,18 @@ export default function ResultsBenchmarkSlot({
     if (status !== 'saved' || !user) return;
     const supabase = createClient();
     const userPct = maxScore > 0 ? (score / maxScore) * 100 : 0;
-    void loadBenchmark(supabase, quizId, user.id, userPct, language).then(setBenchmark);
-  }, [status, user, quizId, score, maxScore, language]);
+    const formatRow = (pct: number, segment: string) =>
+      tBenchmark('percentileText', { pct, segment });
+    void loadBenchmark(
+      supabase,
+      quizId,
+      user.id,
+      userPct,
+      locale,
+      formatRow,
+      tBenchmark('overallLabel'),
+    ).then(setBenchmark);
+  }, [status, user, quizId, score, maxScore, locale, tBenchmark]);
 
   async function handleEmailMe() {
     if (!attemptId) return;
@@ -193,24 +204,21 @@ export default function ResultsBenchmarkSlot({
     setEmailStatus(error ? 'error' : 'sent');
   }
 
-  const copy = UI.saveAndBenchmark[language];
-  const resultsCopy = UI.results[language];
-
   if (isLoading) return null;
 
   if (!user && status === 'idle') {
     return (
       <div className={benchmarkStyles.panel}>
-        <p className={benchmarkStyles.heading}>🔒 {copy.signInCtaTitle}</p>
+        <p className={benchmarkStyles.heading}>🔒 {tSave('signInCtaTitle')}</p>
         <p className="mt-2 font-sans text-[14px] leading-relaxed text-[#4d5b9a]">
-          {copy.signInCtaBody}
+          {tSave('signInCtaBody')}
         </p>
         <button
           type="button"
-          onClick={() => openAuthModal('login', language)}
+          onClick={() => openAuthModal('login')}
           className={`${benchmarkStyles.teaserCta} mt-5`}
         >
-          {copy.signInCtaButton}
+          {tSave('signInCtaButton')}
         </button>
       </div>
     );
@@ -220,7 +228,7 @@ export default function ResultsBenchmarkSlot({
     return (
       <div className="flex items-center justify-center py-8">
         <div className={benchmarkStyles.spinner} />
-        <p className="ml-3 font-sans text-[15px] font-semibold text-[#1f36a9]">{copy.saving}</p>
+        <p className="ml-3 font-sans text-[15px] font-semibold text-[#1f36a9]">{tSave('saving')}</p>
       </div>
     );
   }
@@ -228,13 +236,13 @@ export default function ResultsBenchmarkSlot({
   if (status === 'error') {
     return (
       <div className={benchmarkStyles.panel}>
-        <p className="font-sans text-[15px] text-[#b3261e]">{copy.error}</p>
+        <p className="font-sans text-[15px] text-[#b3261e]">{tSave('error')}</p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
           className={`${benchmarkStyles.teaserCta} mt-3`}
         >
-          {copy.retry}
+          {tSave('retry')}
         </button>
       </div>
     );
@@ -251,7 +259,7 @@ export default function ResultsBenchmarkSlot({
           <div className={benchmarkStyles.spinner} />
         </div>
       ) : (
-        <BenchmarkPanel language={language} totalRespondents={total} rows={rows} />
+        <BenchmarkPanel totalRespondents={total} rows={rows} />
       )}
       <button
         type="button"
@@ -260,12 +268,12 @@ export default function ResultsBenchmarkSlot({
         disabled={!attemptId || emailStatus === 'sending' || emailStatus === 'sent'}
       >
         {emailStatus === 'sending'
-          ? resultsCopy.emailMeSending
+          ? tResults('emailMeSending')
           : emailStatus === 'sent'
-            ? resultsCopy.emailMeSent
+            ? tResults('emailMeSent')
             : emailStatus === 'error'
-              ? resultsCopy.emailMeError
-              : resultsCopy.emailMeButton}
+              ? tResults('emailMeError')
+              : tResults('emailMeButton')}
       </button>
     </div>
   );

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
-import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
-import { mapAuthError } from './auth-errors';
+import { mapAuthErrorKey } from './auth-errors';
 import styles from './auth-modal.module.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,10 +15,9 @@ export default function SignupForm({
 }: {
   onPendingEmail: (email: string) => void;
 }) {
-  const language = useAuthModal((s) => s.language);
   const setMode = useAuthModal((s) => s.setMode);
-  const copy = UI.auth[language].signup;
-  const errorsCopy = UI.auth[language].errors;
+  const t = useTranslations('auth.signup');
+  const tErrors = useTranslations('auth.errors');
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -34,19 +33,19 @@ export default function SignupForm({
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     if (!trimmedName) {
-      setError(errorsCopy.nameRequired);
+      setError(tErrors('nameRequired'));
       return;
     }
     if (!EMAIL_RE.test(trimmedEmail)) {
-      setError(errorsCopy.invalidEmail);
+      setError(tErrors('invalidEmail'));
       return;
     }
     if (password.length < 8) {
-      setError(errorsCopy.passwordTooShort);
+      setError(tErrors('passwordTooShort'));
       return;
     }
     if (password !== confirm) {
-      setError(errorsCopy.passwordMismatch);
+      setError(tErrors('passwordMismatch'));
       return;
     }
 
@@ -71,7 +70,7 @@ export default function SignupForm({
     setSubmitting(false);
 
     if (signUpError) {
-      setError(mapAuthError(signUpError, language));
+      setError(tErrors(mapAuthErrorKey(signUpError)));
       return;
     }
     onPendingEmail(trimmedEmail);
@@ -80,19 +79,19 @@ export default function SignupForm({
 
   return (
     <>
-      <h2 className={styles.title}>{copy.title}</h2>
-      <p className={styles.subtitle}>{copy.subtitle}</p>
+      <h2 className={styles.title}>{t('title')}</h2>
+      <p className={styles.subtitle}>{t('subtitle')}</p>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-signup-name">
-            {copy.nameLabel}
+            {t('nameLabel')}
           </label>
           <input
             id="auth-signup-name"
             type="text"
             autoComplete="name"
             className={glass.input}
-            placeholder={copy.namePlaceholder}
+            placeholder={t('namePlaceholder')}
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={submitting}
@@ -101,14 +100,14 @@ export default function SignupForm({
         </div>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-signup-email">
-            {copy.emailLabel}
+            {t('emailLabel')}
           </label>
           <input
             id="auth-signup-email"
             type="email"
             autoComplete="email"
             className={glass.input}
-            placeholder={copy.emailPlaceholder}
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={submitting}
@@ -117,14 +116,14 @@ export default function SignupForm({
         </div>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-signup-password">
-            {copy.passwordLabel}
+            {t('passwordLabel')}
           </label>
           <input
             id="auth-signup-password"
             type="password"
             autoComplete="new-password"
             className={glass.input}
-            placeholder={copy.passwordPlaceholder}
+            placeholder={t('passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={submitting}
@@ -134,14 +133,14 @@ export default function SignupForm({
         </div>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-signup-confirm">
-            {copy.confirmLabel}
+            {t('confirmLabel')}
           </label>
           <input
             id="auth-signup-confirm"
             type="password"
             autoComplete="new-password"
             className={glass.input}
-            placeholder={copy.confirmPlaceholder}
+            placeholder={t('confirmPlaceholder')}
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             disabled={submitting}
@@ -151,18 +150,18 @@ export default function SignupForm({
         </div>
         {error ? <div className={styles.error}>{error}</div> : null}
         <button type="submit" className={glass.cta} disabled={submitting}>
-          <span className={glass.ctaLabel}>{submitting ? copy.submitting : copy.submit}</span>
+          <span className={glass.ctaLabel}>{submitting ? t('submitting') : t('submit')}</span>
         </button>
       </form>
       <p className={styles.switch}>
-        {copy.switchPrompt}{' '}
+        {t('switchPrompt')}{' '}
         <button
           type="button"
           className={styles.link}
           onClick={() => setMode('login')}
           disabled={submitting}
         >
-          {copy.switchCta}
+          {t('switchCta')}
         </button>
       </p>
     </>

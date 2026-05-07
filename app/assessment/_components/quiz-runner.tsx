@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Language } from '@/lib/content';
-import { UI } from '@/lib/content';
+import { useLocale, useTranslations } from 'next-intl';
+import type { Locale } from '@/i18n/routing';
 import { getBandOrdinal } from '@/lib/scoring';
 import { clearPersistedState, loadPersistedState, savePersistedState } from '@/lib/sessionState';
 import { useUser } from '@/lib/auth/use-user';
@@ -22,11 +22,14 @@ function splitTierLabel(label: string): { number: string; name: string } {
 
 interface QuizRunnerProps {
   quiz: QuizDef;
-  language: Language;
 }
 
-export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
+export default function QuizRunner({ quiz }: QuizRunnerProps) {
   const router = useRouter();
+  const locale = useLocale() as Locale;
+  const tQuiz = useTranslations('quiz');
+  const tResults = useTranslations('results');
+  const tAssessment = useTranslations('assessment');
   const { user, isLoading: userLoading } = useUser();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -58,12 +61,12 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
     (q: number, a: number[]) => {
       savePersistedState({
         quizSlug: quiz.slug,
-        language,
+        locale,
         currentQuestion: q,
         answers: a,
       });
     },
-    [quiz.slug, language],
+    [quiz.slug, locale],
   );
 
   const answerQuestion = useCallback(
@@ -120,7 +123,7 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
     <div className="rounded-2xl bg-white px-5 py-6 text-left sm:px-10 sm:py-11">
       <div className="border-b border-[#eee] pb-8 text-center">
         <h1 className="font-serif text-3xl font-bold text-[#1f36a9] sm:text-4xl">
-          {UI.results[language].heading}
+          {tResults('heading')}
         </h1>
         {(resultLevelNumber || resultLevelName) && (
           <p className="mt-3 font-sans text-[14px] font-semibold text-[#4e6bff] italic sm:text-[15px]">
@@ -131,9 +134,7 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
 
       <div className="mt-8 rounded-[10px] bg-[#eef1ff] px-5 py-4">
         <div className="mb-3 flex items-center justify-between text-[15px]">
-          <span className="text-[#333]">
-            {language === 'es' ? 'Puntuación total' : 'Total score'}
-          </span>
+          <span className="text-[#333]">{tAssessment('totalScore')}</span>
           <span className="font-bold text-[#111]">
             {Math.round(score)} / {Math.round(maxScore)}
           </span>
@@ -152,9 +153,7 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
             {band.description}
           </p>
           <div className="mt-8">
-            <p className="font-sans text-sm font-bold text-[#111]">
-              {UI.results[language].nextStepHeading}
-            </p>
+            <p className="font-sans text-sm font-bold text-[#111]">{tResults('nextStepHeading')}</p>
             <p className="mt-2 font-sans text-[15px] leading-relaxed text-[#333]">
               {band.nextStep}
             </p>
@@ -175,8 +174,10 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
           <div className="w-full max-w-[600px]">
             <header className="mb-3 w-full shrink-0 sm:mb-5">
               <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#365cff] sm:mb-2 sm:text-[14px]">
-                <span>{UI.quiz[language].levelOf(tierDisplayOrdinal)}</span>
-                <span>{UI.quiz[language].questionOf(currentQuestion + 1, totalQuestions)}</span>
+                <span>{tQuiz('levelOf', { n: tierDisplayOrdinal })}</span>
+                <span>
+                  {tQuiz('questionOf', { x: currentQuestion + 1, total: totalQuestions })}
+                </span>
               </div>
               <div
                 className="h-1 w-full rounded-sm bg-[#d8defa]"
@@ -205,14 +206,14 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
                 <p className="mt-3 font-sans text-[14px] leading-[1.6] font-semibold text-[#1f36a9] sm:mt-6 sm:min-h-14 sm:text-[20px]">
                   {currentQ.statement}
                 </p>
-                <ScaleButtons onChange={answerQuestion} language={language} />
+                <ScaleButtons onChange={answerQuestion} />
                 {currentQuestion > 0 && (
                   <button
                     type="button"
                     onClick={goBack}
                     className="mt-3 block w-full cursor-pointer border-none bg-transparent py-0.5 text-center font-sans text-[13px] font-medium text-[rgba(23,23,23,0.3)] transition-colors duration-200 hover:text-[#1f36a9]/60 sm:mt-6"
                   >
-                    {UI.quiz[language].back}
+                    {tQuiz('back')}
                   </button>
                 )}
               </div>
@@ -223,7 +224,6 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
 
       {screen === 'post-quiz' && (
         <PostQuizFlow
-          language={language}
           score={Math.round(score)}
           maxScore={Math.round(maxScore)}
           resultsContent={resultsContent}
@@ -233,7 +233,6 @@ export default function QuizRunner({ quiz, language }: QuizRunnerProps) {
             question_id: q.id,
             value: answers[i] ?? 0,
           }))}
-          locale={language}
         />
       )}
     </div>

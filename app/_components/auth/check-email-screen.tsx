@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
-import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
-import { mapAuthError } from './auth-errors';
+import { mapAuthErrorKey } from './auth-errors';
 import styles from './auth-modal.module.css';
 
 export default function CheckEmailScreen({
@@ -15,18 +15,17 @@ export default function CheckEmailScreen({
   pendingEmail: string;
   origin: 'signup' | 'forgot';
 }) {
-  const language = useAuthModal((s) => s.language);
   const close = useAuthModal((s) => s.close);
-  const copy = UI.auth[language].checkEmail;
-  const resendCopy = UI.auth[language].resend;
+  const t = useTranslations('auth.checkEmail');
+  const tResend = useTranslations('auth.resend');
+  const tErrors = useTranslations('auth.errors');
 
   const [resending, setResending] = useState(false);
   const [resendStatus, setResendStatus] = useState<'idle' | 'sent' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
 
-  const title = origin === 'signup' ? copy.signupTitle : copy.resetTitle;
-  const bodyTemplate = origin === 'signup' ? copy.signupBody : copy.resetBody;
-  const [before, after] = bodyTemplate.split('{email}');
+  const title = origin === 'signup' ? t('signupTitle') : t('resetTitle');
+  const bodyKey = origin === 'signup' ? 'signupBody' : 'resetBody';
 
   async function handleResend() {
     setError(null);
@@ -50,7 +49,7 @@ export default function CheckEmailScreen({
     setResending(false);
     if (resendError) {
       setResendStatus('error');
-      setError(mapAuthError(resendError, language));
+      setError(tErrors(mapAuthErrorKey(resendError)));
       return;
     }
     setResendStatus('sent');
@@ -75,23 +74,23 @@ export default function CheckEmailScreen({
       </div>
       <h2 className={styles.title}>{title}</h2>
       <p className={styles.subtitle}>
-        {before}
-        <span className={styles.checkEmailEmail}>{pendingEmail}</span>
-        {after}
+        {t.rich(bodyKey, {
+          email: () => <span className={styles.checkEmailEmail}>{pendingEmail}</span>,
+        })}
       </p>
       {error ? <div className={styles.error}>{error}</div> : null}
       <button type="button" className={glass.cta} onClick={close}>
-        <span className={glass.ctaLabel}>{copy.close}</span>
+        <span className={glass.ctaLabel}>{t('close')}</span>
       </button>
       <p className={styles.switch}>
-        {resendCopy.prompt}{' '}
+        {tResend('prompt')}{' '}
         <button
           type="button"
           className={styles.link}
           onClick={handleResend}
           disabled={resending || resendStatus === 'sent'}
         >
-          {resendStatus === 'sent' ? resendCopy.sent : resendCopy.cta}
+          {resendStatus === 'sent' ? tResend('sent') : tResend('cta')}
         </button>
       </p>
     </div>

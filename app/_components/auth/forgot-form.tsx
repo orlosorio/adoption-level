@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
-import { UI } from '@/lib/content';
 import glass from '@/app/assessment/_components/glass.module.css';
 import { useAuthModal } from '@/lib/auth/auth-modal-store';
-import { mapAuthError } from './auth-errors';
+import { mapAuthErrorKey } from './auth-errors';
 import styles from './auth-modal.module.css';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,10 +15,9 @@ export default function ForgotForm({
 }: {
   onPendingEmail: (email: string) => void;
 }) {
-  const language = useAuthModal((s) => s.language);
   const setMode = useAuthModal((s) => s.setMode);
-  const copy = UI.auth[language].forgot;
-  const errorsCopy = UI.auth[language].errors;
+  const t = useTranslations('auth.forgot');
+  const tErrors = useTranslations('auth.errors');
 
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -30,7 +29,7 @@ export default function ForgotForm({
 
     const trimmed = email.trim();
     if (!EMAIL_RE.test(trimmed)) {
-      setError(errorsCopy.invalidEmail);
+      setError(tErrors('invalidEmail'));
       return;
     }
 
@@ -42,7 +41,7 @@ export default function ForgotForm({
     setSubmitting(false);
 
     if (resetError) {
-      setError(mapAuthError(resetError, language));
+      setError(tErrors(mapAuthErrorKey(resetError)));
       return;
     }
     onPendingEmail(trimmed);
@@ -51,19 +50,19 @@ export default function ForgotForm({
 
   return (
     <>
-      <h2 className={styles.title}>{copy.title}</h2>
-      <p className={styles.subtitle}>{copy.subtitle}</p>
+      <h2 className={styles.title}>{t('title')}</h2>
+      <p className={styles.subtitle}>{t('subtitle')}</p>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="auth-forgot-email">
-            {copy.emailLabel}
+            {t('emailLabel')}
           </label>
           <input
             id="auth-forgot-email"
             type="email"
             autoComplete="email"
             className={glass.input}
-            placeholder={copy.emailPlaceholder}
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={submitting}
@@ -72,7 +71,7 @@ export default function ForgotForm({
         </div>
         {error ? <div className={styles.error}>{error}</div> : null}
         <button type="submit" className={glass.cta} disabled={submitting}>
-          <span className={glass.ctaLabel}>{submitting ? copy.submitting : copy.submit}</span>
+          <span className={glass.ctaLabel}>{submitting ? t('submitting') : t('submit')}</span>
         </button>
       </form>
       <p className={styles.switch}>
@@ -82,7 +81,7 @@ export default function ForgotForm({
           onClick={() => setMode('login')}
           disabled={submitting}
         >
-          {copy.back}
+          {t('back')}
         </button>
       </p>
     </>

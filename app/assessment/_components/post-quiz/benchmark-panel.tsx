@@ -1,7 +1,6 @@
 'use client';
 
-import type { Language } from '@/lib/content';
-import { UI } from '@/lib/content';
+import { useTranslations } from 'next-intl';
 import styles from './benchmark.module.css';
 
 export interface BenchmarkRow {
@@ -11,7 +10,6 @@ export interface BenchmarkRow {
 }
 
 interface BenchmarkPanelProps {
-  language: Language;
   totalRespondents: number;
   rows: BenchmarkRow[];
   minSegmentSize?: number;
@@ -38,17 +36,17 @@ function PercentileBar({
   );
 }
 
-export default function BenchmarkPanel({ language, totalRespondents, rows }: BenchmarkPanelProps) {
-  const copy = UI.benchmark[language];
+export default function BenchmarkPanel({ totalRespondents, rows }: BenchmarkPanelProps) {
+  const t = useTranslations('benchmark');
   const hasEnoughTotal = totalRespondents >= 50;
 
   return (
     <div className={styles.panel}>
-      <p className={styles.heading}>📊 {copy.panelHeading}</p>
-      <p className={styles.respondents}>{copy.respondentCount(totalRespondents)}</p>
+      <p className={styles.heading}>📊 {t('panelHeading')}</p>
+      <p className={styles.respondents}>{t('respondentCount', { n: totalRespondents })}</p>
 
       {!hasEnoughTotal ? (
-        <p className={`${styles.notEnough} italic`}>{copy.notEnoughData}</p>
+        <p className={`${styles.notEnough} italic`}>{t('notEnoughData')}</p>
       ) : (
         rows.map((row, i) => (
           <div key={`${row.label}-${i}`}>

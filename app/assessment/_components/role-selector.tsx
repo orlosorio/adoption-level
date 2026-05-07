@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/lib/cn';
-import type { Language } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 import type { RoleId } from '@/lib/roles';
 import { ROLE_NAMES } from '@/lib/roles';
 import glass from './glass.module.css';
 import styles from './role-selector.module.css';
 
 interface RoleSelectorProps {
-  language: Language;
   onSelect: (roleId: RoleId) => void;
 }
 
@@ -33,25 +33,16 @@ const ROLE_ORDER: RoleId[] = [
   'webflow-developer',
 ];
 
-const UI_TEXT = {
-  es: {
-    heading: 'Elige tu rol profesional',
-    start: 'Iniciar evaluación →',
-  },
-  en: {
-    heading: 'Select your professional role',
-    start: 'Start Assessment →',
-  },
-} as const;
-
-export default function RoleSelector({ language, onSelect }: RoleSelectorProps) {
+export default function RoleSelector({ onSelect }: RoleSelectorProps) {
+  const locale = useLocale() as Locale;
+  const t = useTranslations('assessment.roleSelector');
   const [selected, setSelected] = useState<RoleId | null>(null);
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       <div className="w-full max-w-[720px] text-center">
         <h2 className="mb-3 font-sans text-sm font-semibold text-[#1f36a9] sm:mb-5 sm:text-base">
-          {UI_TEXT[language].heading}
+          {t('heading')}
         </h2>
 
         <div className={styles.grid}>
@@ -71,7 +62,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
               }}
               className={cn(styles.card, selected === roleId && styles.cardSelected)}
             >
-              {ROLE_NAMES[roleId][language]}
+              {ROLE_NAMES[roleId][locale]}
             </button>
           ))}
         </div>
@@ -89,7 +80,7 @@ export default function RoleSelector({ language, onSelect }: RoleSelectorProps) 
             onClick={() => selected && onSelect(selected)}
             className={cn(glass.answerBtn, glass.answerYes, 'px-8')}
           >
-            {UI_TEXT[language].start}
+            {t('start')}
           </button>
         </div>
       </div>

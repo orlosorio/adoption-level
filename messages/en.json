@@ -1,3 +1,205 @@
 {
-  "_meta": { "version": "1" }
+  "header": {
+    "about": "About",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Switch language",
+    "es": "Español",
+    "en": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Access your account to see your results.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Your password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "forgot": "Forgot your password?",
+      "switchPrompt": "Don't have an account?",
+      "switchCta": "Sign up"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Save your results and compare with the community.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmLabel": "Confirm password",
+      "confirmPlaceholder": "Repeat your password",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "switchPrompt": "Already have an account?",
+      "switchCta": "Sign in"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "We'll send you a link to reset it.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "submit": "Send link",
+      "submitting": "Sending...",
+      "back": "← Back to sign in"
+    },
+    "checkEmail": {
+      "signupTitle": "Confirm your email",
+      "signupBody": "We sent an email to <email></email>. Click the link to confirm your account.",
+      "resetTitle": "Check your inbox",
+      "resetBody": "If an account exists for <email></email>, we've sent a link to reset your password.",
+      "close": "Done"
+    },
+    "signupDemographics": {
+      "title": "Tell us a bit more",
+      "subtitle": "Optional, but it helps us show you how you compare to people in your country, industry, and salary range.",
+      "save": "Save and continue",
+      "saving": "Saving…",
+      "skip": "Skip for now",
+      "loading": "Loading options…",
+      "emptyOption": "—"
+    },
+    "reset": {
+      "title": "Set your new password",
+      "subtitle": "Enter a new password for your account.",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmLabel": "Confirm password",
+      "confirmPlaceholder": "Repeat your password",
+      "submit": "Save and continue",
+      "submitting": "Saving..."
+    },
+    "modal": {
+      "close": "Close"
+    },
+    "errors": {
+      "invalidEmail": "Please enter a valid email.",
+      "passwordTooShort": "Password must be at least 8 characters.",
+      "passwordMismatch": "Passwords do not match.",
+      "nameRequired": "Please enter your name.",
+      "invalidCredentials": "Wrong email or password.",
+      "emailExists": "That email is already registered.",
+      "emailNotConfirmed": "Please confirm your email before signing in.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "weakPassword": "Password is too weak.",
+      "sameOrigin": "New password must differ from the current one.",
+      "generic": "Something went wrong. Please try again.",
+      "sessionExpired": "The link has expired. Request a new one."
+    },
+    "resend": {
+      "prompt": "Didn't get the email?",
+      "cta": "Resend confirmation",
+      "sent": "Sent again."
+    }
+  },
+  "assessment": {
+    "nav": {
+      "home": "Home",
+      "backToHome": "Back to home"
+    },
+    "errors": {
+      "invalidRole": "That role doesn't exist. Please choose from the options below."
+    },
+    "typeSelector": {
+      "heading": "Choose your assessment",
+      "recommended": "Recommended",
+      "general": {
+        "title": "General Assessment",
+        "desc": "How well are you using AI across your entire work life.",
+        "stats": "15 questions · ~2 min"
+      },
+      "role": {
+        "title": "Role-Specific Assessment",
+        "desc": "How well are you using AI in your specific discipline.",
+        "stats": "33 questions · ~4 min"
+      },
+      "company": {
+        "title": "Company Assessment",
+        "desc": "How ready is your organization for AI adoption across 7 key dimensions.",
+        "stats": "35 questions · ~4 min"
+      }
+    },
+    "roleSelector": {
+      "heading": "Select your professional role",
+      "start": "Start Assessment →"
+    },
+    "scaleLabels": [
+      "Never done this",
+      "Tried it once or twice",
+      "Done it a few times, still figuring it out",
+      "Do it regularly and it works well",
+      "Do it daily, confidently — could teach someone else"
+    ],
+    "toolsMarquee": {
+      "label": "Tools the best professionals are using"
+    },
+    "totalScore": "Total score"
+  },
+  "quiz": {
+    "levelOf": "Level {n} of 5",
+    "questionOf": "Question {x} of {total}",
+    "yes": "YES",
+    "no": "NO",
+    "back": "← Previous question"
+  },
+  "results": {
+    "heading": "Your results",
+    "nextStepHeading": "Your next step",
+    "again": "Take the quiz again",
+    "emailMeButton": "Email this to me",
+    "emailMeSending": "Sending…",
+    "emailMeSent": "Sent!",
+    "emailMeError": "Couldn't send. Try again."
+  },
+  "valueProp": {
+    "heading": "You finished. Here's what happens next.",
+    "sub1": "Your AI adoption level is ready.",
+    "sub2": "But before we show you — there's something more valuable we can offer you.",
+    "card1Title": "Your results, sent to your inbox",
+    "card1Desc": "Full breakdown of your level + next steps",
+    "card2Title": "See where you stand vs. everyone else",
+    "card2Desc": "Compare your score against professionals in your country, industry, and company type",
+    "cta": "Get my results + benchmark",
+    "skip": "Skip — just show me my score",
+    "liveCounter": "Join {n, number} professionals who've already benchmarked their AI level."
+  },
+  "benchmark": {
+    "panelHeading": "How you compare",
+    "respondentCount": "Based on {n, number} professionals who've taken this quiz",
+    "overallLabel": "Overall ranking",
+    "percentileText": "You scored higher than {pct}% of all respondents {segment}",
+    "notEnoughData": "Not enough data yet — be one of the first!"
+  },
+  "saveAndBenchmark": {
+    "signInCtaTitle": "See how you compare",
+    "signInCtaBody": "Sign in to save your result and unlock your benchmark against the rest of the community.",
+    "signInCtaButton": "Sign in to unlock",
+    "saving": "Saving…",
+    "error": "Couldn't save your result.",
+    "retry": "Retry"
+  },
+  "about": {
+    "nav": {
+      "home": "Home"
+    },
+    "sidebar": {
+      "heading": "AI Adoption Assessment",
+      "text": "Discover your real AI adoption level in just 2 minutes.",
+      "button": "Take the free assessment →"
+    },
+    "cta": {
+      "heading": "Ready to find out where you stand?",
+      "text": "15 questions. 2 minutes. No fluff.",
+      "button": "Take the free assessment"
+    },
+    "stickyBar": {
+      "text": "Ready to find out your real AI adoption level?",
+      "button": "Take the free assessment →"
+    }
+  }
 }

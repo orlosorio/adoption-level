@@ -1,11 +1,11 @@
-import type { Language } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 
 const STORAGE_KEY = 'accionables_quiz_state';
 const TWO_HOURS = 2 * 60 * 60 * 1000;
 
 export interface PersistedQuizState {
   quizSlug: string;
-  language: Language;
+  locale: Locale;
   currentQuestion: number;
   answers: number[];
   savedAt: number;

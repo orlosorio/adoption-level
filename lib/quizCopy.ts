@@ -3,7 +3,7 @@
 // in-quiz content (questions, tier labels, band copy); titles/subtitles/intro
 // for the entry page and runner header live here.
 
-import type { Language } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 import { ROLE_NAMES, type RoleId } from '@/lib/roles';
 
 export interface QuizCopy {
@@ -12,7 +12,7 @@ export interface QuizCopy {
   intro: string | null;
 }
 
-const STATIC: Record<string, Record<Language, QuizCopy>> = {
+const STATIC: Record<string, Record<Locale, QuizCopy>> = {
   general: {
     es: {
       title: 'Self-Assessment de Adopción de IA',
@@ -40,7 +40,7 @@ const STATIC: Record<string, Record<Language, QuizCopy>> = {
   },
 };
 
-export function getQuizCopy(slug: string, locale: Language): QuizCopy {
+export function getQuizCopy(slug: string, locale: Locale): QuizCopy {
   if (STATIC[slug]) return STATIC[slug]![locale];
 
   const rolePrefix = 'role-';

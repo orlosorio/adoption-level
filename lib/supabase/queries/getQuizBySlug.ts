@@ -2,7 +2,7 @@ import 'server-only';
 import { unstable_cache as nextCache } from 'next/cache';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '@/lib/supabase/database.types';
-import type { Language } from '@/lib/content';
+import type { Locale } from '@/i18n/routing';
 
 // Build-time / no-cookie client for static reads (generateStaticParams, ISR).
 function createPublicClient() {
@@ -16,7 +16,7 @@ function createPublicClient() {
 export interface QuizDef {
   id: string;
   slug: string;
-  locale: Language;
+  locale: Locale;
   tiers: Array<{ id: string; ordinal: number; shortLabel: string }>;
   questions: Array<{
     id: string;
@@ -34,7 +34,7 @@ export interface QuizDef {
   }>;
 }
 
-async function fetchQuiz(slug: string, locale: Language): Promise<QuizDef | null> {
+async function fetchQuiz(slug: string, locale: Locale): Promise<QuizDef | null> {
   const supabase = createPublicClient();
 
   const { data: quiz } = await supabase
@@ -114,7 +114,7 @@ async function fetchQuiz(slug: string, locale: Language): Promise<QuizDef | null
 }
 
 export const getQuizBySlug = nextCache(
-  async (slug: string, locale: Language) => fetchQuiz(slug, locale),
+  async (slug: string, locale: Locale) => fetchQuiz(slug, locale),
   ['quiz-by-slug'],
   { revalidate: 3600, tags: ['quizzes'] },
 );
