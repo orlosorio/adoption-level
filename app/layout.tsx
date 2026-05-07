@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Space_Mono } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
 import './globals.css';
 import { OG_IMAGE_URL } from '@/lib/config';
@@ -38,23 +40,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html
-      lang="es"
+      lang={locale}
       className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full font-sans text-neutral-900" suppressHydrationWarning>
-        <Suspense fallback={null}>
-          <Header />
-        </Suspense>
-        {children}
-        <AuthModal />
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Suspense fallback={null}>
+            <Header />
+          </Suspense>
+          {children}
+          <AuthModal />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
