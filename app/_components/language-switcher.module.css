@@ -45,3 +45,21 @@
   color: #fff;
   background: #1f36a9;
 }
+
+.labelShort {
+  display: inline;
+}
+
+.labelLong {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .labelShort {
+    display: none;
+  }
+
+  .labelLong {
+    display: inline;
+  }
+}

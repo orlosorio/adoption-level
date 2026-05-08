@@ -36,8 +36,12 @@ export default function LanguageSwitcher() {
             onClick={() => isLocale(code) && setLocale(code)}
             disabled={isPending}
             aria-pressed={active}
+            aria-label={t(code)}
           >
-            {t(code)}
+            <span className={styles.labelLong}>{t(code)}</span>
+            <span className={styles.labelShort} aria-hidden="true">
+              {code.toUpperCase()}
+            </span>
           </button>
         );
       })}

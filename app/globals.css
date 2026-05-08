@@ -8,6 +8,13 @@
   --brand-600: #365cff;
   --brand-500: #4e6bff;
   --brand-300: #8a9ff0;
+  --header-h: 56px;
+}
+
+@media (max-width: 639px) {
+  :root {
+    --header-h: 48px;
+  }
 }
 
 @theme inline {

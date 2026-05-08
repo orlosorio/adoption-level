@@ -18,6 +18,11 @@
   align-items: center;
   gap: 8px;
   pointer-events: auto;
+  min-width: 0;
+}
+
+.right {
+  flex: 0 1 auto;
 }
 
 .backLink {
@@ -142,4 +147,29 @@
   background: rgba(255, 255, 255, 0.85);
   color: #1f36a9;
   border-color: rgba(54, 92, 255, 0.3);
+}
+
+@media (max-width: 639px) {
+  .bar {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .right {
+    gap: 6px;
+  }
+
+  .aboutLink {
+    display: none;
+  }
+
+  .btn,
+  .user {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .userName {
+    max-width: 80px;
+  }
 }
