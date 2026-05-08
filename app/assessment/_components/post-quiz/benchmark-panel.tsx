@@ -1,18 +1,17 @@
 'use client';
 
-import type { Language } from '@/lib/content';
-import { UI } from '@/lib/content';
-import type { BenchmarkResult } from '@/lib/benchmarkMock';
+import { useTranslations } from 'next-intl';
 import styles from './benchmark.module.css';
 
+export interface BenchmarkRow {
+  label: string;
+  statement: string;
+  percentile: number;
+}
+
 interface BenchmarkPanelProps {
-  language: Language;
-  data: BenchmarkResult;
-  labels: {
-    country: string;
-    companyType: string;
-    industry: string;
-  };
+  totalRespondents: number;
+  rows: BenchmarkRow[];
   minSegmentSize?: number;
 }
 
@@ -37,62 +36,23 @@ function PercentileBar({
   );
 }
 
-export default function BenchmarkPanel({
-  language,
-  data,
-  labels,
-  minSegmentSize = 10,
-}: BenchmarkPanelProps) {
-  const copy = UI.benchmark[language];
-  const hasEnoughTotal = data.totalRespondents >= 50;
+export default function BenchmarkPanel({ totalRespondents, rows }: BenchmarkPanelProps) {
+  const t = useTranslations('benchmark');
+  const showRespondentCount = totalRespondents >= 50;
 
   return (
     <div className={styles.panel}>
-      <p className={styles.heading}>📊 {copy.panelHeading}</p>
-      <p className={styles.respondents}>{copy.respondentCount(data.totalRespondents)}</p>
-
-      {!hasEnoughTotal ? (
-        <p className={`${styles.notEnough} italic`}>{copy.notEnoughData}</p>
-      ) : (
-        <>
-          <PercentileBar
-            label={copy.overallLabel}
-            statement={copy.percentileText(data.overall, '')}
-            percentile={data.overall}
-          />
-
-          <hr className={styles.divider} />
-
-          {data.totalRespondents >= minSegmentSize ? (
-            <PercentileBar
-              label={copy.countryLabel(labels.country)}
-              statement={copy.percentileText(data.country, labels.country)}
-              percentile={data.country}
-            />
-          ) : (
-            <div className={styles.section}>
-              <p className={styles.label}>{copy.countryLabel(labels.country)}</p>
-              <p className={`${styles.notEnough} italic`}>{copy.notEnoughData}</p>
-            </div>
-          )}
-
-          <hr className={styles.divider} />
-
-          <PercentileBar
-            label={copy.companyLabel(labels.companyType)}
-            statement={copy.percentileText(data.companyType, labels.companyType)}
-            percentile={data.companyType}
-          />
-
-          <hr className={styles.divider} />
-
-          <PercentileBar
-            label={copy.industryLabel(labels.industry)}
-            statement={copy.percentileText(data.industry, labels.industry)}
-            percentile={data.industry}
-          />
-        </>
+      <p className={styles.heading}>📊 {t('panelHeading')}</p>
+      {showRespondentCount && (
+        <p className={styles.respondents}>{t('respondentCount', { n: totalRespondents })}</p>
       )}
+
+      {rows.map((row, i) => (
+        <div key={`${row.label}-${i}`}>
+          {i > 0 && <hr className={styles.divider} />}
+          <PercentileBar label={row.label} statement={row.statement} percentile={row.percentile} />
+        </div>
+      ))}
     </div>
   );
 }

@@ -17,7 +17,8 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local > lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --local > lib/supabase/database.types.ts",
+    "gen:email-hero": "node scripts/render-email-hero.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -39,12 +40,14 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "next": "16.2.1",
+    "next-intl": "^4.11.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.5.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

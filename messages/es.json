@@ -1,0 +1,210 @@
+{
+  "header": {
+    "about": "Sobre",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Cambiar idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sesión",
+      "subtitle": "Accede a tu cuenta para ver tus resultados.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Tu contraseña",
+      "submit": "Entrar",
+      "submitting": "Entrando...",
+      "forgot": "¿Olvidaste tu contraseña?",
+      "switchPrompt": "¿No tienes cuenta?",
+      "switchCta": "Regístrate"
+    },
+    "signup": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Guarda tus resultados y compáralos con la comunidad.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "confirmLabel": "Confirma la contraseña",
+      "confirmPlaceholder": "Repite la contraseña",
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta...",
+      "switchPrompt": "¿Ya tienes cuenta?",
+      "switchCta": "Inicia sesión"
+    },
+    "forgot": {
+      "title": "Recupera tu contraseña",
+      "subtitle": "Te enviaremos un enlace para restablecerla.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando...",
+      "back": "← Volver al inicio de sesión"
+    },
+    "checkEmail": {
+      "signupTitle": "Confirma tu correo",
+      "signupBody": "Te enviamos un correo a <email></email>. Haz click en el enlace para confirmar tu cuenta.",
+      "resetTitle": "Revisa tu bandeja",
+      "resetBody": "Si tienes una cuenta con <email></email>, te enviamos un enlace para restablecer tu contraseña.",
+      "close": "Listo"
+    },
+    "signupDemographics": {
+      "title": "Cuéntanos un poco más",
+      "subtitle": "Es opcional, pero nos ayuda a mostrarte cómo te comparas con personas en tu país, industria y rango salarial.",
+      "save": "Guardar y continuar",
+      "saving": "Guardando…",
+      "skip": "Saltar por ahora",
+      "loading": "Cargando opciones…",
+      "emptyOption": "—"
+    },
+    "reset": {
+      "title": "Define tu nueva contraseña",
+      "subtitle": "Ingresa una contraseña nueva para tu cuenta.",
+      "passwordLabel": "Nueva contraseña",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "confirmLabel": "Confirma la contraseña",
+      "confirmPlaceholder": "Repite la contraseña",
+      "submit": "Guardar y continuar",
+      "submitting": "Guardando..."
+    },
+    "modal": {
+      "close": "Cerrar"
+    },
+    "errors": {
+      "invalidEmail": "Ingresa un email válido.",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "nameRequired": "Ingresa tu nombre.",
+      "invalidCredentials": "Email o contraseña incorrectos.",
+      "emailExists": "Ese email ya está registrado.",
+      "emailNotConfirmed": "Confirma tu correo antes de iniciar sesión.",
+      "rateLimited": "Demasiados intentos. Intenta de nuevo en unos minutos.",
+      "weakPassword": "La contraseña es demasiado débil.",
+      "sameOrigin": "La nueva contraseña debe ser distinta de la actual.",
+      "generic": "Algo salió mal. Intenta de nuevo.",
+      "sessionExpired": "El enlace expiró. Solicita uno nuevo."
+    },
+    "resend": {
+      "prompt": "¿No recibiste el correo?",
+      "cta": "Reenviar confirmación",
+      "sent": "Reenviado."
+    }
+  },
+  "assessment": {
+    "nav": {
+      "home": "Inicio",
+      "backToHome": "Volver al inicio"
+    },
+    "errors": {
+      "invalidRole": "Ese rol no existe. Por favor elige una de las opciones."
+    },
+    "typeSelector": {
+      "heading": "Elige tu evaluación",
+      "recommended": "Recomendado",
+      "general": {
+        "title": "Evaluación General",
+        "desc": "Qué tan bien estás usando IA en toda tu vida laboral.",
+        "stats": "15 preguntas · ~2 min"
+      },
+      "role": {
+        "title": "Evaluación por Rol",
+        "desc": "Qué tan bien estás usando IA en tu disciplina específica.",
+        "stats": "33 preguntas · ~4 min"
+      },
+      "company": {
+        "title": "Evaluación Empresarial",
+        "desc": "Qué tan preparada está tu organización para adoptar IA en 7 dimensiones clave.",
+        "stats": "35 preguntas · ~4 min"
+      }
+    },
+    "roleSelector": {
+      "heading": "Elige tu rol profesional",
+      "start": "Iniciar evaluación →"
+    },
+    "scaleLabels": [
+      "Nunca he hecho esto",
+      "Lo probé una o dos veces",
+      "Lo hago a veces, todavía lo estoy aprendiendo",
+      "Lo hago regularmente y me funciona bien",
+      "Lo hago diario con confianza — podría enseñárselo a alguien"
+    ],
+    "toolsMarquee": {
+      "label": "Las herramientas que están usando los mejores"
+    },
+    "totalScore": "Puntuación total"
+  },
+  "quiz": {
+    "levelOf": "Nivel {n} de 5",
+    "questionOf": "Pregunta {x} de {total}",
+    "yes": "SÍ",
+    "no": "NO",
+    "back": "← Pregunta anterior"
+  },
+  "results": {
+    "heading": "Tus resultados",
+    "nextStepHeading": "Tu siguiente paso",
+    "again": "Hacer el quiz de nuevo",
+    "emailMeButton": "Enviarme por correo",
+    "emailMeSending": "Enviando…",
+    "emailMeSent": "¡Enviado!",
+    "emailMeError": "No pudimos enviarlo. Intenta de nuevo."
+  },
+  "valueProp": {
+    "heading": "Terminaste. Esto es lo que pasa ahora.",
+    "sub1": "Tu nivel de adopción de IA está listo.",
+    "sub2": "En la siguiente pantalla vas a obtener:",
+    "card1Title": "Tus resultados, en tu correo",
+    "card1Desc": "Análisis completo de tu nivel + próximos pasos",
+    "card2Title": "Ve dónde estás vs. todos los demás",
+    "card2Desc": "Compara tu puntaje con profesionales en tu país, industria y tipo de empresa",
+    "cta": "Ver mis resultados",
+    "liveCounter": "Únete a miles de profesionales que ya midieron su nivel de IA."
+  },
+  "profile": {
+    "title": "Tu perfil",
+    "subtitle": "Estos datos nos ayudan a mostrarte cómo te comparas con profesionales similares. Son privados.",
+    "loading": "Cargando…",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "saved": "Guardado",
+    "error": "No pudimos guardar. Intentá de nuevo.",
+    "emptyOption": "—"
+  },
+  "benchmark": {
+    "panelHeading": "Cómo te comparas",
+    "respondentCount": "Basado en {n, number} profesionales que tomaron este quiz",
+    "overallLabel": "Ranking general",
+    "percentileText": "Puntuaste más alto que el {pct}% de los encuestados {segment}"
+  },
+  "saveAndBenchmark": {
+    "signInCtaTitle": "Mira cómo te comparas",
+    "signInCtaBody": "Inicia sesión para guardar tu resultado y desbloquear tu benchmark contra el resto de la comunidad.",
+    "signInCtaButton": "Inicia sesión para ver",
+    "saving": "Guardando…",
+    "error": "No pudimos guardar tu resultado.",
+    "retry": "Reintentar"
+  },
+  "about": {
+    "sidebar": {
+      "heading": "Assessment de Adopción de IA",
+      "text": "Descubre tu nivel real de adopción de IA en solo 2 minutos.",
+      "button": "Tomar el assessment gratuito →"
+    },
+    "cta": {
+      "heading": "¿Listo para saber dónde estás?",
+      "text": "15 preguntas. 2 minutos. Sin relleno.",
+      "button": "Tomar el assessment gratuito"
+    },
+    "stickyBar": {
+      "text": "¿Listo para saber tu nivel real de adopción de IA?",
+      "button": "Tomar el assessment gratuito →"
+    }
+  }
+}

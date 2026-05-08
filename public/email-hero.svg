@@ -1,0 +1,70 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 560 200"
+  width="560"
+  height="200"
+  role="img"
+  aria-label="adoptionlevel.ai"
+>
+  <defs>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(54,92,255,0.10)" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="560" height="200" fill="#eef1ff" />
+  <rect width="560" height="200" fill="url(#grid)" />
+  <rect
+    x="56"
+    y="38"
+    width="36"
+    height="36"
+    rx="3"
+    fill="none"
+    stroke="rgba(54,92,255,0.42)"
+    stroke-width="1.4"
+    transform="rotate(-12 74 56)"
+  />
+  <rect
+    x="450"
+    y="120"
+    width="40"
+    height="40"
+    rx="3"
+    fill="none"
+    stroke="rgba(54,92,255,0.42)"
+    stroke-width="1.4"
+    transform="rotate(14 470 140)"
+  />
+  <polygon
+    points="496,38 520,72 472,72"
+    fill="none"
+    stroke="rgba(54,92,255,0.42)"
+    stroke-width="1.4"
+  />
+  <g transform="translate(175,25)">
+    <path
+      d="M 0 150 L 50 0 L 80 0 L 130 150 L 104 150 L 86 92 L 44 92 L 26 150 Z M 50 78 L 65 24 L 80 78 Z"
+      fill-rule="evenodd"
+      fill="rgba(140,168,255,0.55)"
+    />
+    <path
+      d="M 0 150 L 50 0 L 80 0 L 130 150 L 104 150 L 86 92 L 44 92 L 26 150 Z M 50 78 L 65 24 L 80 78 Z"
+      fill-rule="evenodd"
+      fill="none"
+      stroke="rgba(43,76,240,0.9)"
+      stroke-width="3"
+      stroke-linejoin="miter"
+    />
+    <path
+      d="M 145 0 L 210 0 L 210 18 L 188 18 L 188 132 L 210 132 L 210 150 L 145 150 L 145 132 L 167 132 L 167 18 L 145 18 Z"
+      fill="rgba(140,168,255,0.55)"
+    />
+    <path
+      d="M 145 0 L 210 0 L 210 18 L 188 18 L 188 132 L 210 132 L 210 150 L 145 150 L 145 132 L 167 132 L 167 18 L 145 18 Z"
+      fill="none"
+      stroke="rgba(43,76,240,0.9)"
+      stroke-width="3"
+      stroke-linejoin="miter"
+    />
+  </g>
+</svg>

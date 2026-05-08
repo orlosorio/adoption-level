@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Confirm your email</title>
+  </head>
+  <body
+    style="margin:0;padding:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1a1a2e;"
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background:#f4f6fb;"
+    >
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table
+            role="presentation"
+            width="560"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="max-width:560px;width:100%;"
+          >
+            <tr>
+              <td
+                style="background:#eef1ff;border:1px solid #d8defa;border-bottom:0;border-radius:16px 16px 0 0;padding:0;line-height:0;font-size:0;"
+              >
+                <img
+                  src="https://adoptionlevel.ai/email-hero.png"
+                  width="560"
+                  alt="adoptionlevel.ai"
+                  style="display:block;width:100%;height:auto;border:0;border-radius:16px 16px 0 0;"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td
+                align="center"
+                style="background:#ffffff;border:1px solid #d8defa;border-top:0;border-radius:0 0 16px 16px;padding:32px 28px;text-align:center;"
+              >
+                <h1 style="margin:0 0 14px;font-size:22px;font-weight:700;color:#1a1a2e;">
+                  One click away from your results
+                </h1>
+                <p style="margin:0 0 22px;font-size:15px;line-height:1.55;color:#4d5b9a;">
+                  Confirm your email to save your AI adoption level and see how you compare to
+                  professionals in your country, industry, and salary range.
+                </p>
+                <a
+                  href="{{ .ConfirmationURL }}"
+                  style="display:inline-block;padding:13px 22px;border-radius:10px;background:#365cff;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;"
+                >
+                  See my results
+                </a>
+                <p style="margin:24px 0 0;font-size:13px;line-height:1.55;color:#8893b8;">
+                  Or paste this link into your browser:<br />
+                  <a href="{{ .ConfirmationURL }}" style="color:#365cff;word-break:break-all;">
+                    {{ .ConfirmationURL }}
+                  </a>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p
+            style="margin:20px 4px 0;max-width:560px;font-size:12px;line-height:1.55;color:#8893b8;"
+          >
+            If you didn't sign up for adoptionlevel.ai, ignore this email — no account will be
+            created.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
