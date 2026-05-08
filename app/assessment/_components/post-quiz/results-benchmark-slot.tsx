@@ -195,13 +195,43 @@ export default function ResultsBenchmarkSlot({
   }, [status, user, quizId, score, maxScore, locale, tBenchmark]);
 
   async function handleEmailMe() {
-    if (!attemptId) return;
+    if (!attemptId || !benchmark) return;
     setEmailStatus('sending');
     const supabase = createClient();
     const { error } = await supabase.functions.invoke('send-result-email', {
-      body: { attempt_id: attemptId },
+      body: {
+        attempt_id: attemptId,
+        benchmark: {
+          totalRespondents: benchmark.totalRespondents,
+          rows: benchmark.rows,
+        },
+      },
     });
-    setEmailStatus(error ? 'error' : 'sent');
+    if (error) {
+      // FunctionsHttpError swallows the body — pull it off the underlying Response.
+      const ctx = (error as { context?: Response }).context;
+      let detail: unknown = null;
+      if (ctx && typeof ctx.text === 'function') {
+        try {
+          const raw = await ctx.text();
+          try {
+            detail = JSON.parse(raw);
+          } catch {
+            detail = raw;
+          }
+        } catch {
+          /* noop */
+        }
+      }
+      console.error('[send-result-email] failed', {
+        message: (error as Error).message,
+        status: ctx?.status,
+        detail,
+      });
+      setEmailStatus('error');
+      return;
+    }
+    setEmailStatus('sent');
   }
 
   if (isLoading) return null;
@@ -265,7 +295,7 @@ export default function ResultsBenchmarkSlot({
         type="button"
         className={benchmarkStyles.teaserCta}
         onClick={handleEmailMe}
-        disabled={!attemptId || emailStatus === 'sending' || emailStatus === 'sent'}
+        disabled={!attemptId || !benchmark || emailStatus === 'sending' || emailStatus === 'sent'}
       >
         {emailStatus === 'sending'
           ? tResults('emailMeSending')
